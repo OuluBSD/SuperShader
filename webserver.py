@@ -105,7 +105,7 @@ def api_search():
 @app.route('/static/<path:path>')
 def send_static(path):
     """Serve static files from various directories"""
-    # Try to serve from different directories
+    # Try to serve from different directories - using the same paths as defined in the script
     static_dirs = [TMP_DIR, COMMON_DIR]
     for static_dir in static_dirs:
         try:
@@ -113,6 +113,14 @@ def send_static(path):
         except FileNotFoundError:
             continue
     abort(404)
+
+@app.route('/css/<path:path>')
+def send_css(path):
+    """Serve CSS files from templates directory"""
+    try:
+        return send_from_directory('templates', path)
+    except FileNotFoundError:
+        return send_from_directory(TMP_DIR, path)
 
 def load_all_shaders():
     """Load all shaders from JSON files in the JSON directory"""
