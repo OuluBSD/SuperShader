@@ -1,4 +1,4 @@
-# Shadertoy Browser
+# Shadertoy Browser (15,067 shaders)
 
 A web application for browsing, searching, and viewing shaders from Shadertoy. This project allows you to run a local browser for Shadertoy shaders with search and pagination capabilities.
 
