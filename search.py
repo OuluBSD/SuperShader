@@ -290,18 +290,22 @@ class ShaderSearcher:
         # Apply text-based filters
         if tags:
             temp_set = set()
-            tag_lower = tags.lower()
+            # Split tags by comma to allow multiple tags
+            tag_list = [tag.strip().lower() for tag in tags.split(',')]
+            
             for shader_id, data in self.shader_index.items():
                 # Check both tags in JSON and tags in cache
-                all_tags = data['tags'][:]
+                all_tags = [t.lower() for t in data['tags']]  # Convert to lowercase for comparison
                 # Check if shader appears in the tag cache
                 for cached_tag, shader_ids in self.tag_cache.items():
-                    if shader_id in shader_ids and cached_tag.lower().startswith(tag_lower):
+                    if shader_id in shader_ids and any(cached_tag.lower().startswith(tag) for tag in tag_list):
                         # Add this tag to our all_tags if not already there
-                        if cached_tag not in all_tags:
-                            all_tags.append(cached_tag)
+                        cached_tag_lower = cached_tag.lower()
+                        if cached_tag_lower not in all_tags:
+                            all_tags.append(cached_tag_lower)
                 
-                if any(tag_lower in t.lower() for t in all_tags):
+                # Check if shader contains ALL specified tags (AND operation)
+                if all(any(tag in shader_tag for shader_tag in all_tags) for tag in tag_list):
                     temp_set.add(shader_id)
             matching_shaders &= temp_set
 
