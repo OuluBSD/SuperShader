@@ -12,6 +12,7 @@ The project includes a powerful command-line search tool (`search.py`) that enab
 
 ### Basic Search Options
 - `--tags <tag>`: Search by tags (e.g. `--tags game`)
+- `--tags <tag1,tag2,tag3>`: Search by multiple tags with AND operation (e.g. `--tags game,physics` finds shaders with both tags)
 - `--name <text>`: Search in shader names
 - `--author <text>`: Search by author/username  
 - `--description <text>`: Search in descriptions
@@ -40,6 +41,9 @@ python search.py --tags game --buffer
 
 # Find all games with keyboard input
 python search.py --tags game --keyboard
+
+# Find shaders with multiple tags (AND operation)
+python search.py --tags game,physics  # Finds shaders with both 'game' AND 'physics' tags
 
 # Find shaders by specific author
 python search.py --author iq
