@@ -43,6 +43,7 @@ The SuperShader project aims to:
 - Generate shaders by combining modules
 - Tag analysis for organizing shaders by genre
 - Feature cataloging system for identifying common shader components
+- Data processing pipeline for batch analysis of shaders
 
 ## License
 

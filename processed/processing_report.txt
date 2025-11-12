@@ -1,0 +1,50 @@
+Shader Processing Pipeline Report
+==================================================
+Total Shaders Processed: 15061
+Total Unique Tags: 664
+
+Top 20 Tags:
+------------------------------
+basic: 120
+2d: 120
+animation: 119
+aliasing: 118
+auto: 117
+art: 117
+abstract: 117
+beginner: 117
+ball: 116
+3d: 115
+blob: 113
+ai: 109
+blend: 109
+analytic: 106
+amiga: 66
+param: 60
+chromatic: 60
+triangle: 60
+bloom: 60
+maze: 60
+
+Top 20 Shader Features:
+------------------------------
+function:mainImage: 21377
+function:if: 15066
+type:vec2: 15037
+type:vec4: 15022
+type:vec3: 12293
+type:mat2: 3839
+type:mat3: 3004
+function:map: 1963
+function:for: 1873
+function:hash: 1531
+function:rand: 1087
+type:sampler2D: 1036
+function:calcNormal: 826
+function:sdBox: 810
+function:fbm: 796
+function:smin: 794
+function:rotate: 758
+function:rot: 751
+function:render: 700
+type:mat4: 661

@@ -109,6 +109,14 @@ The project includes a system for cataloging shader features:
 - Creates a comprehensive report of feature distribution across the shader collection
 - Helps identify the most common shader components for module creation
 
+## Data Processing Pipeline
+
+The project includes a comprehensive data processing pipeline:
+- Use pipeline.py to process shaders in batches for large-scale analysis
+- The pipeline organizes shaders by tags and features for systematic processing
+- Stores shader metadata and features in an indexed database for fast queries
+- Optimized for processing large numbers of shaders efficiently
+
 ## 3D Model and Math Library Integration
 
 - Use assimp library for 3D model loading, replacing built-in 3D primitives when appropriate

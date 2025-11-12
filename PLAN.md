@@ -21,6 +21,7 @@ SuperShader is a tongue-in-cheek project designed to combine all shaders into on
 - Set up project structure and management code
 - [COMPLETED] Analyze JSON files to extract tags and categorize shaders
 - [COMPLETED] Create tools for cataloging shader features
+- [COMPLETED] Create data processing pipeline for large-scale analysis
 - Create tools for GLSL extraction and shader analysis
 - Design module architecture and pseudocode format
 - Document project in TASKS.md and PLAN.md
