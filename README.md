@@ -1,152 +1,45 @@
-# Shadertoy Browser (15,067 shaders)
+# SuperShader
 
-A comprehensive toolkit for browsing, searching, and viewing shaders from Shadertoy. This project allows you to run a local browser for Shadertoy shaders with extensive search capabilities.
+Tongue-in-cheek project that combines all shaders into one unified system using generic modules.
 
-## Overview
+## Goal
 
-The Shadertoy Browser is a collection of tools for exploring the vast collection of Shadertoy shaders, featuring both a web interface and a powerful command-line search tool. It comes with thousands of pre-downloaded shaders ready to browse and search.
+The SuperShader project aims to:
+- Break down all shaders into generic, reusable modules
+- Identify and eliminate duplicate code
+- Find similar modules and group them logically
+- Create a management system to combine modules into useful shaders
+- Store code in a universal format (pseudocode) that can be translated to multiple languages and rendering APIs
 
-## Search Tool (Most Important Feature!)
+## Approach
 
-The project includes a powerful command-line search tool (`search.py`) that enables sophisticated searching across all shader data:
+- Modules are organized by genre, with conflicting features separated into branches
+- Management code (Python) combines modules into functional shaders
+- Universal pseudocode serves as storage format, easily translatable to:
+  - Programming languages: C/C++, Java, Python, JavaScript, C#
+  - Graphics APIs: OpenGL, DirectX, Vulkan, Metal, Software rendering
 
-### Basic Search Options
-- `--tags <tag>`: Search by tags (e.g. `--tags game`)
-- `--tags <tag1,tag2,tag3>`: Search by multiple tags with AND operation (e.g. `--tags game,physics` finds shaders with both tags)
-- `--name <text>`: Search in shader names
-- `--author <text>`: Search by author/username  
-- `--description <text>`: Search in descriptions
+## Structure
 
-### Resource Requirement Search
-- `--buffer`: Find shaders requiring buffers
-- `--cubemap`: Find shaders requiring cubemaps
-- `--image`: Find shaders requiring images
-- `--keyboard`: Find shaders requiring keyboard input
-- `--texture`: Find shaders requiring textures
-- `--video`: Find shaders requiring video input
-- `--sound`: Find shaders requiring sound input
-- `--library`: Find shaders requiring external libraries
-- `--webcam`: Find shaders requiring webcam input
-- And many more resource types...
-
-### Advanced Options
-- `--add-tags`: Add tag information from search_results to JSON files and analyze JSONs for resource dependencies
-- `--reindex`: Rebuild shader index cache
-- `--json-dir <dir>`: Specify directory with JSON shader files
-
-### Examples:
-```bash
-# Find all games requiring buffers
-python search.py --tags game --buffer
-
-# Find all games with keyboard input
-python search.py --tags game --keyboard
-
-# Find shaders with multiple tags (AND operation)
-python search.py --tags game,physics  # Finds shaders with both 'game' AND 'physics' tags
-
-# Find shaders by specific author
-python search.py --author iq
-
-# Find shaders using textures
-python search.py --texture --name "raymarching"
-```
-
-The search tool intelligently analyzes shader JSON files to detect resource requirements and combines this with the original requires data for comprehensive searching.
+- `modules/` - Contains generic shader modules organized by genre
+- `management/` - Python scripts to combine modules into shaders
+- `extract_glsl.py` - Utility to extract GLSL code from JSON files
+- `search.py` - Search functionality for shader analysis
+- `TASKS.md` - Detailed project tasks
+- `PLAN.md` - Project phases and implementation plan
+- `QWEN.md` - Project context and instructions for AI assistants
+- `json/` - Original shader data files in JSON format
+- `common/` - Common resources and assets
 
 ## Features
 
-- Browse all shaders with pagination
-- Search functionality for finding specific shaders
-- Detailed shader views with code and metadata
-- Responsive design that works on different screen sizes
-- Local web interface - no internet required after setup
-- Support for shader preview functionality
-
-## File Structure
-
-```
-Shaders/
-├── webserver.py          # Main Flask application
-├── json/                 # Shader data files in JSON format
-├── templates/            # HTML templates (base.html, browse.html, shader.html, etc.)
-├── README.md             # This file
-└── ...
-```
-
-## Prerequisites
-
-- Python 3.6+
-- Flask
-- Other Python dependencies
-
-## Installation
-
-1. Clone the repository or download the source code
-2. Install Python dependencies:
-   ```bash
-   pip install flask werkzeug
-   ```
-
-## Usage
-
-1. Run the webserver:
-   ```bash
-   python webserver.py
-   ```
-
-2. Open your browser and navigate to:
-   ```
-   http://localhost:8081
-   ```
-
-## Project Structure
-
-- `webserver.py`: Main Flask application that serves the web interface
-- `json/`: Contains hundreds of shader files in JSON format
-- `templates/`: HTML templates for the web interface
-  - `base.html`: Main layout template
-  - `frontpage.html`: Front page of the application
-  - `browse.html`: Browse all shaders page
-  - `shader.html`: Individual shader detail page
-  - `search_results.html`: Search results page
-- `templates/styles.css`: CSS styling for the application
-
-## Shader Data Format
-
-Each shader is stored as a JSON file containing:
-- Metadata (ID, name, username, description, date, etc.)
-- Render pass information
-- GLSL shader code
-- Statistics (views, likes, etc.)
-
-## Features
-
-### Browse
-View all available shaders in a grid layout with pagination.
-
-### Search
-Search for shaders by name, username, or description.
-
-### Detailed View
-View individual shaders with full code and metadata.
-
-### Responsive Design
-Works on various screen sizes and devices.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+- Extract GLSL code from JSON shader files
+- Analyze and categorize shader modules
+- Identify duplicate and similar code segments
+- Create generic, reusable modules from specific implementations
+- Generate shaders by combining modules
 
 ## License
 
-This project does not specify a license in the provided files. Please check with the project maintainers for licensing information.
-
-## Notes
-
-- This project contains a large collection of shaders obtained from Shadertoy
-- All shaders are stored locally in the `json/` directory
-- The application runs locally and doesn't require continuous internet access after setup
+The SuperShader code (excluding the `json/` directory) is licensed under the BSD 3-Clause License (see LICENSE file).
+The JSON files in the `json/` directory are not covered by this license and remain the property of their respective copyright holders.

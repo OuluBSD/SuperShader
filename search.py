@@ -2,6 +2,9 @@
 """
 Search script for Shadertoy shaders based on various criteria.
 Supports searching by tags, name, author, description, and finding shaders with requires_* files.
+
+For the SuperShader project: This script can be used to analyze shaders for module extraction.
+Use extract_glsl.py to extract GLSL code from JSON files for further analysis.
 """
 
 import os
