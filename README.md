@@ -41,9 +41,6 @@ The SuperShader project aims to:
 - Identify duplicate and similar code segments
 - Create generic, reusable modules from specific implementations
 - Generate shaders by combining modules
-- Extensive documentation with PlantUML visualizations
-- Hypothesis development for universal shader architectures
-- Analysis of app-in-shader extension possibilities
 
 ## License
 
