@@ -15,6 +15,8 @@ from pathlib import Path
 import pickle
 import time
 from typing import Dict, List, Set
+import re
+from difflib import SequenceMatcher
 
 class ShaderSearcher:
     def __init__(self, json_dir='json', shader_dirs=None):
@@ -475,6 +477,168 @@ class ShaderSearcher:
 
         return results
 
+    def extract_shader_code(self, json_file_path):
+        """Extract shader code from the JSON file."""
+        try:
+            with open(json_file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            # Extract code from renderpass
+            code_parts = []
+            if 'renderpass' in data:
+                for pass_data in data['renderpass']:
+                    if 'code' in pass_data:
+                        code_parts.append(pass_data['code'])
+            return '\n'.join(code_parts)
+        except Exception as e:
+            print(f"Error extracting code from {json_file_path}: {e}")
+            return ""
+
+    def normalize_code(self, code):
+        """Normalize code to remove formatting differences that don't affect functionality."""
+        if not code:
+            return ""
+        
+        # Remove comments
+        code = re.sub(r'//.*?$', '', code, flags=re.MULTILINE)
+        code = re.sub(r'/\*.*?\*/', '', code, flags=re.DOTALL)
+        
+        # Remove extra whitespace
+        code = re.sub(r'\s+', ' ', code)
+        
+        # Remove spaces around operators
+        code = re.sub(r'\s*([{}=+\-*/<>!&|^~%[\]()?,.:;])\s*', r'\1', code)
+        
+        return code.strip()
+
+    def find_similar_code_snippets(self, min_similarity=0.8, sample_size=None):
+        """Find similar code snippets across shaders."""
+        print("Loading shader metadata...")
+        self.shader_index = self.load_all_json_metadata()
+        
+        shader_codes = {}
+        json_files = list(self.shader_index.values())
+        
+        if sample_size:
+            json_files = json_files[:sample_size]
+        
+        print(f"Processing {len(json_files)} shaders...")
+        
+        # Extract code from all shaders
+        for i, shader_info in enumerate(json_files):
+            if i % 500 == 0:
+                print(f"Processed {i}/{len(json_files)} shaders...")
+            
+            code = self.extract_shader_code(shader_info['filepath'])
+            normalized_code = self.normalize_code(code)
+            
+            if normalized_code:  # Only store non-empty code
+                shader_codes[shader_info['id']] = {
+                    'code': normalized_code,
+                    'filepath': shader_info['filepath'],
+                    'name': shader_info['name'],
+                    'username': shader_info['username'],
+                    'full_code': code  # Keep original formatting for display
+                }
+        
+        print(f"Found {len(shader_codes)} shaders with code.")
+        
+        # Compare code snippets to find similarities
+        similar_pairs = []
+        shader_ids = list(shader_codes.keys())
+        
+        print("Finding similar code snippets...")
+        for i in range(len(shader_ids)):
+            for j in range(i + 1, len(shader_ids)):
+                id1, id2 = shader_ids[i], shader_ids[j]
+                
+                code1 = shader_codes[id1]['code']
+                code2 = shader_codes[id2]['code']
+                
+                similarity = SequenceMatcher(None, code1, code2).ratio()
+                
+                if similarity >= min_similarity:
+                    similar_pairs.append({
+                        'id1': id1,
+                        'id2': id2,
+                        'similarity': similarity,
+                        'code1': shader_codes[id1]['full_code'],
+                        'code2': shader_codes[id2]['full_code'],
+                        'name1': shader_codes[id1]['name'],
+                        'name2': shader_codes[id2]['name'],
+                        'username1': shader_codes[id1]['username'],
+                        'username2': shader_codes[id2]['username']
+                    })
+                    
+                    # Sort by similarity in descending order
+                    similar_pairs.sort(key=lambda x: x['similarity'], reverse=True)
+                    
+                    # Keep only top 100 matches to avoid memory issues
+                    if len(similar_pairs) > 100:
+                        similar_pairs = similar_pairs[:100]
+        
+        return similar_pairs
+
+    def find_common_functions(self, min_appearances=5):
+        """Find commonly appearing functions in shaders."""
+        print("Loading shader metadata...")
+        self.shader_index = self.load_all_json_metadata()
+        
+        function_count = {}
+        shader_count = 0
+        json_files = list(self.shader_index.values())
+        
+        print(f"Analyzing functions in {len(json_files)} shaders...")
+        
+        for i, shader_info in enumerate(json_files):
+            if i % 500 == 0:
+                print(f"Processed {i}/{len(json_files)} shaders...")
+                
+            code = self.extract_shader_code(shader_info['filepath'])
+            if not code:
+                continue
+                
+            shader_count += 1
+            
+            # Find function definitions (simple pattern for GLSL functions)
+            # This finds patterns like: return_type function_name ( parameters ) { ... }
+            function_pattern = r'\b(\w+)\s+(\w+)\s*\([^)]*\)\s*\{([^{}]|\{[^{}]*\})*\}'
+            functions = re.findall(function_pattern, code, re.DOTALL)
+            
+            for return_type, func_name, func_body in functions:
+                # Skip built-in GLSL functions
+                if func_name.lower() in ['main', 'mainimage', 'maincamera', 'mainray', 'mainmipmap', 'sin', 'cos', 'tan', 'pow', 'sqrt', 'abs', 'sign', 'floor', 'ceil', 'fract', 'mod', 'min', 'max', 'clamp', 'mix', 'step', 'smoothstep', 'length', 'distance', 'dot', 'cross', 'normalize', 'faceforward', 'reflect', 'refract', 'texture', 'texture2d', 'texturecube', 'texelfetch', 'texturegather', 'texturegrad', 'texturelod', 'textureproj', 'dFdx', 'dFdy', 'fwidth', 'noise', 'cellnoise', 'snoise']:
+                    continue
+                    
+                full_func_sig = f"{return_type} {func_name}"
+                if full_func_sig not in function_count:
+                    function_count[full_func_sig] = {'count': 0, 'examples': []}
+                
+                function_count[full_func_sig]['count'] += 1
+                
+                # Store a sample of the function
+                if len(function_count[full_func_sig]['examples']) < 3:
+                    # Store the actual function code
+                    full_match = re.search(rf'{re.escape(return_type)}\s+{re.escape(func_name)}\s*\([^)]*\)\s*\{{([^{{}}]|{{[^{{}}]*}})*\}}', code, re.DOTALL)
+                    if full_match:
+                        function_code = full_match.group(0)
+                        function_count[full_func_sig]['examples'].append({
+                            'shader_id': shader_info.get('id', 'unknown'),
+                            'shader_name': shader_info.get('name', 'unknown'),
+                            'code': function_code
+                        })
+        
+        # Filter functions that appear at least min_appearances times
+        common_functions = {name: info for name, info in function_count.items() 
+                           if info['count'] >= min_appearances}
+        
+        # Sort by count in descending order
+        sorted_functions = sorted(common_functions.items(), 
+                                 key=lambda x: x[1]['count'], reverse=True)
+        
+        return sorted_functions, shader_count
+
+
 def main():
     parser = argparse.ArgumentParser(description='Search Shadertoy shaders')
 
@@ -506,6 +670,13 @@ def main():
     parser.add_argument('--reindex', action='store_true', help='Force rebuild of shader index cache')
     parser.add_argument('--add-tags', action='store_true', help='Add tags from search_results to JSON files')
     parser.add_argument('--json-dir', type=str, default='json', help='Directory containing JSON shader files')
+    
+    # SuperShader analysis options
+    parser.add_argument('--find-similar', action='store_true', help='Find similar code snippets across shaders')
+    parser.add_argument('--similarity-threshold', type=float, default=0.8, help='Similarity threshold for code comparison (default: 0.8)')
+    parser.add_argument('--find-functions', action='store_true', help='Find common functions across shaders')
+    parser.add_argument('--min-function-appearance', type=int, default=5, help='Minimum number of times a function must appear to be considered common (default: 5)')
+    parser.add_argument('--sample-size', type=int, help='Number of shaders to sample (for testing purposes)')
 
     args = parser.parse_args()
 
@@ -524,6 +695,51 @@ def main():
     if args.add_tags:
         print("Adding tags and requires information from search_results and by analyzing JSONs...")
         searcher.add_requires_info_to_jsons()
+        return
+    
+    # If --find-similar is specified, analyze similarities
+    if args.find_similar:
+        print(f"Finding similar code snippets with threshold {args.similarity_threshold}...")
+        if args.sample_size:
+            print(f"Using sample size: {args.sample_size}")
+        similar_pairs = searcher.find_similar_code_snippets(
+            min_similarity=args.similarity_threshold,
+            sample_size=args.sample_size
+        )
+        
+        if similar_pairs:
+            print(f"Found {len(similar_pairs)} pairs of similar shaders:")
+            print("=" * 100)
+            for i, pair in enumerate(similar_pairs[:20]):  # Show top 20 matches
+                print(f"Match {i+1}: Similarity {pair['similarity']:.3f}")
+                print(f"  Shader 1: {pair['id1']} - {pair['name1']} by {pair['username1']}")
+                print(f"  Shader 2: {pair['id2']} - {pair['name2']} by {pair['username2']}")
+                print(f"  Code 1 preview: {pair['code1'][:200] + '...' if len(pair['code1']) > 200 else pair['code1']}")
+                print(f"  Code 2 preview: {pair['code2'][:200] + '...' if len(pair['code2']) > 200 else pair['code2']}")
+                print("-" * 100)
+        else:
+            print("No similar code snippets found.")
+        return
+
+    # If --find-functions is specified, analyze common functions
+    if args.find_functions:
+        print(f"Finding common functions (appearing in at least {args.min_function_appearance} shaders)...")
+        common_functions, total_shaders = searcher.find_common_functions(
+            min_appearances=args.min_function_appearance
+        )
+        
+        if common_functions:
+            print(f"Analyzed {total_shaders} shaders and found {len(common_functions)} common functions:")
+            print("=" * 100)
+            for i, (func_name, info) in enumerate(common_functions[:20]):  # Show top 20 functions
+                print(f"Function {i+1}: {func_name} (appears in {info['count']} shaders)")
+                print("Examples:")
+                for j, example in enumerate(info['examples'][:2]):  # Show first 2 examples
+                    print(f"  Example {j+1} from shader '{example['shader_name']}':")
+                    print(f"    {example['code'][:200] + '...' if len(example['code']) > 200 else example['code']}")
+                print("-" * 100)
+        else:
+            print("No common functions found.")
         return
 
     # Check if any search criteria are provided

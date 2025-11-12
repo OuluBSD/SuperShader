@@ -1,0 +1,81 @@
+{
+  "name": "circle_module",
+  "version": "0.1",
+  "description": "Generic circle primitive module",
+  "type": "geometry",
+  "genre": "primitives",
+  "implementation": {
+    "pseudocode": [
+      "FUNCTION circle_distance(point, center, radius)",
+      "  distance_vector = point - center",
+      "  distance_from_center = length(distance_vector)",
+      "  RETURN distance_from_center - radius",
+      "END FUNCTION",
+      
+      "FUNCTION circle(point, center, radius)",
+      "  dist = circle_distance(point, center, radius)",
+      "  RETURN step(dist, 0.0)",
+      "END FUNCTION",
+      
+      "FUNCTION circle_with_thickness(point, center, radius, thickness)",
+      "  distance_gradient = calculate_distance_gradient(point)",
+      "  circle_dist = circle_distance(point, center, radius)",
+      "  edge_width = thickness / resolution.y",
+      "  coverage = smoothstep(0.0, edge_width, abs(circle_dist / length(distance_gradient)))",
+      "  RETURN 1.0 - coverage",
+      "END FUNCTION"
+    ],
+    
+    "glsl": [
+      "float circle_distance(vec2 pos, vec2 center, float radius) {",
+      "    vec2 rel_pos = pos - center;",
+      "    return length(rel_pos) - radius;",
+      "}",
+      "",
+      "float circle(vec2 pos, vec2 center, float radius) {",
+      "    return step(circle_distance(pos, center, radius), 0.0);",
+      "}",
+      "",
+      "float circle_with_thickness(vec2 pos, vec2 center, float radius, float thickness) {",
+      "    vec2 d = vec2(0.001, 0.0);",
+      "    float dist = circle_distance(pos, center, radius);",
+      "    float dist_dx = circle_distance(pos + d, center, radius);",
+      "    float dist_dy = circle_distance(pos + d.yx, center, radius);",
+      "    vec2 gradient = vec2(dist - dist_dx, dist - dist_dy) / d.xx;",
+      "    float edge_width = thickness / iResolution.y;",
+      "    float coverage = smoothstep(0.0, edge_width, abs(dist / length(gradient)));",
+      "    return coverage;",
+      "}"
+    ]
+  },
+  
+  "parameters": [
+    {
+      "name": "center",
+      "type": "vec2",
+      "description": "Center position of the circle"
+    },
+    {
+      "name": "radius", 
+      "type": "float",
+      "description": "Radius of the circle"
+    },
+    {
+      "name": "thickness",
+      "type": "float",
+      "description": "Thickness of circle edges (optional)"
+    }
+  ],
+  
+  "dependencies": [
+    "math/constants",
+    "math/vectors"
+  ],
+  
+  "tags": [
+    "geometry",
+    "circle",
+    "primitive",
+    "2D"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "name": "math_constants",
+  "version": "0.1",
+  "description": "Mathematical constants module",
+  "type": "math",
+  "genre": "constants",
+  "implementation": {
+    "pseudocode": [
+      "CONSTANT PI = 3.14159265358979323846",
+      "CONSTANT TWO_PI = 2.0 * PI",
+      "CONSTANT PI_OVER_TWO = PI / 2.0",
+      "CONSTANT PI_OVER_FOUR = PI / 4.0",
+      "CONSTANT E = 2.71828182845904523536",
+      "CONSTANT SQRT_TWO = 1.41421356237309504880",
+      "CONSTANT SQRT_THREE = 1.73205080756887729352"
+    ],
+    
+    "glsl": [
+      "#ifndef MATH_CONSTANTS_INCLUDED",
+      "#define MATH_CONSTANTS_INCLUDED",
+      "",
+      "#define PI 3.14159265358979323846",
+      "#define TWO_PI (2.0 * PI)",
+      "#define PI_OVER_TWO (PI / 2.0)",
+      "#define PI_OVER_FOUR (PI / 4.0)",
+      "#define E 2.71828182845904523536",
+      "#define SQRT_TWO 1.41421356237309504880",
+      "#define SQRT_THREE 1.73205080756887729352",
+      "",
+      "#endif // MATH_CONSTANTS_INCLUDED"
+    ]
+  },
+  
+  "parameters": [],
+  
+  "dependencies": [],
+  
+  "tags": [
+    "math",
+    "constants"
+  ]
+}

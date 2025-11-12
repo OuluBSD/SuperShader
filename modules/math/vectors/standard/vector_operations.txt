@@ -1,0 +1,106 @@
+{
+  "name": "vector_operations",
+  "version": "0.1",
+  "description": "Basic vector operations module",
+  "type": "math",
+  "genre": "vectors",
+  "implementation": {
+    "pseudocode": [
+      "FUNCTION length(vector)",
+      "  RETURN sqrt(vector.x * vector.x + vector.y * vector.y + (vector.z * vector.z if vector has z component))",
+      "END FUNCTION",
+      
+      "FUNCTION normalize(vector)",
+      "  len = length(vector)",
+      "  IF len > 0 THEN",
+      "    RETURN vector / len",
+      "  ELSE",
+      "    RETURN vector",
+      "  END IF",
+      "END FUNCTION",
+      
+      "FUNCTION dot_product(vector_a, vector_b)",
+      "  RETURN vector_a.x * vector_b.x + vector_a.y * vector_b.y + (vector_a.z * vector_b.z if both have z component)",
+      "END FUNCTION",
+      
+      "FUNCTION distance(vec_a, vec_b)",
+      "  diff = vec_a - vec_b",
+      "  RETURN length(diff)",
+      "END FUNCTION"
+    ],
+    
+    "glsl": [
+      "// Vector operations",
+      "float vector_length(vec2 v) {",
+      "    return sqrt(v.x * v.x + v.y * v.y);",
+      "}",
+      "",
+      "float vector_length(vec3 v) {",
+      "    return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);",
+      "}",
+      "",
+      "vec2 vector_normalize(vec2 v) {",
+      "    float len = vector_length(v);",
+      "    if(len > 0.0) {",
+      "        return v / len;",
+      "    } else {",
+      "        return v;",
+      "    }",
+      "}",
+      "",
+      "vec3 vector_normalize(vec3 v) {",
+      "    float len = vector_length(v);",
+      "    if(len > 0.0) {",
+      "        return v / len;",
+      "    } else {",
+      "        return v;",
+      "    }",
+      "}",
+      "",
+      "float dot_product(vec2 a, vec2 b) {",
+      "    return a.x * b.x + a.y * b.y;",
+      "}",
+      "",
+      "float dot_product(vec3 a, vec3 b) {",
+      "    return a.x * b.x + a.y * b.y + a.z * b.z;",
+      "}",
+      "",
+      "float vector_distance(vec2 a, vec2 b) {",
+      "    vec2 diff = a - b;",
+      "    return vector_length(diff);",
+      "}",
+      "",
+      "float vector_distance(vec3 a, vec3 b) {",
+      "    vec3 diff = a - b;",
+      "    return vector_length(diff);",
+      "}"
+    ]
+  },
+  
+  "parameters": [
+    {
+      "name": "vector",
+      "type": "vec2/vec3",
+      "description": "Input vector for operations"
+    },
+    {
+      "name": "vector_a", 
+      "type": "vec2/vec3",
+      "description": "First vector for operations"
+    },
+    {
+      "name": "vector_b",
+      "type": "vec2/vec3", 
+      "description": "Second vector for operations"
+    }
+  ],
+  
+  "dependencies": [],
+  
+  "tags": [
+    "math",
+    "vectors",
+    "operations",
+    "geometry"
+  ]
+}

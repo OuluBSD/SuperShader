@@ -1,0 +1,91 @@
+{
+  "name": "polygon_module",
+  "version": "0.1",
+  "description": "Generic polygon primitive module",
+  "type": "geometry",
+  "genre": "primitives",
+  "implementation": {
+    "pseudocode": [
+      "FUNCTION polygon_point_inside(point, center, radius, sides)",
+      "  angle = atan2(point.y - center.y, point.x - center.x)",
+      "  angle_normalized = mod(angle, 2.0 * PI / sides) - PI / sides",
+      "  distance_from_center = length(point - center)",
+      "  apothem = radius * cos(PI / sides)",
+      "  polygon_radius = apothem / cos(angle_normalized)",
+      "  RETURN distance_from_center <= polygon_radius",
+      "END FUNCTION",
+      
+      "FUNCTION polygon_with_thickness(point, center, radius, sides, thickness)",
+      "  distance_gradient = calculate_distance_gradient(point)",
+      "  polygon_distance = polygon_distance_function(point, center, radius, sides)",
+      "  edge_width = thickness / resolution.y",
+      "  coverage = smoothstep(0.0, edge_width, abs(polygon_distance / length(distance_gradient)))",
+      "  RETURN 1.0 - coverage",
+      "END FUNCTION"
+    ],
+    
+    "glsl": [
+      "#define PI 3.14159265",
+      "",
+      "float polygon_distance(vec2 pos, vec2 center, float radius, float sides) {",
+      "    vec2 rel_pos = pos - center;",
+      "    float angle = atan(rel_pos.y, rel_pos.x);",
+      "    float angle_normalized = mod(angle, 2.0 * PI / sides) - PI / sides;",
+      "    float distance_from_center = length(rel_pos);",
+      "    float apothem = radius * cos(PI / sides);",
+      "    float polygon_radius = apothem / cos(angle_normalized);",
+      "    return polygon_radius - distance_from_center;",
+      "}",
+      "",
+      "float polygon(vec2 pos, vec2 center, float radius, float sides) {",
+      "    return step(0.0, polygon_distance(pos, center, radius, sides));",
+      "}",
+      "",
+      "float polygon_with_thickness(vec2 pos, vec2 center, float radius, float sides, float thickness) {",
+      "    vec2 d = vec2(0.001, 0.0);",
+      "    float dist = polygon_distance(pos, center, radius, sides);",
+      "    float dist_dx = polygon_distance(pos + d, center, radius, sides);",
+      "    float dist_dy = polygon_distance(pos + d.yx, center, radius, sides);",
+      "    vec2 gradient = vec2(dist - dist_dx, dist - dist_dy) / d.xx;",
+      "    float edge_width = thickness / iResolution.y;",
+      "    float coverage = smoothstep(0.0, edge_width, abs(dist / length(gradient)));",
+      "    return coverage;",
+      "}"
+    ]
+  },
+  
+  "parameters": [
+    {
+      "name": "center",
+      "type": "vec2",
+      "description": "Center position of the polygon"
+    },
+    {
+      "name": "radius", 
+      "type": "float",
+      "description": "Radius of the polygon (distance from center to vertices)"
+    },
+    {
+      "name": "sides",
+      "type": "float", 
+      "description": "Number of sides of the polygon"
+    },
+    {
+      "name": "thickness",
+      "type": "float",
+      "description": "Thickness of polygon edges (optional)"
+    }
+  ],
+  
+  "dependencies": [
+    "math/constants",
+    "math/vectors"
+  ],
+  
+  "tags": [
+    "geometry",
+    "polygon",
+    "primitive",
+    "2D"
+  ]
+}
