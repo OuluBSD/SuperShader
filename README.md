@@ -46,6 +46,11 @@ The SuperShader project aims to:
 - Data processing pipeline for batch analysis of shaders
 - Universal pseudocode system for cross-platform shaders
 
+## Testing and Building
+
+- Use the `test.sh` script to simulate common C++ compilation errors
+- This helps identify potential build issues in SuperShader C++ implementations
+
 ## License
 
 The SuperShader code (excluding the `json/` directory) is licensed under the BSD 3-Clause License (see LICENSE file).
