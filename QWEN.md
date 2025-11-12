@@ -101,6 +101,14 @@ Use the tag information from JSON files to group shaders by functionality:
 - Create genre-specific modules based on tag organization
 - An analysis script (analyze_tags.py) has been created to extract and categorize all available tags
 
+## Shader Feature Cataloging
+
+The project includes a system for cataloging shader features:
+- Use catalog_features.py to analyze and catalog features across shaders
+- The catalog identifies common functions, types, uniforms, and renderpass configurations
+- Creates a comprehensive report of feature distribution across the shader collection
+- Helps identify the most common shader components for module creation
+
 ## 3D Model and Math Library Integration
 
 - Use assimp library for 3D model loading, replacing built-in 3D primitives when appropriate

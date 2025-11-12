@@ -1,0 +1,138 @@
+Shader Feature Catalog Report
+==================================================
+Total Shaders Processed: 15066
+Total Feature Types: 15
+Total Unique Features: 40403
+
+
+RENDERPASS_TYPE FEATURES:
+------------------------------
+image: 15066
+buffer: 3360
+common: 1690
+sound: 404
+cubemap: 61
+
+SAMPLER_SRGB FEATURES:
+------------------------------
+false: 7917
+
+TAG FEATURES:
+------------------------------
+basic: 120
+2d: 120
+animation: 119
+aliasing: 118
+auto: 117
+art: 117
+abstract: 117
+beginner: 117
+ball: 116
+3d: 115
+blob: 113
+ai: 109
+blend: 109
+analytic: 106
+amiga: 66
+param: 60
+chromatic: 60
+triangle: 60
+bloom: 60
+maze: 60
+
+SAMPLER_INTERNAL FEATURES:
+------------------------------
+byte: 7917
+
+SAMPLER_VFLIP FEATURES:
+------------------------------
+true: 6576
+false: 1877
+
+FUNCTION FEATURES:
+------------------------------
+mainImage: 14877
+if: 3689
+map: 1865
+for: 1352
+hash: 1276
+rand: 912
+calcNormal: 773
+sdBox: 759
+smin: 733
+fbm: 726
+rot: 703
+rotate: 696
+render: 685
+trace: 572
+normal: 561
+sdSphere: 521
+getNormal: 446
+hsv2rgb: 429
+mainSound: 408
+scene: 401
+
+TYPE FEATURES:
+------------------------------
+vec2: 15037
+vec4: 15022
+vec3: 12293
+mat2: 3839
+mat3: 3004
+sampler2D: 1036
+mat4: 661
+samplerCube: 37
+
+SAMPLER_WRAP FEATURES:
+------------------------------
+clamp: 5441
+repeat: 4403
+
+SAMPLER_FILTER FEATURES:
+------------------------------
+linear: 5041
+mipmap: 4325
+nearest: 863
+
+FRAGMENT_SHADER_FEATURE FEATURES:
+------------------------------
+gl_FragColor: 13078
+gl_FragDepth: 1
+
+INPUT_TYPE FEATURES:
+------------------------------
+texture: 4222
+buffer: 3374
+keyboard: 899
+cubemap: 801
+musicstream: 798
+video: 715
+music: 322
+webcam: 208
+volume: 123
+mic: 70
+
+FEATURE FEATURES:
+------------------------------
+multi_pass_shader: 4152
+
+PRECISION FEATURES:
+------------------------------
+highp: 146
+mediump: 115
+lowp: 25
+
+GLSL_VERSION FEATURES:
+------------------------------
+120: 5
+300: 3
+330: 1
+150: 1
+410: 1
+430: 1
+130: 1
+140: 1
+
+VERTEX_SHADER_FEATURE FEATURES:
+------------------------------
+gl_Position: 3
