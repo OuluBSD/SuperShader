@@ -105,6 +105,16 @@ Use the tag information from JSON files to group shaders by functionality:
 - Recognize code that duplicates system library functionality for potential replacement with native libraries
 - Consider future collection of "library code" that duplicates native language library functionality (currently a curiosity only)
 
+## Documentation and Analysis Tasks
+
+The project includes extensive documentation and analysis phases:
+
+- Create PlantUML diagrams visualizing common, average, minimal, semi-advanced, and app-in-shader architectures
+- Generate inline PNG images for all documentation diagrams
+- Develop hypotheses for best universal shaders for different complexity levels
+- Formulate extension approaches for app-in-shader systems with filesystem access between shaders
+- Explore possibilities for inter-shader communication and complex application architectures
+
 ## Important Notes
 
 - Original JSON shader files are in the `json/` directory (over 100MB)
