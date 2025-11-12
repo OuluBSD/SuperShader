@@ -117,6 +117,14 @@ The project includes a comprehensive data processing pipeline:
 - Stores shader metadata and features in an indexed database for fast queries
 - Optimized for processing large numbers of shaders efficiently
 
+## Pseudocode Language System
+
+The project includes a universal pseudocode system:
+- Defined in pseudocode_spec.md with syntax and structure guidelines
+- Supports mapping to multiple target languages (GLSL, HLSL, etc.)
+- Includes a translator (pseudocode_translator.py) to convert pseudocode to target implementations
+- Enables cross-platform shader modules that work with multiple graphics APIs
+
 ## 3D Model and Math Library Integration
 
 - Use assimp library for 3D model loading, replacing built-in 3D primitives when appropriate

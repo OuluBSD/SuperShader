@@ -39,10 +39,10 @@
 - [x] Create prototype module organization
 
 ### Task 1.7: Pseudocode Language Design
-- [ ] Define pseudocode syntax and structure
-- [ ] Create mapping to various target languages (C/C++, Java, Python, etc.)
-- [ ] Define mapping to graphics APIs (OpenGL, DirectX, Vulkan, etc.)
-- [ ] Design translation tools from pseudocode to target implementations
+- [x] Define pseudocode syntax and structure
+- [x] Create mapping to various target languages (C/C++, Java, Python, etc.)
+- [x] Define mapping to graphics APIs (OpenGL, DirectX, Vulkan, etc.)
+- [x] Design translation tools from pseudocode to target implementations
 
 ### Task 1.8: Search and Analysis Tools
 - [x] Enhance `search.py` for module analysis purposes

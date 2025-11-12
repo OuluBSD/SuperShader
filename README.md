@@ -44,6 +44,7 @@ The SuperShader project aims to:
 - Tag analysis for organizing shaders by genre
 - Feature cataloging system for identifying common shader components
 - Data processing pipeline for batch analysis of shaders
+- Universal pseudocode system for cross-platform shaders
 
 ## License
 
