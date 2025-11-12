@@ -1,0 +1,170 @@
+Genre Categorization
+==================================================
+
+GEOMETRY (447 shaders):
+------------------------------
+  - 4t2Gzz: [NV15] 18/3/15 by hughsk
+  - XllXD8: Sierpinski Fractals, Chaos Game by 4rknova
+  - 4d2SWy: Triangles Mosaic by tiagosr
+  - MlVXzD: Rockball by psonice
+  - MssSW2: Flange by demofox
+  - MlsBWj: The Dark Side Of The Moon by rigel
+  - 4dlGW8: Eye sketch by Dave_Hoskins
+  - 4lBSzW: 3-Tap 2D Voronoi by Shane
+  - 4tGGzd: Sampling Spherical Triangle by koiava
+  - llXfRl: Welcome to the Starport by marian42
+  ... and 437 more
+
+LIGHTING (313 shaders):
+------------------------------
+  - 3sXSD2: Sparkle sparkle little lightning by MacSlow
+  - 3s2BWG: Lightning Menger Sponge by TAKUSAKU
+  - 3lsXzf: Lightning noise! by toomuchvoltage
+  - wsGSWd: isocahedron gift by antonOTI
+  - MdycRK: Tesla's Tower by dr2
+  - 3tXSRS: Attracting funnel by TambakoJaguar
+  - 4tySWK: [ #02 ] - Electric field by Yrai
+  - WdBBzd: Lightning corrosion gravity by TAKUSAKU
+  - WdGXWG: Perlin noise vs interpolation 2 by FabriceNeyret2
+  - wsySWG: Perlin noise vs interp.4 (347ch) by FabriceNeyret2
+  ... and 303 more
+
+EFFECTS (429 shaders):
+------------------------------
+  - ltSyRG: prettyboi by allanlavell
+  - Mt2czG: prettyboi2 by allanlavell
+  - 4d2yRt: SynTech 001 by KK
+  - 4dGXW1: Anti-Aliasing Compare by JasonD
+  - Xdc3Rf: Simple graph plotter by waterhead
+  - ltsfz8: Julia_waterEffect by juliaupdegraff
+  - 4lS3Rh: Monolith Sparkles by cabbibo
+  - MslGzr: Blueorange by NickWest
+  - ltf3W4: [2TC 15] Sand Pour Up by MichaelPohoreski
+  - 4tlyD8: Transverse Chromatic Aberration by FlexMonkey
+  ... and 419 more
+
+ANIMATION (251 shaders):
+------------------------------
+  - 4d23Rc: Indie Impression Mar by antonOTI
+  - 4lKGDz: Neon motion detection by kloumpt
+  - XtcfRH: Polar Grid Motion by Shane
+  - 4lX3zM: Dancers by BGC
+  - Ml3SRf: bp Turbulence by blackpolygon
+  - MtBXWw: ResolutionVsAntialiasing by TimothyLottes
+  - XdfSD8: Nucleus Rave by 4rknova
+  - 4ldBR2: Motion Illusion by P_Malin
+  - llySRV: fBm Domain Warping by capnslipp
+  - XldGR7: [SH16B] valley flight by Bananaft
+  ... and 241 more
+
+PROCEDURAL (124 shaders):
+------------------------------
+  - XtsSWs: Skyline by otaviogood
+  - Xsl3zX: galaxy3 by FabriceNeyret2
+  - ls2SDD: Unreal Intro by fizzer
+  - ldSSzV: Wet stone by TDM
+  - MdXGW2: Venice by reinder
+  - 4sfGWX: Wolfenstein 3D by reinder
+  - XtGGRt: Auroras by nimitz
+  - Ms2SD1: Seascape by TDM
+  - 4sl3z4: Moonlight by reinder
+  - XljXRG: Cloudy stuff by Nrx
+  ... and 114 more
+
+RAYMARCHING (172 shaders):
+------------------------------
+  - ldfGWn: Truchet Tentacles by WAHa_06x36
+  - llcSz8: Kelp Forest by BigWIngs
+  - XtSGDK: Rotating Structure by iq
+  - 4tBXR1: Mushroom by iq
+  - 4t2SRh: Umbrellar by candycat
+  - 4dSfRc: [SH17C] Raymarching tutorial by reinder
+  - Mdf3zM: Escher's prentententoonstelling by reinder
+  - XsSSRW: Abandoned base by reinder
+  - XsfSR8: Fur Distance Field by hat
+  - ldX3zS: Wavy by iq
+  ... and 162 more
+
+PARTICLES (194 shaders):
+------------------------------
+  - 4sKGDK: Hot liquid metal by Nrx
+  - 4dBcDV: grass with wind by kev7774
+  - 4tBGRm: true pinball physics by archee
+  - llXXz4: voronoi fracture by mattz
+  - llyBDW: Lazy Cloth by 834144373
+  - llcfWf: Stream by wyatt
+  - wllSRr: What! Are you Kidding me? 1234 by wyatt
+  - lsy3R1: Stateful particle system by oks2024
+  - 4tKBDc: Thermal Particles by wyatt
+  - Wd33Wn: Smoke on the Water by piyushslayer
+  ... and 184 more
+
+TEXTURING (137 shaders):
+------------------------------
+  - XdSSRw: Parametrics by nimitz
+  - tdKSRR: All possible quadratics by iq
+  - 4d3SR4: Pastelizer by paniq
+  - MssGRl: Metal Ball by asalga
+  - 4tf3RM: Sun & Cloud dome by Dave_Hoskins
+  - Xd3XDS: Smooth Triplanar Mapping by Xor
+  - ldcSRN: ACES Operator by paniq
+  - 4sjXW1: Sphere mappings by nimitz
+  - 4dj3Dw: Raymarched Surface Displacement by Hamneggs
+  - ldSGzR: Screen space bump mapping by iq
+  ... and 127 more
+
+AUDIO (283 shaders):
+------------------------------
+  - lsdGDH: ♫ sA.2 - wave by patu
+  - ldKSDh: Circular Audio Spectrum Mk2 by skyrising
+  - llt3Dj: BassCube by hopskotchrainbow
+  - lsdGR8: Basic Audio Visualizer  by chronos
+  - MtfGzX: Reactive Audio March by StanRee
+  - tdXSRS: Spinning Sound Waves by yonibr
+  - 4tt3W2: Sans Battle Scene by hopskotchrainbow
+  - WdSGzR: Psychedelic Music Slices by yonibr
+  - 4sVBWy: Radiant Music Visualiser by TekF
+  - Xd3GRX: Audio Visualizer - Raymarching by Lallis
+  ... and 273 more
+
+UI (109 shaders):
+------------------------------
+  - lllyW8: Fluid Dynamics - Housefire by TimoKinnunen
+  - XsSGWm: Dragon's Gullet by RavenWorks
+  - 4tG3DW: Saint George Ripples by s23b
+  - 4dfSzS: Milk and Strawberries by TomoAlien
+  - lljBWy: fast liquid research by Makio64
+  - 3sfXRM: [TWITCH] Fountain by Flopine
+  - XtBXzG: liquid_gold_test_1 by snolot
+  - MdySRR: heyx3 Metaballs 2D by heyx3
+  - 4tVBDw: Liquid Crystal V by wyatt
+  - MtGGDK: Liquid Symmetry by guarajeno
+  ... and 99 more
+
+EXPERIMENTAL (31 shaders):
+------------------------------
+  - 3dlGDM: Motion Vectors Visualization by boksajak
+  - 4dcGR7: randomcolors by jt
+  - WsVSRK: debug parallax by nabr
+  - WsXcWn: Non-Euclidean world by tmst
+  - 4dG3WK: <<<now>you<can>>> :-) by FabriceNeyret2
+  - 3tV3DR: cube raytrace debug by nabr
+  - XtyXDz: sdf debug by acdimalev
+  - llfcDS: shadow differential forest by ollj
+  - WdcSDs: CubeMap Debug by sapporo_dynamite
+  - ldjcWt: 2D SDF Toy (forked) by taseenb
+  ... and 21 more
+
+UNASSIGNED (10320 shaders):
+------------------------------
+  - XsBXW3: monkey saddle by joates
+  - Mlf3zl: Curvature - Parametric 2D by iq
+  - WsKczW: parametric_thingy_0 by balkhan
+  - XtjyzR: Revealing Glass by Lunck
+  - wsfcR8: param_v009 by darkczar
+  - XsjBWt: Implicit vs parametric curve by etale_cohomology
+  - ldSfDt: Pixel grid matching blur by MartyMcFly
+  - XdScRR: [ Famous curves ] - #4 by Yrai
+  - XslyDl: [ Famous curves ] - #3 by Yrai
+  - 4dBcRz: [ Famous curves ] - #5 by Yrai
+  ... and 10310 more

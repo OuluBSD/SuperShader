@@ -41,6 +41,7 @@ The SuperShader project aims to:
 - Identify duplicate and similar code segments
 - Create generic, reusable modules from specific implementations
 - Generate shaders by combining modules
+- Tag analysis for organizing shaders by genre
 
 ## License
 

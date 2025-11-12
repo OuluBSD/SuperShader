@@ -1,0 +1,509 @@
+Detailed Tag to Shaders Mapping
+==================================================
+
+TAG: parametric (46 shaders)
+------------------------------
+  ID: XdSSRw
+    Name: Parametrics
+    Author: nimitz
+    Description: Parametric plotting as minimum finding and root finding.  Please let me know if you know faster meth...
+  ID: XsBXW3
+    Name: monkey saddle
+    Author: joates
+    Description: raymarching a parametric surface. (rotate with mouse click+drag) if you comment out line #4 it looks...
+  ID: Mlf3zl
+    Name: Curvature - Parametric 2D
+    Author: iq
+    Description: Computes curvature for parametric curves (same formula works for 3D), and displays it with colors (r...
+  ID: WsKczW
+    Name: parametric_thingy_0
+    Author: balkhan
+    Description: http://paulbourke.net/geometry/toroidal/
+  ID: XtjyzR
+    Name: Revealing Glass
+    Author: Lunck
+    Description: Applies a parametric blur kernel to foreground, and other kernels to the hidden image. A re-sizable ...
+
+TAG: tone (55 shaders)
+------------------------------
+  ID: XdSSRw
+    Name: Parametrics
+    Author: nimitz
+    Description: Parametric plotting as minimum finding and root finding.  Please let me know if you know faster meth...
+  ID: 4d3SR4
+    Name: Pastelizer
+    Author: paniq
+    Description: This is a pastel hue function, extracted from the YCoCg colorspace at Y'=0.5, S=0.5, designed to pro...
+  ID: 4ssyz4
+    Name: circles and planes
+    Author: flockaroo
+    Description: fun with circles...
+  ID: 4ssBWs
+    Name: Équerre Arlequin (Kisrhombille)
+    Author: ttoinou
+    Description: see https://www.shadertoy.com/view/lsXfDl
+Click left, middle or right for variants
+  ID: XtSfW1
+    Name: Cartoon/ComicBook FX
+    Author: snakebyteme2
+    Description: Uses Sobel edge detection, bilateral filtering, and halftone to achieve cartoon or comic book style ...
+
+TAG: tonemap (46 shaders)
+------------------------------
+  ID: XdSSRw
+    Name: Parametrics
+    Author: nimitz
+    Description: Parametric plotting as minimum finding and root finding.  Please let me know if you know faster meth...
+  ID: 4d3SR4
+    Name: Pastelizer
+    Author: paniq
+    Description: This is a pastel hue function, extracted from the YCoCg colorspace at Y'=0.5, S=0.5, designed to pro...
+  ID: MtcSDN
+    Name: Sphere Refraction & Reflection
+    Author: VoidChicken
+    Description: A relatively little code shader. Sphere refraction and reflection with HDR. Use mouse to look around...
+  ID: ldlyzl
+    Name: Tonemapping
+    Author: Persegan
+    Description: tonemapping
+  ID: ldcSRN
+    Name: ACES Operator
+    Author: paniq
+    Description: Testing the ACES operator (fitted by Stephen Hill). First: clamped, linear. Second: Reinhard tonemap...
+
+TAG: param (60 shaders)
+------------------------------
+  ID: XdSSRw
+    Name: Parametrics
+    Author: nimitz
+    Description: Parametric plotting as minimum finding and root finding.  Please let me know if you know faster meth...
+  ID: XsBXW3
+    Name: monkey saddle
+    Author: joates
+    Description: raymarching a parametric surface. (rotate with mouse click+drag) if you comment out line #4 it looks...
+  ID: Mlf3zl
+    Name: Curvature - Parametric 2D
+    Author: iq
+    Description: Computes curvature for parametric curves (same formula works for 3D), and displays it with colors (r...
+  ID: MlsGRl
+    Name: Descending Splats
+    Author: eiffie
+    Description: Choose a few random splats and reposition them in front of the ray using gradient descent. The idea ...
+  ID: WsKczW
+    Name: parametric_thingy_0
+    Author: balkhan
+    Description: http://paulbourke.net/geometry/toroidal/
+
+TAG: mapping (56 shaders)
+------------------------------
+  ID: XdSSRw
+    Name: Parametrics
+    Author: nimitz
+    Description: Parametric plotting as minimum finding and root finding.  Please let me know if you know faster meth...
+  ID: tdKSRR
+    Name: All possible quadratics
+    Author: iq
+    Description: All possible quadratic equations can be mapped to the surface of a sphere. Blue: complex solutions. ...
+  ID: 4d3SR4
+    Name: Pastelizer
+    Author: paniq
+    Description: This is a pastel hue function, extracted from the YCoCg colorspace at Y'=0.5, S=0.5, designed to pro...
+  ID: MssGRl
+    Name: Metal Ball
+    Author: asalga
+    Description: Simple sphere texture mapping
+  ID: 4tf3RM
+    Name: Sun & Cloud dome
+    Author: Dave_Hoskins
+    Description: Renders half a sphere map for procedural sky rendering. it uses the FLATTEN define to stop the mappi...
+
+TAG: moon (59 shaders)
+------------------------------
+  ID: 4tlXzr
+    Name: Moon Surface II
+    Author: 4rknova
+    Description: Navigating on the surface of the moon.
+Remake of [url=https://www.shadertoy.com/view/4slGRf]"Moon Su...
+  ID: XsdXDj
+    Name: Sun and Moon Dynamic
+    Author: Danich
+    Description: Two dynamic circles
+  ID: 4tGfWR
+    Name: Moon gleam
+    Author: jsen
+    Description: A test to see how wave deformation affects the light column formed by the moon's reflection on water...
+  ID: wslBWs
+    Name: ShATI - Lune
+    Author: Flopine
+    Description: My former school named ATI decided to launch an everyday challenge from 4th may to 24th may, here is...
+  ID: 4lBXRR
+    Name: Moon Phases
+    Author: clayjohn
+    Description: Basic moon and stars learning about noise functions. Also moon phases for fun!
+
+TAG: chromatic (60 shaders)
+------------------------------
+  ID: MdsyDX
+    Name: Better Chromab
+    Author: yupferris
+    Description: Finally sitting down to make a stateless version of my chromatic aberration ramp function after a tw...
+  ID: XssfzX
+    Name: chromatic tile
+    Author: public_int_i
+    Description: chromatic tile
+  ID: XdXXD4
+    Name: Chromatical
+    Author: justicle
+    Description: Simple TV distortion, with chromatic aberration, scanlines and vignette effect.
+Inspired by: https:/...
+  ID: XlKyWy
+    Name: Bouncing on Marble
+    Author: Blokatt
+    Description: Quality pogo time.
+Anti-aliasing is done by dynamically smoothing the texture generation function, s...
+  ID: ltB3WD
+    Name: helloworld lens blur
+    Author: phl
+    Description: --
+
+   * Click in x-axis to set blur amount, y-axis for colour aberration.
+
+
+TAG: aberration (52 shaders)
+------------------------------
+  ID: MdsyDX
+    Name: Better Chromab
+    Author: yupferris
+    Description: Finally sitting down to make a stateless version of my chromatic aberration ramp function after a tw...
+  ID: Mtf3zl
+    Name: RadColorShift
+    Author: yaz
+    Description: hello world, first shader
+radial chromatic aberration
+  ID: XdXXD4
+    Name: Chromatical
+    Author: justicle
+    Description: Simple TV distortion, with chromatic aberration, scanlines and vignette effect.
+Inspired by: https:/...
+  ID: ltB3WD
+    Name: helloworld lens blur
+    Author: phl
+    Description: --
+
+   * Click in x-axis to set blur amount, y-axis for colour aberration.
+
+  ID: 4sS3Dw
+    Name: chromatic aberration test
+    Author: 2Light
+    Description: Just a test of chromatic aberration
+
+TAG: edge (57 shaders)
+------------------------------
+  ID: 4t2Gzz
+    Name: [NV15] 18/3/15
+    Author: hughsk
+    Description: Experimenting with a few new techniques.
+  ID: MdGGWh
+    Name: sobel edge detection demo
+    Author: LukasPukenis
+    Description: sobel edge detection
+  ID: ld2XWD
+    Name: Cel shaderish
+    Author: SvDvorak
+    Description: Cel shader'y style, click and drag mouse horizontally to increase or decrease shading. Uses Sobel op...
+  ID: Mtyczw
+    Name: Manhattan Voronoi Distance Map
+    Author: curice
+    Description: Hello Shadertoy!!!
+This is my attempt at generating smooth distances to Manhattan Voronoi Cell Edges...
+  ID: XtSfW1
+    Name: Cartoon/ComicBook FX
+    Author: snakebyteme2
+    Description: Uses Sobel edge detection, bilateral filtering, and halftone to achieve cartoon or comic book style ...
+
+TAG: triangle (60 shaders)
+------------------------------
+  ID: 4t2Gzz
+    Name: [NV15] 18/3/15
+    Author: hughsk
+    Description: Experimenting with a few new techniques.
+  ID: XllXD8
+    Name: Sierpinski Fractals, Chaos Game
+    Author: 4rknova
+    Description: Use the 'r' key to switch between the rendering modes.
+Hold down the key corresponding to the fracta...
+  ID: 4d2SWy
+    Name: Triangles Mosaic
+    Author: tiagosr
+    Description: Simple shader that splits square "pixels" into 4 triangles, to make a hexels-like display
+Each 2x2 p...
+  ID: MlVXzD
+    Name: Rockball
+    Author: psonice
+    Description: Quick test to see if i could get displacement mapping working well. Works OK on ball, need to try it...
+  ID: MssSW2
+    Name: Flange
+    Author: demofox
+    Description: Basic Audio Waves with flange.  AKA playing the same sound on top of itself, but time shifted backwa...
+
+TAG: galaxy (52 shaders)
+------------------------------
+  ID: wtfSzH
+    Name: Galaxy Test
+    Author: Zeliss
+    Description: A little galaxy raymarcher from my game engine, pasted in some IQ bits to fill the gaps.
+  ID: llySWh
+    Name: galaxy sim
+    Author: archee
+    Description: Simple galaxy simulation of 2000 stars. Gravital attraction ordo(n*n)
+
+  ID: tsjcRz
+    Name: vodka runner copperworld
+    Author: flockaroo
+    Description: lada on weird copper planet...
+ASDW for driving +/- for zoom
+...also try other worlds (uncomment in ...
+  ID: tdKSRz
+    Name: Galaxy raymarching explained
+    Author: skythedragon
+    Description: Drag the mouse around to change the view!
+A galaxy raymarcher loosely based on this paper: https://i...
+  ID: tsSyDD
+    Name: crystal fbm
+    Author: nergethic
+    Description: fbm warping
+
+TAG: cat (55 shaders)
+------------------------------
+  ID: MlGSz3
+    Name: Fourier vs Spline interpolation 
+    Author: revers
+    Description: Fork of iq's [url=https://www.shadertoy.com/view/4lGSDw]Fourier - interpolation[/url] that compares ...
+  ID: MdlyDs
+    Name: Volumetric Stanford Bunny
+    Author: SebH
+    Description: Volumetric 32x32x32 Stanford Bunny with volumetric lighting, shadow and noise.
+The shader does not c...
+  ID: MdtXD2
+    Name: Two lines atmospheric scattering
+    Author: Bananaft
+    Description: Attmpt to make fast and simple atmosphere shader.
+  ID: 4sBXRc
+    Name: Texture swirl
+    Author: gleurop
+    Description: Some swirly blur and color enhancing.
+  ID: 4tlcWj
+    Name: Subsurface Scattering Demo
+    Author: ssell
+    Description: Demo of an approach to approximating subsurface scattering/partial translucency. See comments for so...
+
+TAG: line (58 shaders)
+------------------------------
+  ID: MlGSz3
+    Name: Fourier vs Spline interpolation 
+    Author: revers
+    Description: Fork of iq's [url=https://www.shadertoy.com/view/4lGSDw]Fourier - interpolation[/url] that compares ...
+  ID: MdsGzr
+    Name: Mostly Harmless
+    Author: P_Malin
+    Description: More 8bit era fun. A Cobra Mk III from Elite with chunky rasterization.
+(used with permission by Fro...
+  ID: 4ssBWs
+    Name: Équerre Arlequin (Kisrhombille)
+    Author: ttoinou
+    Description: see https://www.shadertoy.com/view/lsXfDl
+Click left, middle or right for variants
+  ID: 4sjcz1
+    Name: Cubemap to Gnomonic Projection
+    Author: starea
+    Description: Just contribute a gnomonic projection shader to ShaderToy! Move mouse to change the central point. P...
+  ID: MsB3W1
+    Name: Raymarch Edge Detection
+    Author: HLorenzi
+    Description: Raymarch edge detection by checking whether a ray that comes too close to a surface goes away. Will ...
+
+TAG: crystal (54 shaders)
+------------------------------
+  ID: llSBRD
+    Name: Soulstone pt1
+    Author: mmerchante
+    Description: Currently building a soulstone, but thought this crystal looks nice enough :)
+  ID: WdKXWz
+    Name: Stranger Crystal
+    Author: ShnitzelKiller
+    Description: A crystal with bizarre properties
+  ID: wtfcWH
+    Name: Crystallize
+    Author: indere
+    Description: Inspired by  https://thebookofshaders.com/12/
+
+
+  ID: tsSyDD
+    Name: crystal fbm
+    Author: nergethic
+    Description: fbm warping
+  ID: tdsyR2
+    Name: Swarovski Piglet
+    Author: xjorma
+    Description: Mesh from:
+https://opengameart.org/content/lowpoly-animated-farm-animal-pack
+
+TAG: sierpinski (58 shaders)
+------------------------------
+  ID: XllXD8
+    Name: Sierpinski Fractals, Chaos Game
+    Author: 4rknova
+    Description: Use the 'r' key to switch between the rendering modes.
+Hold down the key corresponding to the fracta...
+  ID: tsXGDl
+    Name: Latihan 7
+    Author: dennyraymond
+    Description: Sierpinski Triangle Fractal - manuals way :)
+  ID: XtyGD1
+    Name: Sierpinski Floater
+    Author: Zanzlanz
+    Description: I was accidentally challenged by @CacheFlowe to make a Sierpinski Gasket in a fragment shader. It wa...
+  ID: 3sGyRm
+    Name: Sumpinski
+    Author: samuelotherion
+    Description: Again some Sieprinski Adaption.
+
+Caution!!!
+If you watch too long then your world will rotate the ot...
+  ID: wdfyDj
+    Name: Sierpinski Octahedron Tutorial
+    Author: mla
+    Description: Wireframe Octahedron, with start of the Sierpinski triangulation. Practice for the main exercise, wh...
+
+TAG: bloom (60 shaders)
+------------------------------
+  ID: Wld3zM
+    Name: Inside an Infinity Mirror
+    Author: RobRob
+    Description: This shader was made for someone very special. It is based on an infinity mirror we gazed at for a l...
+  ID: wldGWj
+    Name: Precious marble 2.0
+    Author: loicvdb
+    Description: Second iteration of this previous shader https://www.shadertoy.com/view/Wsd3R4
+  ID: lstSRS
+    Name: Gargantua With HDR Bloom
+    Author: sonicether
+    Description: My attempt at recreating the black hole Gargantua from the movie Interstellar. High-quality bloom wa...
+  ID: lsXGWN
+    Name: Glowing Grid
+    Author: bekre
+    Description: Raymarching with some csg (only the inner part of the sphere is shown) and glow effect.
+  ID: 3s3GDn
+    Name: GLOW TUTORIAL
+    Author: alro
+    Description: A simple glow effect and how to control it.
+
+See [url]https://www.desmos.com/calculator/eecd6kmwy9[/...
+
+TAG: mirror (58 shaders)
+------------------------------
+  ID: Wld3zM
+    Name: Inside an Infinity Mirror
+    Author: RobRob
+    Description: This shader was made for someone very special. It is based on an infinity mirror we gazed at for a l...
+  ID: MtKyzD
+    Name: Glass cubes in infinity mirror
+    Author: keim
+    Description: Glass cubes in infinity mirror room
+  ID: 4lXcDl
+    Name: difference of 2 identities
+    Author: ollj
+    Description: press mouse to get an intuition on what green shows.
+as long as magenta circles are very close, all ...
+  ID: XdG3RR
+    Name: Everyday015 - gilthcse
+    Author: Makio64
+    Description: Everyday015 - gilthcse
+Its friday night!!!!!!!!!!!!!!!!!!!! Have fun everyone!!!!!! :D
+  ID: MlBSzR
+    Name: Binary Glitch
+    Author: ddddddddd
+    Description: Binary Glitch - based on Luminosity. (use the Mouse to effect the strength).
+
+TAG: rainbow (59 shaders)
+------------------------------
+  ID: Wld3zM
+    Name: Inside an Infinity Mirror
+    Author: RobRob
+    Description: This shader was made for someone very special. It is based on an infinity mirror we gazed at for a l...
+  ID: XlB3Wz
+    Name: Rainbow soft brush draw 
+    Author: klk
+    Description: Draw something with rainbow-like color gradient.
+  ID: llVGDh
+    Name: Trail effect
+    Author: Gaktan
+    Description: You can change from JCVD to a rotating quad by commenting #define USE_JCVD
+  ID: ltBcRc
+    Name: more colorful than average
+    Author: ollj
+    Description: because
+https://www.shadertoy.com/view/XlSczc
+claimed to be "more colorful than average"
+i remembere...
+  ID: 4tGczc
+    Name: Rainbow Fractal Descent
+    Author: mathmasterzach
+    Description: Try it in VR. Ride along a track through a bizarre fractal.
+Thanks to iq for his camera function and...
+
+TAG: auto (117 shaders)
+------------------------------
+  ID: XsjyzW
+    Name: maze worms / graffitis 2
+    Author: FabriceNeyret2
+    Description: some worms are drawing mazes under bark on in the silt above marine stones.
+These correspond to very...
+  ID: MlGSzV
+    Name: Deus ex machina
+    Author: nimitz
+    Description: The initial state is simply a constant value for the whole domain, this specific version takes about...
+  ID: ls2GWc
+    Name: disparity4
+    Author: FabriceNeyret2
+    Description: C: toggles greyscale vs colors
+G: toggles grid vs dots
+D: toggles deformations vs displacement
+S: to...
+  ID: 4tKXRz
+    Name: diffusion noise 2
+    Author: FabriceNeyret2
+    Description: ( you have 2" to switch to full screen if you wish )
+see variants in comments.
+  ID: XdjczW
+    Name: maze worms / graffitis 1b
+    Author: FabriceNeyret2
+    Description: This is basically graffity 1 [url]https://www.shadertoy.com/view/XsjyRW[/url] with alternate tunings...
+
+TAG: maze (60 shaders)
+------------------------------
+  ID: XsjyzW
+    Name: maze worms / graffitis 2
+    Author: FabriceNeyret2
+    Description: some worms are drawing mazes under bark on in the silt above marine stones.
+These correspond to very...
+  ID: Mlc3D7
+    Name: Another Maze
+    Author: aiekick
+    Description: based on [url=https://www.shadertoy.com/view/4scGWf]Maze 4 (90c)[/url]
+
+click for fullscreen
+  ID: MdyGRD
+    Name: Lost
+    Author: Nrx
+    Description: Use the mouse to rotate the camera; reset the time if you get stuck in the maze ;).
+  ID: XsjyWG
+    Name: [Amaze2017]Evil Asteroid
+    Author: antonOTI
+    Description: A port of a game shader I made for the Mini Game Jam - A MAZE. Edition 2017 in Berlin
+
+You are the R...
+  ID: XdjczW
+    Name: maze worms / graffitis 1b
+    Author: FabriceNeyret2
+    Description: This is basically graffity 1 [url]https://www.shadertoy.com/view/XsjyRW[/url] with alternate tunings...

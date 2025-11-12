@@ -1,5 +1,9 @@
 # SuperShader Project Context
 
+## Work Approach
+
+For quality assurance, we follow a focused approach where only one task (from one phase) is worked on at a time. The agent should take sufficient time to thoroughly complete each task, paying careful attention to detail. It's important to look for hidden faults and optional improvements during implementation, and to address them proactively. Each task should be completed with high quality, and the agent should invest additional effort to ensure the work is robust and well-executed.
+
 ## Project Overview
 
 This is the Qwen Code context for the SuperShader repository. SuperShader is a tongue-in-cheek project that combines all shaders into one unified system using generic modules.
@@ -95,6 +99,7 @@ Use the tag information from JSON files to group shaders by functionality:
 - Process shaders by tag categories (geometry, lighting, effects, etc.)
 - Identify common patterns within each tag category
 - Create genre-specific modules based on tag organization
+- An analysis script (analyze_tags.py) has been created to extract and categorize all available tags
 
 ## 3D Model and Math Library Integration
 

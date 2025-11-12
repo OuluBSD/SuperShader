@@ -9,10 +9,10 @@
 - [x] Update README.md and create PLAN.md documentation
 
 ### Task 1.2: Extract Tags and Categories from Existing Shaders
-- [ ] Analyze JSON files to extract all available tags
-- [ ] Create a comprehensive list of tags to organize shaders by genre
-- [ ] Group shaders by tags for systematic analysis
-- [ ] Document the tag distribution across shaders
+- [x] Analyze JSON files to extract all available tags
+- [x] Create a comprehensive list of tags to organize shaders by genre
+- [x] Group shaders by tags for systematic analysis
+- [x] Document the tag distribution across shaders
 
 ### Task 1.3: GLSL Extraction Script
 - [x] Create `extract_glsl.py` to easily extract GLSL code from JSON files
