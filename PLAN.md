@@ -11,6 +11,9 @@ SuperShader is a tongue-in-cheek project designed to combine all shaders into on
 3. **Categorization**: Organize modules by genre with branching for conflicting features
 4. **Universal Format**: Store code in pseudocode format translatable to multiple languages/APIs
 5. **Management System**: Create Python-based system to combine modules into functional shaders
+6. **3D Model Integration**: Use assimp for 3D model loading, replacing built-in 3D primitives
+7. **Math Library Integration**: Utilize platform-appropriate math libraries (GLM for C, DirectX math, etc.)
+8. **System Library Recognition**: Identify code replaceable with system libraries
 
 ## Project Phases
 
@@ -66,6 +69,33 @@ SuperShader is a tongue-in-cheek project designed to combine all shaders into on
 3. **Pattern Recognition**: Identify similar code segments across different shaders
 4. **Gradual Conversion**: Convert specific implementations to generic modules
 5. **Conflict Resolution**: Use branching directories when features conflict
+
+## Specialized Integration Areas
+
+### 3D Model Loading
+- Use assimp library for 3D model loading
+- Replace built-in 3D primitives with model loader when appropriate
+- Wrap with "easy and intuitive helpers" when needed for simple cases
+- Maintain primitive support for basic shapes (spheres, cubes, etc.) without external dependencies
+- Only allow primitives that can be loaded from 3D models as a replacement strategy
+
+### Math Libraries
+- Utilize platform-appropriate math libraries (GLM for C/C++, DirectX math, etc.)
+- Recognize built-in mathematical code that can be replaced with optimized library functions
+- Design pseudocode format to accommodate different math libraries per target platform
+- Maintain compatibility across different platform math implementations
+
+### System Library Recognition
+- Develop tools to recognize code that duplicates system library functionality
+- Identify opportunities to replace custom implementations with native system libraries
+- Create analysis methods to detect mathematical, vector, and matrix operations that match library functions
+- Plan for potential replacement of built-in functions with system equivalents
+
+### Library Code Collection (Future Consideration)
+- Gather collection of "library code" that duplicates native language library functionality
+- Maintain this as a curiosity for reference and analysis purposes
+- Note that actual implementation of this approach is not planned in the near term
+- May revisit this approach much later in the project lifecycle
 
 ## Success Metrics
 

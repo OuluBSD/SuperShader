@@ -15,6 +15,9 @@ The SuperShader project aims to:
 
 - Modules are organized by genre, with conflicting features separated into branches
 - Management code (Python) combines modules into functional shaders
+- Use assimp for 3D model loading, replacing built-in 3D primitives when appropriate
+- Utilize platform-appropriate math libraries (GLM for C/C++, DirectX math, etc.) instead of built-in mathematical code
+- Recognize code that duplicates system library functionality for potential replacement
 - Universal pseudocode serves as storage format, easily translatable to:
   - Programming languages: C/C++, Java, Python, JavaScript, C#
   - Graphics APIs: OpenGL, DirectX, Vulkan, Metal, Software rendering

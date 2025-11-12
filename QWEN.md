@@ -96,6 +96,15 @@ Use the tag information from JSON files to group shaders by functionality:
 - Identify common patterns within each tag category
 - Create genre-specific modules based on tag organization
 
+## 3D Model and Math Library Integration
+
+- Use assimp library for 3D model loading, replacing built-in 3D primitives when appropriate
+- Wrap with intuitive helpers when needed for simple cases (e.g., adding red spheres)
+- Maintain primitive support but consider replacing with 3D model loaders when beneficial
+- Utilize platform-specific math libraries (GLM for C/C++, DirectX math, etc.) instead of built-in mathematical operations
+- Recognize code that duplicates system library functionality for potential replacement with native libraries
+- Consider future collection of "library code" that duplicates native language library functionality (currently a curiosity only)
+
 ## Important Notes
 
 - Original JSON shader files are in the `json/` directory (over 100MB)
