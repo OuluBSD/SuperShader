@@ -1,0 +1,86 @@
+{
+  "module_type": "lighting",
+  "modules": [
+    {
+      "name": "diffuse_lighting",
+      "path": "modules/lighting/diffuse/diffuse_lighting.glsl",
+      "type": "diffuse",
+      "description": "Standard diffuse lighting calculations including Lambert, Oren-Nayar, and wrapped diffuse models",
+      "inputs": ["normal", "lightDir", "albedo"],
+      "outputs": ["diffuseColor"],
+      "dependencies": []
+    },
+    {
+      "name": "specular_lighting", 
+      "path": "modules/lighting/specular/specular_lighting.glsl",
+      "type": "specular",
+      "description": "Specular lighting calculations including Phong, Blinn-Phong, and Cook-Torrance models",
+      "inputs": ["normal", "lightDir", "viewDir", "roughness", "F0"],
+      "outputs": ["specularColor"],
+      "dependencies": ["diffuse_lighting"]
+    },
+    {
+      "name": "pbr_lighting",
+      "path": "modules/lighting/pbr/pbr_lighting.glsl", 
+      "type": "pbr",
+      "description": "Physically Based Rendering lighting using Cook-Torrance BRDF",
+      "inputs": ["normal", "viewDir", "lightDir", "albedo", "metallic", "roughness"],
+      "outputs": ["pbrColor"],
+      "dependencies": ["diffuse_lighting", "specular_lighting"]
+    },
+    {
+      "name": "basic_point_light",
+      "path": "modules/lighting/point_light/basic_point_light.glsl",
+      "type": "point_light",
+      "description": "Point light calculations with attenuation and radius considerations",
+      "inputs": ["fragPos", "normal", "lightPos", "lightColor", "lightParams"],
+      "outputs": ["lightColor"],
+      "dependencies": ["diffuse_lighting", "specular_lighting"]
+    },
+    {
+      "name": "directional_light",
+      "path": "modules/lighting/directional_light/directional_light.glsl",
+      "type": "directional_light", 
+      "description": "Directional light calculations for sun/sky lighting",
+      "inputs": ["normal", "lightDir", "lightColor", "albedo"],
+      "outputs": ["lightColor"],
+      "dependencies": ["diffuse_lighting", "specular_lighting"]
+    },
+    {
+      "name": "shadow_mapping",
+      "path": "modules/lighting/shadow_mapping/shadow_mapping.glsl",
+      "type": "shadow",
+      "description": "Shadow calculations for various light types",
+      "inputs": ["fragPos", "lightPos", "normal", "lightDir"],
+      "outputs": ["shadowFactor"],
+      "dependencies": []
+    },
+    {
+      "name": "normal_mapping", 
+      "path": "modules/lighting/normal_mapping/normal_mapping.glsl",
+      "type": "normal_mapping",
+      "description": "Normal mapping for enhanced surface detail lighting",
+      "inputs": ["normal", "tangent", "bitangent", "texCoords"],
+      "outputs": ["perturbedNormal"],
+      "dependencies": []
+    },
+    {
+      "name": "lighting_functions",
+      "path": "modules/lighting/lighting_functions/lighting_functions.glsl",
+      "type": "lighting_system",
+      "description": "High-level lighting functions combining multiple lighting models",
+      "inputs": ["fragPos", "normal", "viewDir", "material", "lights"],
+      "outputs": ["finalColor"],
+      "dependencies": ["diffuse_lighting", "specular_lighting", "pbr_lighting", "basic_point_light", "directional_light"]
+    },
+    {
+      "name": "cel_shading",
+      "path": "modules/lighting/cel_shading/cel_shading.glsl",
+      "type": "stylized_lighting",
+      "description": "Toon/cel shading for cartoon-like rendering",
+      "inputs": ["normal", "lightDir", "viewDir", "albedo"],
+      "outputs": ["celColor"],
+      "dependencies": ["diffuse_lighting", "specular_lighting"]
+    }
+  ]
+}
