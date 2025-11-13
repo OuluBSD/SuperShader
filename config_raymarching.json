@@ -1,0 +1,10 @@
+{
+  "selected_branches": {
+    "lighting_approach": "raymarching",
+    "light_types": [],
+    "effects": []
+  },
+  "modules": [
+    "raymarching_lighting"
+  ]
+}

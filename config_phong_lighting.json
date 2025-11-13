@@ -1,0 +1,19 @@
+{
+  "selected_branches": {
+    "lighting_approach": "phong",
+    "light_types": [
+      "point_light",
+      "spot_light"
+    ],
+    "effects": [
+      "shadows"
+    ]
+  },
+  "modules": [
+    "basic_point_light",
+    "spot_light",
+    "shadow_mapping",
+    "specular_lighting",
+    "diffuse_lighting"
+  ]
+}

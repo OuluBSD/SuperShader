@@ -1,0 +1,13 @@
+{
+  "name": "demo_lighting_profile",
+  "modules": [
+    "lighting/point_light/basic_point_light",
+    "lighting/diffuse/diffuse_lighting",
+    "lighting/normal_mapping/normal_mapping",
+    "lighting/specular/specular_lighting"
+  ],
+  "dependencies": [
+    "lighting/normal_mapping/normal_mapping"
+  ],
+  "timestamp": "2025-11-13T11:13:26.708618"
+}

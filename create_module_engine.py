@@ -1,302 +1,242 @@
 #!/usr/bin/env python3
 """
-Module combination engine for SuperShader project.
-
-This script creates an engine to combine modules into functional shaders,
-implement validation for module compatibility, add support for optional
-modules, and create error handling for incompatible modules.
+Module Engine
+Engine to combine modules into functional shaders with validation
 """
 
-import os
 import json
-from pathlib import Path
+from create_module_registry import ModuleRegistry
+from create_pseudocode_translator import PseudocodeTranslator
 
 
-def create_module_registry():
-    """
-    Create a registry of available modules with metadata.
-    """
-    registry = {
-        "modules": []
-    }
+class ModuleEngine:
+    def __init__(self):
+        self.registry = ModuleRegistry()
+        self.translator = PseudocodeTranslator()
+        self.selected_modules = []
+        self.dependencies = set()
+        self.conflicts = []
     
-    # Walk through all module directories
-    modules_dir = Path("modules")
-    if modules_dir.exists():
-        for module_type_dir in modules_dir.iterdir():
-            if module_type_dir.is_dir():
-                for glsl_file in module_type_dir.rglob("*.glsl"):
-                    module_info = {
-                        "name": glsl_file.stem,
-                        "path": str(glsl_file.relative_to(modules_dir)),
-                        "category": module_type_dir.name,
-                        "type": "standardized" if "standardized" in str(glsl_file) else "extracted",
-                        "dependencies": [],
-                        "conflicts": [],
-                        "tags": [module_type_dir.name]
-                    }
-                    registry["modules"].append(module_info)
+    def add_module(self, module_key):
+        """Add a module to the combination, resolving dependencies and conflicts"""
+        # Check if module exists in the registry
+        full_module_key = None
+        for genre, modules in self.registry.modules.items():
+            for module_name, module_info in modules.items():
+                full_key = f"{genre}/{module_name}"
+                if full_key == module_key or module_name.split('/')[-1] == module_key:  # Handle just the filename part
+                    full_module_key = full_key
+                    break
+            if full_module_key:
+                break
+        
+        if full_module_key is None:
+            raise ValueError(f"Module '{module_key}' not found in registry")
+        
+        # Check for conflicts with already selected modules
+        new_conflicts = self.registry.get_module_conflicts(full_module_key)
+        for selected_module in self.selected_modules:
+            if selected_module in new_conflicts:
+                self.conflicts.append(f"Conflict: {full_module_key} conflicts with {selected_module}")
+                return False
+        
+        # Add dependencies
+        deps = self.registry.get_module_dependencies(full_module_key)
+        for dep in deps:
+            # Find the full path for the dependency
+            dep_full_key = None
+            for genre, modules in self.registry.modules.items():
+                for module_name, module_info in modules.items():
+                    if module_name.split('/')[-1] == dep or f"{genre}/{module_name}" == dep:
+                        dep_full_key = f"{genre}/{module_name}"
+                        break
+                if dep_full_key:
+                    break
+            
+            if dep_full_key:
+                if dep_full_key not in self.selected_modules and dep_full_key not in self.dependencies:
+                    self.add_module(dep_full_key)  # Recursive addition of dependencies
+                    self.dependencies.add(dep_full_key)
+        
+        # Add the module
+        if full_module_key not in self.selected_modules:
+            self.selected_modules.append(full_module_key)
+        
+        return True
     
-    # Save registry to file
-    os.makedirs("registry", exist_ok=True)
-    with open("registry/modules.json", "w") as f:
-        json.dump(registry, f, indent=2)
+    def remove_module(self, module_key):
+        """Remove a module from the combination"""
+        if module_key in self.selected_modules:
+            self.selected_modules.remove(module_key)
+        if module_key in self.dependencies:
+            self.dependencies.remove(module_key)
     
-    print(f"Created registry with {len(registry['modules'])} modules")
-    return registry
-
-
-def validate_module_compatibility(selected_modules):
-    """
-    Validate if selected modules are compatible with each other.
-    
-    Args:
-        selected_modules (list): List of module names to check
-    
-    Returns:
-        tuple: (is_compatible, list of issues)
-    """
-    issues = []
-    
-    # For now, we'll implement basic checks
-    # In a full implementation, this would check for conflicts between modules
-    
-    # Check for duplicate functionality (very basic)
-    function_categories = {}
-    for module in selected_modules:
-        # Extract category from module name
-        category = module.split('_')[0] if '_' in module else module
-        if category in function_categories:
-            function_categories[category].append(module)
-        else:
-            function_categories[category] = [module]
-    
-    # Flag cases where multiple modules might provide similar functionality
-    for category, modules in function_categories.items():
-        if len(modules) > 1:
-            issues.append(f"Multiple modules in '{category}' category: {', '.join(modules)}. May cause conflicts.")
-    
-    return len(issues) == 0, issues
-
-
-def combine_modules(selected_modules, output_file="combined_shader.glsl"):
-    """
-    Combine selected modules into a single shader file.
-    
-    Args:
-        selected_modules (list): List of module names to combine
-        output_file (str): Output file path
-    
-    Returns:
-        str: Path to combined shader file
-    """
-    combined_code = []
-    
-    # Add standard GLSL header
-    combined_code.append("// Combined shader from SuperShader modules")
-    combined_code.append("// Automatically generated")
-    combined_code.append("")
-    combined_code.append("#version 300 es")
-    combined_code.append("precision highp float;")
-    combined_code.append("")
-    
-    # Track which code has been added to avoid duplicates
-    added_code = set()
-    
-    # Process each selected module
-    for module_name in selected_modules:
-        # Find the module file
-        module_path = find_module_file(module_name)
-        if module_path:
-            with open(module_path, 'r') as f:
-                module_code = f.read()
+    def validate_combination(self):
+        """Validate that the current module combination is valid"""
+        issues = []
+        
+        # Check for conflicts
+        for i, module1 in enumerate(self.selected_modules):
+            for module2 in self.selected_modules[i+1:]:
+                conflicts1 = self.registry.get_module_conflicts(module1)
+                conflicts2 = self.registry.get_module_conflicts(module2)
                 
-                # Add the module code if not already added
-                if module_code not in added_code:
-                    combined_code.append(f"// Begin module: {module_name}")
-                    combined_code.append(module_code)
-                    combined_code.append(f"// End module: {module_name}")
-                    combined_code.append("")
-                    added_code.add(module_code)
-    
-    # Add a basic main function if not already present
-    if not any("main()" in code for code in combined_code):
-        combined_code.append("// Default main function")
-        combined_code.append("uniform vec2 iResolution;")
-        combined_code.append("uniform float iTime;")
-        combined_code.append("in vec2 fragCoord;")
-        combined_code.append("out vec4 fragColor;")
-        combined_code.append("")
-        combined_code.append("void main() {")
-        combined_code.append("    vec2 uv = fragCoord / iResolution.xy;")
-        combined_code.append("    // Combined shader output")
-        combined_code.append("    fragColor = vec4(uv, 0.5 + 0.5 * sin(iTime), 1.0);")
-        combined_code.append("}")
-    
-    # Write combined code to file
-    with open(output_file, 'w') as f:
-        f.write('\n'.join(combined_code))
-    
-    print(f"Combined {len(selected_modules)} modules into {output_file}")
-    return output_file
-
-
-def find_module_file(module_name):
-    """
-    Find the file path for a given module name.
-    
-    Args:
-        module_name (str): Name of the module
-    
-    Returns:
-        str or None: Path to the module file, or None if not found
-    """
-    modules_dir = Path("modules")
-    if modules_dir.exists():
-        # Search for the module in all subdirectories
-        for module_type_dir in modules_dir.iterdir():
-            if module_type_dir.is_dir():
-                # Look in both standardized and extracted directories
-                for search_dir in [module_type_dir, module_type_dir / "standardized"]:
-                    if search_dir.exists():
-                        # Look for exact match
-                        exact_match = search_dir / f"{module_name}.glsl"
-                        if exact_match.exists():
-                            return str(exact_match)
-                        
-                        # Look for files containing the module name
-                        for glsl_file in search_dir.glob("*.glsl"):
-                            if module_name.replace("_functions", "") in glsl_file.stem:
-                                return str(glsl_file)
-    
-    return None
-
-
-def create_shader_generator():
-    """
-    Create a shader generator system that can produce complete shaders from modules.
-    """
-    generator_code = '''// SuperShader - Shader Generation System
-// Combines modules into complete, functional shaders
-
-#version 300 es
-precision highp float;
-
-// Common uniforms
-uniform vec2 iResolution;
-uniform float iTime;
-uniform float iTimeDelta;
-uniform int iFrame;
-uniform vec4 iMouse;
-uniform vec4 iDate;
-uniform float iSampleRate;
-
-in vec2 fragCoord;
-out vec4 fragColor;
-
-// Include module functions here
-// The specific modules will be inserted during generation
-
-void main() {
-    // Calculate normalized UV coordinates
-    vec2 uv = fragCoord / iResolution.xy;
-    
-    // Center coordinates (-1 to 1)
-    vec2 coord = (2.0 * fragCoord - iResolution.xy) / min(iResolution.x, iResolution.y);
-    
-    // Main shader composition happens here using selected modules
-    // This is where the combined functionality goes
-    
-    // Default output if no specific modules are combined
-    fragColor = vec4(uv, 0.5 + 0.5 * sin(iTime), 1.0);
-}
-'''
-    
-    os.makedirs("generator", exist_ok=True)
-    with open("generator/template.glsl", "w") as f:
-        f.write(generator_code)
-    
-    print("Created shader generator template")
-
-
-def create_module_interface_standard():
-    """
-    Define standard interfaces that modules should follow.
-    """
-    interface_standard = {
-        "version": "1.0",
-        "standards": {
-            "naming_conventions": {
-                "function_names": "use_underscores_and_descriptive_names",
-                "variables": "use_underscores",
-                "constants": "ALL_CAPS_WITH_UNDERSCORES"
-            },
-            "function_signatures": [
-                "vec3 lighting_function(vec3 normal, vec3 lightDir, vec3 viewDir)",
-                "vec4 effect_function(vec4 color, vec2 uv, float time)",
-                "float sdf_function(vec3 position)",
-                "vec3 transformation_function(vec3 position, float time)"
-            ],
-            "required_comments": [
-                "Purpose of the module",
-                "Input parameters",
-                "Output description",
-                "Dependencies if any"
-            ],
-            "compatibility_guidelines": {
-                "uniform_variables": "use standard SuperShader uniforms",
-                "global_variables": "avoid if possible",
-                "performance": "aim for minimal instructions"
-            }
+                if module2 in conflicts1 or module1 in conflicts2:
+                    issues.append(f"Conflict: {module1} and {module2} are incompatible")
+        
+        # Check for missing dependencies
+        for module_key in self.selected_modules:
+            deps = self.registry.get_module_dependencies(module_key)
+            for dep in deps:
+                if dep not in self.selected_modules and dep not in self.dependencies:
+                    issues.append(f"Missing dependency: {module_key} requires {dep}")
+        
+        return {
+            'valid': len(issues) == 0,
+            'issues': issues,
+            'selected_modules': self.selected_modules.copy()
         }
-    }
     
-    os.makedirs("standards", exist_ok=True)
-    with open("standards/interface_standard.json", "w") as f:
-        json.dump(interface_standard, f, indent=2)
-    
-    print("Created module interface standard")
-
-
-def main():
-    print("Creating module combination engine...")
-    
-    # Create module registry
-    registry = create_module_registry()
-    
-    # Create shader generator template
-    create_shader_generator()
-    
-    # Create module interface standard
-    create_module_interface_standard()
-    
-    # Example of combining a few modules to test the system
-    if registry["modules"]:
-        print(f"\nFound {len(registry['modules'])} modules in registry")
+    def generate_shader(self, target_language='glsl', include_validation=True):
+        """Generate shader code from selected modules"""
+        validation = self.validate_combination()
         
-        # Select a few modules for demonstration
-        selected_modules = [mod["name"] for mod in registry["modules"][:3]]
-        
-        print(f"Attempting to combine modules: {selected_modules}")
-        
-        # Validate compatibility
-        is_compatible, issues = validate_module_compatibility(selected_modules)
-        if is_compatible:
-            print("✓ Modules are compatible")
-        else:
-            print("⚠ Compatibility issues found:")
-            for issue in issues:
+        if include_validation and not validation['valid']:
+            print("Warning: Module combination has issues:")
+            for issue in validation['issues']:
                 print(f"  - {issue}")
         
-        # Combine the modules
-        try:
-            output_file = combine_modules(selected_modules, "test_combined_shader.glsl")
-            print(f"✓ Successfully created {output_file}")
-        except Exception as e:
-            print(f"✗ Failed to combine modules: {str(e)}")
+        if not self.selected_modules:
+            return "// No modules selected\n"
+        
+        # Collect pseudocode from all selected modules
+        all_pseudocode = []
+        module_metadata = []
+        
+        for module_key in self.selected_modules:
+            # Find the module in the registry
+            found = False
+            for genre, modules in self.registry.modules.items():
+                for module_name, module_info in modules.items():
+                    full_key = f"{genre}/{module_name}"
+                    if full_key == module_key or module_name == module_key:
+                        if 'pseudocode' in dir(__import__(f"modules.{genre}.{module_name.split('/')[0]}.{module_name.split('/')[1]}", fromlist=['get_pseudocode'])):
+                            # Import the specific module and get its pseudocode
+                            import importlib
+                            module_path_parts = module_key.split('/')
+                            if len(module_path_parts) == 2:
+                                module_dir, module_file = module_path_parts
+                                module_imp = importlib.import_module(f"modules.{genre}.{module_dir}.{module_file}")
+                                
+                                if hasattr(module_imp, 'get_pseudocode'):
+                                    pseudocode = module_imp.get_pseudocode()
+                                    all_pseudocode.append(pseudocode)
+                                    module_metadata.append({
+                                        'name': module_key,
+                                        'metadata': module_info['metadata']
+                                    })
+                        found = True
+                        break
+                if found:
+                    break
+        
+        # Generate shader using the translator
+        shader_code = self.translator.create_glsl_shader_from_modules(self.selected_modules)
+        
+        return shader_code
     
-    print("\nModule combination engine created successfully!")
+    def get_combination_summary(self):
+        """Get a summary of the current module combination"""
+        validation = self.validate_combination()
+        
+        summary = {
+            'total_modules': len(self.selected_modules),
+            'modules': self.selected_modules.copy(),
+            'dependencies': list(self.dependencies),
+            'conflicts': self.conflicts.copy(),
+            'validation': validation
+        }
+        
+        return summary
+    
+    def create_profile(self, profile_name):
+        """Create a saved profile of the current module combination"""
+        profile = {
+            'name': profile_name,
+            'modules': self.selected_modules.copy(),
+            'dependencies': list(self.dependencies),
+            'timestamp': __import__('datetime').datetime.now().isoformat()
+        }
+        
+        # Save to profiles directory
+        import os
+        os.makedirs('profiles', exist_ok=True)
+        
+        with open(f'profiles/{profile_name}.json', 'w') as f:
+            json.dump(profile, f, indent=2)
+        
+        return profile
+
+
+def demo_module_engine():
+    """Demonstrate the module engine functionality"""
+    print("Demonstrating Module Engine:")
+    print("=" * 40)
+    
+    engine = ModuleEngine()
+    
+    # Add some lighting modules to combine
+    modules_to_add = [
+        'lighting/point_light/basic_point_light',
+        'lighting/diffuse/diffuse_lighting', 
+        'lighting/specular/specular_lighting',
+        'lighting/normal_mapping/normal_mapping'
+    ]
+    
+    print("Adding modules:")
+    for module in modules_to_add:
+        success = engine.add_module(module)
+        print(f"  - {module}: {'Success' if success else 'Failed'}")
+    
+    print()
+    
+    # Validate the combination
+    validation = engine.validate_combination()
+    print(f"Combination valid: {validation['valid']}")
+    if validation['issues']:
+        print("Issues found:")
+        for issue in validation['issues']:
+            print(f"  - {issue}")
+    
+    print()
+    
+    # Generate shader
+    shader = engine.generate_shader()
+    print("Generated shader code (first 20 lines):")
+    lines = shader.split('\n')
+    for i, line in enumerate(lines[:20]):
+        print(f"  {i+1:2d}: {line}")
+    if len(lines) > 20:
+        print(f"  ... and {len(lines) - 20} more lines")
+    
+    # Save the generated shader
+    with open('engine_generated_shader.glsl', 'w') as f:
+        f.write(shader)
+    print("\nShader saved to engine_generated_shader.glsl")
+    
+    # Create a profile
+    profile = engine.create_profile('demo_lighting_profile')
+    print(f"Profile created: {profile['name']}")
+    
+    # Print combination summary
+    summary = engine.get_combination_summary()
+    print(f"\nCombination Summary:")
+    print(f"  Modules: {summary['total_modules']}")
+    print(f"  Dependencies: {len(summary['dependencies'])}")
+    print(f"  Conflicts: {len(summary['conflicts'])}")
+    
+    return engine
 
 
 if __name__ == "__main__":
-    main()
+    demo_module_engine()

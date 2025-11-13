@@ -1,1871 +1,207 @@
 {
-  "modules": [
-    {
-      "name": "forces_functions",
-      "path": "physics/forces_functions.glsl",
-      "category": "physics",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "particles",
-        "color",
-        "physics"
-      ]
-    },
-    {
-      "name": "integration_methods_functions",
-      "path": "physics/integration_methods_functions.glsl",
-      "category": "physics",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "particles",
-        "physics"
-      ]
-    },
-    {
-      "name": "particle_systems_functions",
-      "path": "physics/particle_systems_functions.glsl",
-      "category": "physics",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "lighting",
-        "color",
-        "physics"
-      ]
-    },
-    {
-      "name": "collision_detection_functions",
-      "path": "physics/collision_detection_functions.glsl",
-      "category": "physics",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "particles",
-        "physics"
-      ]
-    },
-    {
-      "name": "fluid_simulation_functions",
-      "path": "physics/fluid_simulation_functions.glsl",
-      "category": "physics",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "particles",
-        "lighting",
-        "color",
-        "physics"
-      ]
-    },
-    {
-      "name": "constraints_functions",
-      "path": "physics/constraints_functions.glsl",
-      "category": "physics",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "particles",
-        "physics"
-      ]
-    },
-    {
-      "name": "fluid_simulation",
-      "path": "physics/standardized/fluid_simulation.glsl",
-      "category": "physics",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "particles",
-        "physics"
-      ]
-    },
-    {
-      "name": "forces",
-      "path": "physics/standardized/forces.glsl",
-      "category": "physics",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping"
-      ],
-      "conflicts": [],
-      "tags": [
-        "particles",
-        "physics"
-      ]
-    },
-    {
-      "name": "constraints",
-      "path": "physics/standardized/constraints.glsl",
-      "category": "physics",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping"
-      ],
-      "conflicts": [],
-      "tags": [
-        "particles",
-        "physics"
-      ]
-    },
-    {
-      "name": "particle_system",
-      "path": "physics/standardized/particle_system.glsl",
-      "category": "physics",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "particles",
-        "color",
-        "physics"
-      ]
-    },
-    {
-      "name": "collision_detection",
-      "path": "physics/standardized/collision_detection.glsl",
-      "category": "physics",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping"
-      ],
-      "conflicts": [],
-      "tags": [
-        "physics"
-      ]
-    },
-    {
-      "name": "integration_methods",
-      "path": "physics/standardized/integration_methods.glsl",
-      "category": "physics",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "physics"
-      ]
-    },
-    {
-      "name": "uv_mapping_functions",
-      "path": "texturing/uv_mapping_functions.glsl",
-      "category": "texturing",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "lighting",
-        "color"
-      ]
-    },
-    {
-      "name": "texture_blending_functions",
-      "path": "texturing/texture_blending_functions.glsl",
-      "category": "texturing",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "texture_filtering_functions",
-      "path": "texturing/texture_filtering_functions.glsl",
-      "category": "texturing",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "normal_mapping_functions",
-      "path": "texturing/normal_mapping_functions.glsl",
-      "category": "texturing",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "texture_sampling_functions",
-      "path": "texturing/texture_sampling_functions.glsl",
-      "category": "texturing",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color",
-        "particles"
-      ]
-    },
-    {
-      "name": "procedural_textures_functions",
-      "path": "texturing/procedural_textures_functions.glsl",
-      "category": "texturing",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "texture_sampling",
-      "path": "texturing/standardized/texture_sampling.glsl",
-      "category": "texturing",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "procedural_textures",
-      "path": "texturing/standardized/procedural_textures.glsl",
-      "category": "texturing",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing"
-      ]
-    },
-    {
-      "name": "triplanar_mapping",
-      "path": "texturing/standardized/triplanar_mapping.glsl",
-      "category": "texturing",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "uv_mapping",
-      "path": "texturing/standardized/uv_mapping.glsl",
-      "category": "texturing",
-      "type": "standardized",
-      "dependencies": [
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing"
-      ]
-    },
-    {
-      "name": "texture_blending",
-      "path": "texturing/standardized/texture_blending.glsl",
-      "category": "texturing",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "normal_mapping",
-      "path": "texturing/standardized/normal_mapping.glsl",
-      "category": "texturing",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing"
-      ]
-    },
-    {
-      "name": "channel_processing_functions",
-      "path": "audio/channel_processing_functions.glsl",
-      "category": "audio",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "particles",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "beat_detection_functions",
-      "path": "audio/beat_detection_functions.glsl",
-      "category": "audio",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "audio"
-      ]
-    },
-    {
-      "name": "audio_sampling_functions",
-      "path": "audio/audio_sampling_functions.glsl",
-      "category": "audio",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "particles",
-        "lighting",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "amplitude_processing_functions",
-      "path": "audio/amplitude_processing_functions.glsl",
-      "category": "audio",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "particles",
-        "lighting",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "visual_representations_functions",
-      "path": "audio/visual_representations_functions.glsl",
-      "category": "audio",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "lighting",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "frequency_analysis_functions",
-      "path": "audio/frequency_analysis_functions.glsl",
-      "category": "audio",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "visual_representations",
-      "path": "audio/standardized/visual_representations.glsl",
-      "category": "audio",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "particles",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "beat_detection",
-      "path": "audio/standardized/beat_detection.glsl",
-      "category": "audio",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "audio"
-      ]
-    },
-    {
-      "name": "audio_sampling",
-      "path": "audio/standardized/audio_sampling.glsl",
-      "category": "audio",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "audio"
-      ]
-    },
-    {
-      "name": "frequency_analysis",
-      "path": "audio/standardized/frequency_analysis.glsl",
-      "category": "audio",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "audio"
-      ]
-    },
-    {
-      "name": "channel_processing",
-      "path": "audio/standardized/channel_processing.glsl",
-      "category": "audio",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "audio"
-      ]
-    },
-    {
-      "name": "amplitude_processing",
-      "path": "audio/standardized/amplitude_processing.glsl",
-      "category": "audio",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "blinn_phong_functions",
-      "path": "lighting/blinn_phong_functions.glsl",
-      "category": "lighting",
-      "type": "extracted",
-      "dependencies": [
-        "normal_mapping",
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting"
-      ]
-    },
-    {
-      "name": "light_calculation_functions",
-      "path": "lighting/light_calculation_functions.glsl",
-      "category": "lighting",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color",
-        "particles"
-      ]
-    },
-    {
-      "name": "specular",
-      "path": "lighting/specular.glsl",
-      "category": "lighting",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "pbr_functions",
-      "path": "lighting/pbr_functions.glsl",
-      "category": "lighting",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "ambient_functions",
-      "path": "lighting/ambient_functions.glsl",
-      "category": "lighting",
-      "type": "extracted",
-      "dependencies": [
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting"
-      ]
-    },
-    {
-      "name": "diffuse",
-      "path": "lighting/diffuse.glsl",
-      "category": "lighting",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "ambient",
-      "path": "lighting/ambient.glsl",
-      "category": "lighting",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "shadow_functions",
-      "path": "lighting/shadow_functions.glsl",
-      "category": "lighting",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "specular_functions",
-      "path": "lighting/specular_functions.glsl",
-      "category": "lighting",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "diffuse_functions",
-      "path": "lighting/diffuse_functions.glsl",
-      "category": "lighting",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color"
-      ]
-    },
-    {
-      "name": "phong_functions",
-      "path": "lighting/phong_functions.glsl",
-      "category": "lighting",
-      "type": "extracted",
-      "dependencies": [
-        "normal_mapping",
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "color"
-      ]
-    },
-    {
-      "name": "light_attenuation",
-      "path": "lighting/standardized/light_attenuation.glsl",
-      "category": "lighting",
-      "type": "standardized",
-      "dependencies": [
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "color"
-      ]
-    },
-    {
-      "name": "pbr_lit",
-      "path": "lighting/standardized/pbr_lit.glsl",
-      "category": "lighting",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping",
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "color"
-      ]
-    },
-    {
-      "name": "specular_blinn_phong",
-      "path": "lighting/standardized/specular_blinn_phong.glsl",
-      "category": "lighting",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping",
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "color"
-      ]
-    },
-    {
-      "name": "diffuse_lit",
-      "path": "lighting/standardized/diffuse_lit.glsl",
-      "category": "lighting",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping",
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "color"
-      ]
-    },
-    {
-      "name": "shadow_mapping",
-      "path": "lighting/standardized/shadow_mapping.glsl",
-      "category": "lighting",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing"
-      ]
-    },
-    {
-      "name": "lighting_functions",
-      "path": "raymarching/lighting_functions.glsl",
-      "category": "raymarching",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "lighting",
-        "color",
-        "raymarching"
-      ]
-    },
-    {
-      "name": "ray_operations_functions",
-      "path": "raymarching/ray_operations_functions.glsl",
-      "category": "raymarching",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "lighting",
-        "color",
-        "raymarching"
-      ]
-    },
-    {
-      "name": "optimizations_functions",
-      "path": "raymarching/optimizations_functions.glsl",
-      "category": "raymarching",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "lighting",
-        "color",
-        "raymarching"
-      ]
-    },
-    {
-      "name": "ray_generations_functions",
-      "path": "raymarching/ray_generations_functions.glsl",
-      "category": "raymarching",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color",
-        "raymarching"
-      ]
-    },
-    {
-      "name": "distance_functions_functions",
-      "path": "raymarching/distance_functions_functions.glsl",
-      "category": "raymarching",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "lighting",
-        "color",
-        "audio",
-        "raymarching"
-      ]
-    },
-    {
-      "name": "primitives_functions",
-      "path": "raymarching/primitives_functions.glsl",
-      "category": "raymarching",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "lighting",
-        "color",
-        "audio",
-        "raymarching"
-      ]
-    },
-    {
-      "name": "raymarching_core",
-      "path": "raymarching/standardized/raymarching_core.glsl",
-      "category": "raymarching",
-      "type": "standardized",
-      "dependencies": [
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "raymarching"
-      ]
-    },
-    {
-      "name": "distance_functions",
-      "path": "raymarching/standardized/distance_functions.glsl",
-      "category": "raymarching",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping"
-      ],
-      "conflicts": [],
-      "tags": [
-        "raymarching"
-      ]
-    },
-    {
-      "name": "ray_operations",
-      "path": "raymarching/standardized/ray_operations.glsl",
-      "category": "raymarching",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "raymarching"
-      ]
-    },
-    {
-      "name": "lighting",
-      "path": "raymarching/standardized/lighting.glsl",
-      "category": "raymarching",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "color",
-        "raymarching"
-      ]
-    },
-    {
-      "name": "primitives",
-      "path": "raymarching/standardized/primitives.glsl",
-      "category": "raymarching",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "raymarching"
-      ]
-    },
-    {
-      "name": "ray_generators",
-      "path": "raymarching/standardized/ray_generators.glsl",
-      "category": "raymarching",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping"
-      ],
-      "conflicts": [],
-      "tags": [
-        "raymarching"
-      ]
-    },
-    {
-      "name": "post_processing_functions",
-      "path": "effects/post_processing_functions.glsl",
-      "category": "effects",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "effects",
-        "color"
-      ]
-    },
-    {
-      "name": "color_adjustments_functions",
-      "path": "effects/color_adjustments_functions.glsl",
-      "category": "effects",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "lighting",
-        "effects",
-        "color"
-      ]
-    },
-    {
-      "name": "blur_functions",
-      "path": "effects/blur_functions.glsl",
-      "category": "effects",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "effects",
-        "color"
-      ]
-    },
-    {
-      "name": "distortion_functions",
-      "path": "effects/distortion_functions.glsl",
-      "category": "effects",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "effects",
-        "color"
-      ]
-    },
-    {
-      "name": "compositing_functions",
-      "path": "effects/compositing_functions.glsl",
-      "category": "effects",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "effects",
-        "color"
-      ]
-    },
-    {
-      "name": "filters_functions",
-      "path": "effects/filters_functions.glsl",
-      "category": "effects",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "effects",
-        "color"
-      ]
-    },
-    {
-      "name": "edge_detection_functions",
-      "path": "effects/edge_detection_functions.glsl",
-      "category": "effects",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "effects",
-        "color"
-      ]
-    },
-    {
-      "name": "edge_detection",
-      "path": "effects/standardized/edge_detection.glsl",
-      "category": "effects",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "effects"
-      ]
-    },
-    {
-      "name": "bloom_effect",
-      "path": "effects/standardized/bloom_effect.glsl",
-      "category": "effects",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "effects",
-        "color"
-      ]
-    },
-    {
-      "name": "color_adjustment",
-      "path": "effects/standardized/color_adjustment.glsl",
-      "category": "effects",
-      "type": "standardized",
-      "dependencies": [
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "effects",
-        "color"
-      ]
-    },
-    {
-      "name": "composite",
-      "path": "effects/standardized/composite.glsl",
-      "category": "effects",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "effects"
-      ]
-    },
-    {
-      "name": "blur",
-      "path": "effects/standardized/blur.glsl",
-      "category": "effects",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "effects"
-      ]
-    },
-    {
-      "name": "vignette_effect",
-      "path": "effects/standardized/vignette_effect.glsl",
-      "category": "effects",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "effects",
-        "color"
-      ]
-    },
-    {
-      "name": "text_rendering_functions",
-      "path": "ui/text_rendering_functions.glsl",
-      "category": "ui",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "lighting",
-        "ui",
-        "color"
-      ]
-    },
-    {
-      "name": "graphics_operations_functions",
-      "path": "ui/graphics_operations_functions.glsl",
-      "category": "ui",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "ui",
-        "color"
-      ]
-    },
-    {
-      "name": "ui_elements_functions",
-      "path": "ui/ui_elements_functions.glsl",
-      "category": "ui",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "lighting",
-        "ui",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "effects_functions",
-      "path": "ui/effects_functions.glsl",
-      "category": "ui",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "particles",
-        "lighting",
-        "ui",
-        "color"
-      ]
-    },
-    {
-      "name": "basic_shapes_functions",
-      "path": "ui/basic_shapes_functions.glsl",
-      "category": "ui",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "lighting",
-        "ui",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "utilities_functions",
-      "path": "ui/utilities_functions.glsl",
-      "category": "ui",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "lighting",
-        "ui",
-        "color"
-      ]
-    },
-    {
-      "name": "graphics_operations",
-      "path": "ui/standardized/graphics_operations.glsl",
-      "category": "ui",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "ui",
-        "color"
-      ]
-    },
-    {
-      "name": "effects",
-      "path": "ui/standardized/effects.glsl",
-      "category": "ui",
-      "type": "standardized",
-      "dependencies": [
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "ui",
-        "color"
-      ]
-    },
-    {
-      "name": "basic_shapes",
-      "path": "ui/standardized/basic_shapes.glsl",
-      "category": "ui",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "ui"
-      ]
-    },
-    {
-      "name": "ui_elements",
-      "path": "ui/standardized/ui_elements.glsl",
-      "category": "ui",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "ui",
-        "color"
-      ]
-    },
-    {
-      "name": "primitives",
-      "path": "ui/standardized/primitives.glsl",
-      "category": "ui",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping"
-      ],
-      "conflicts": [],
-      "tags": [
-        "ui"
-      ]
-    },
-    {
-      "name": "utilities",
-      "path": "ui/standardized/utilities.glsl",
-      "category": "ui",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "ui"
-      ]
-    },
-    {
-      "name": "patterns_functions",
-      "path": "procedural/patterns_functions.glsl",
-      "category": "procedural",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color",
-        "procedural"
-      ]
-    },
-    {
-      "name": "animation_functions",
-      "path": "procedural/animation_functions.glsl",
-      "category": "procedural",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "procedural",
-        "lighting",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "mathematical_functions",
-      "path": "procedural/mathematical_functions.glsl",
-      "category": "procedural",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "procedural"
-      ]
-    },
-    {
-      "name": "noise_functions",
-      "path": "procedural/noise_functions.glsl",
-      "category": "procedural",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "procedural",
-        "lighting",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "fractals_functions",
-      "path": "procedural/fractals_functions.glsl",
-      "category": "procedural",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "procedural",
-        "lighting",
-        "color"
-      ]
-    },
-    {
-      "name": "simulation_functions",
-      "path": "procedural/simulation_functions.glsl",
-      "category": "procedural",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "particles",
-        "procedural",
-        "lighting",
-        "color"
-      ]
-    },
-    {
-      "name": "mathematical_functions",
-      "path": "procedural/standardized/mathematical_functions.glsl",
-      "category": "procedural",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "procedural"
-      ]
-    },
-    {
-      "name": "fractal_generation",
-      "path": "procedural/standardized/fractal_generation.glsl",
-      "category": "procedural",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "color",
-        "procedural"
-      ]
-    },
-    {
-      "name": "animation_utils",
-      "path": "procedural/standardized/animation_utils.glsl",
-      "category": "procedural",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "animation",
-        "procedural"
-      ]
-    },
-    {
-      "name": "noise_functions",
-      "path": "procedural/standardized/noise_functions.glsl",
-      "category": "procedural",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "procedural"
-      ]
-    },
-    {
-      "name": "procedural_patterns",
-      "path": "procedural/standardized/procedural_patterns.glsl",
-      "category": "procedural",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "procedural"
-      ]
-    },
-    {
-      "name": "simulation_kernels",
-      "path": "procedural/standardized/simulation_kernels.glsl",
-      "category": "procedural",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "particles",
-        "procedural"
-      ]
-    },
-    {
-      "name": "hud_components_functions",
-      "path": "game/hud_components_functions.glsl",
-      "category": "game",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "particles",
-        "color",
-        "game"
-      ]
-    },
-    {
-      "name": "ui_elements_functions",
-      "path": "game/ui_elements_functions.glsl",
-      "category": "game",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "game",
-        "texturing",
-        "animation",
-        "lighting",
-        "color",
-        "audio"
-      ]
-    },
-    {
-      "name": "interaction_feedback_functions",
-      "path": "game/interaction_feedback_functions.glsl",
-      "category": "game",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color",
-        "game"
-      ]
-    },
-    {
-      "name": "game_state_visuals_functions",
-      "path": "game/game_state_visuals_functions.glsl",
-      "category": "game",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color",
-        "game"
-      ]
-    },
-    {
-      "name": "game_visuals_functions",
-      "path": "game/game_visuals_functions.glsl",
-      "category": "game",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "animation",
-        "lighting",
-        "color",
-        "game"
-      ]
-    },
-    {
-      "name": "input_handling_functions",
-      "path": "game/input_handling_functions.glsl",
-      "category": "game",
-      "type": "extracted",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping",
-        "lighting",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "texturing",
-        "color",
-        "game"
-      ]
-    },
-    {
-      "name": "game_state_visuals",
-      "path": "game/standardized/game_state_visuals.glsl",
-      "category": "game",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "color",
-        "game"
-      ]
-    },
-    {
-      "name": "interaction_feedback",
-      "path": "game/standardized/interaction_feedback.glsl",
-      "category": "game",
-      "type": "standardized",
-      "dependencies": [
-        "normal_mapping",
-        "lighting"
-      ],
-      "conflicts": [],
-      "tags": [
-        "lighting",
-        "color",
-        "game"
-      ]
-    },
-    {
-      "name": "ui_elements",
-      "path": "game/standardized/ui_elements.glsl",
-      "category": "game",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "game"
-      ]
-    },
-    {
-      "name": "input_handling",
-      "path": "game/standardized/input_handling.glsl",
-      "category": "game",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "normal_mapping"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "game"
-      ]
-    },
-    {
-      "name": "game_visuals",
-      "path": "game/standardized/game_visuals.glsl",
-      "category": "game",
-      "type": "standardized",
-      "dependencies": [],
-      "conflicts": [],
-      "tags": [
-        "game"
-      ]
-    },
-    {
-      "name": "hud_components",
-      "path": "game/standardized/hud_components.glsl",
-      "category": "game",
-      "type": "standardized",
-      "dependencies": [
-        "texture_sampling",
-        "raymarching"
-      ],
-      "conflicts": [],
-      "tags": [
-        "texturing",
-        "color",
-        "game"
-      ]
+  "physics": {},
+  "meshes": {},
+  "texturing": {},
+  "geometry": {},
+  "audio": {},
+  "transforms": {},
+  "utilities": {},
+  "rendering": {},
+  "lighting": {
+    "shadow_mapping/shadow_mapping": {
+      "path": "modules/lighting/shadow_mapping/shadow_mapping.py",
+      "metadata": {
+        "name": "shadow_mapping",
+        "type": "lighting",
+        "patterns": [
+          "Shadow Mapping"
+        ],
+        "frequency": 282,
+        "dependencies": [],
+        "conflicts": [],
+        "description": "Shadow mapping implementations with PCF and exponential methods"
+      },
+      "genre": "lighting",
+      "module_type": "shadow_mapping"
+    },
+    "raymarching_lighting/raymarching_lighting": {
+      "path": "modules/lighting/raymarching_lighting/raymarching_lighting.py",
+      "metadata": {
+        "name": "raymarching_lighting",
+        "type": "lighting",
+        "patterns": [
+          "Ray Marching",
+          "Normal Mapping"
+        ],
+        "frequency": 282,
+        "dependencies": [
+          "normal_mapping",
+          "diffuse_lighting"
+        ],
+        "conflicts": [],
+        "description": "Ray marching lighting calculations with soft shadows and ambient occlusion"
+      },
+      "genre": "lighting",
+      "module_type": "raymarching_lighting"
+    },
+    "diffuse/diffuse_lighting": {
+      "path": "modules/lighting/diffuse/diffuse_lighting.py",
+      "metadata": {
+        "name": "diffuse_lighting",
+        "type": "lighting",
+        "patterns": [
+          "Diffuse",
+          "Lambert",
+          "Ambient"
+        ],
+        "frequency": 378,
+        "dependencies": [],
+        "conflicts": [],
+        "description": "Diffuse lighting calculations including Lambert and Oren-Nayar models"
+      },
+      "genre": "lighting",
+      "module_type": "diffuse"
+    },
+    "cel_shading/cel_shading": {
+      "path": "modules/lighting/cel_shading/cel_shading.py",
+      "metadata": {
+        "name": "cel_shading",
+        "type": "lighting",
+        "patterns": [
+          "Cel Shading",
+          "Toon Shading"
+        ],
+        "frequency": 181,
+        "dependencies": [
+          "diffuse_lighting"
+        ],
+        "conflicts": [
+          "pbr_lighting"
+        ],
+        "description": "Cel/toon shading implementations with outline detection"
+      },
+      "genre": "lighting",
+      "module_type": "cel_shading"
+    },
+    "spot_light/spot_light": {
+      "path": "modules/lighting/spot_light/spot_light.py",
+      "metadata": {
+        "name": "spot_light",
+        "type": "lighting",
+        "patterns": [
+          "Spot Light"
+        ],
+        "frequency": 63,
+        "dependencies": [
+          "diffuse_lighting",
+          "basic_point_light"
+        ],
+        "conflicts": [],
+        "description": "Spot light implementations with cutoff angles and smooth edges"
+      },
+      "genre": "lighting",
+      "module_type": "spot_light"
+    },
+    "pbr/pbr_lighting": {
+      "path": "modules/lighting/pbr/pbr_lighting.py",
+      "metadata": {
+        "name": "pbr_lighting",
+        "type": "lighting",
+        "patterns": [
+          "Pbr",
+          "Fresnel",
+          "Normal Mapping"
+        ],
+        "frequency": 341,
+        "dependencies": [
+          "normal_mapping",
+          "specular_lighting"
+        ],
+        "conflicts": [],
+        "description": "Complete PBR lighting calculation using Cook-Torrance BRDF"
+      },
+      "genre": "lighting",
+      "module_type": "pbr"
+    },
+    "normal_mapping/normal_mapping": {
+      "path": "modules/lighting/normal_mapping/normal_mapping.py",
+      "metadata": {
+        "name": "normal_mapping",
+        "type": "lighting",
+        "patterns": [
+          "Normal Mapping"
+        ],
+        "frequency": 533,
+        "dependencies": [],
+        "conflicts": [],
+        "description": "Normal mapping implementation with TBN matrix"
+      },
+      "genre": "lighting",
+      "module_type": "normal_mapping"
+    },
+    "directional_light/directional_light": {
+      "path": "modules/lighting/directional_light/directional_light.py",
+      "metadata": {
+        "name": "directional_light",
+        "type": "lighting",
+        "patterns": [
+          "Directional Light",
+          "Light Direction"
+        ],
+        "frequency": 60,
+        "dependencies": [
+          "diffuse_lighting"
+        ],
+        "conflicts": [],
+        "description": "Directional light calculations"
+      },
+      "genre": "lighting",
+      "module_type": "directional_light"
+    },
+    "point_light/basic_point_light": {
+      "path": "modules/lighting/point_light/basic_point_light.py",
+      "metadata": {
+        "name": "basic_point_light",
+        "type": "lighting",
+        "patterns": [
+          "Point Light",
+          "Light Attenuation"
+        ],
+        "frequency": 405,
+        "dependencies": [],
+        "conflicts": [],
+        "description": "Basic point light calculation with attenuation"
+      },
+      "genre": "lighting",
+      "module_type": "point_light"
+    },
+    "specular/specular_lighting": {
+      "path": "modules/lighting/specular/specular_lighting.py",
+      "metadata": {
+        "name": "specular_lighting",
+        "type": "lighting",
+        "patterns": [
+          "Specular",
+          "Phong",
+          "Blinn Phong",
+          "Fresnel"
+        ],
+        "frequency": 310,
+        "dependencies": [
+          "normal_mapping"
+        ],
+        "conflicts": [],
+        "description": "Specular lighting calculations including Phong, Blinn-Phong and Fresnel"
+      },
+      "genre": "lighting",
+      "module_type": "specular"
     }
-  ]
+  },
+  "postprocessing": {},
+  "raymarching": {},
+  "effects": {},
+  "math": {},
+  "ui": {},
+  "procedural": {},
+  "game": {}
 }

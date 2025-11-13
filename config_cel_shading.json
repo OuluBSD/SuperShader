@@ -1,0 +1,14 @@
+{
+  "selected_branches": {
+    "lighting_approach": "cel_shading",
+    "light_types": [
+      "point_light"
+    ],
+    "effects": []
+  },
+  "modules": [
+    "cel_shading",
+    "diffuse_lighting",
+    "basic_point_light"
+  ]
+}

@@ -1,532 +1,363 @@
 #!/usr/bin/env python3
 """
-Pseudocode translation system for SuperShader project.
-
-This script creates translators from pseudocode to various target languages
-including GLSL, C/C++, Java, Python, and different graphics APIs.
+Pseudocode to GLSL Translator
+Translates pseudocode from modules to GLSL and other target languages
 """
 
-import os
 import re
-from pathlib import Path
 
 
 class PseudocodeTranslator:
     def __init__(self):
-        self.translators = {
-            'glsl': self.translate_to_glsl,
-            'cpp': self.translate_to_cpp,
-            'java': self.translate_to_java,
-            'python': self.translate_to_python
-        }
-        
-        # Define pseudocode to target language mappings
-        self.mappings = {
+        # Define mappings for different target languages
+        self.translations = {
             'glsl': {
-                'function_def': (r'function\s+(\w+)\s*\(([^)]*)\)\s*{', r'{} {}({}) {{'),
-                'variable_decl': (r'var\s+(\w+)\s*:\s*(\w+)', r'{} {};'),
-                'return_stmt': (r'return\s+(.+?);', r'return {};'),
-                'if_stmt': (r'if\s*\((.+?)\)\s*{', r'if ({}) {{'),
-                'for_loop': (r'for\s+(\w+)\s+in\s+range\s*\((.+?)\)\s*{', r'for (int {} = 0; {} < {}; {}++) {{'),
-                'while_loop': (r'while\s*\((.+?)\)\s*{', r'while ({}) {{'),
-                'vec3_type': r'vec3',
-                'vec2_type': r'vec2',
-                'float_type': r'float',
-                'int_type': r'int'
+                'function_start': self._glsl_function_start,
+                'function_end': self._glsl_function_end,
+                'data_types': self._glsl_data_types,
+                'vector_types': self._glsl_vector_types,
+                'math_functions': self._glsl_math_functions,
+                'syntax': self._glsl_syntax
             },
-            'cpp': {
-                'function_def': (r'function\s+(\w+)\s*\(([^)]*)\)\s*{', r'auto {}({}) -> {} {{'),
-                'variable_decl': (r'var\s+(\w+)\s*:\s*(\w+)', r'{} {};'),
-                'return_stmt': (r'return\s+(.+?);', r'return {};'),
-                'if_stmt': (r'if\s*\((.+?)\)\s*{', r'if ({}) {{'),
-                'for_loop': (r'for\s+(\w+)\s+in\s+range\s*\((.+?)\)\s*{', r'for (int {} = 0; {} < {}; {}++) {{'),
-                'while_loop': (r'while\s*\((.+?)\)\s*{', r'while ({}) {{'),
-                'vec3_type': r'glm::vec3',  # Using GLM library
-                'vec2_type': r'glm::vec2',
-                'float_type': r'float',
-                'int_type': r'int'
+            'hlsl': {
+                'function_start': self._hlsl_function_start,
+                'function_end': self._hlsl_function_end,
+                'data_types': self._hlsl_data_types,
+                'vector_types': self._hlsl_vector_types,
+                'math_functions': self._hlsl_math_functions,
+                'syntax': self._hlsl_syntax
             },
-            'java': {
-                'function_def': (r'function\s+(\w+)\s*\(([^)]*)\)\s*{', r'{} {}({}) {{'),
-                'variable_decl': (r'var\s+(\w+)\s*:\s*(\w+)', r'{} {};'),
-                'return_stmt': (r'return\s+(.+?);', r'return {};'),
-                'if_stmt': (r'if\s*\((.+?)\)\s*{', r'if ({}) {{'),
-                'for_loop': (r'for\s+(\w+)\s+in\s+range\s*\((.+?)\)\s*{', r'for (int {} = 0; {} < {}; {}++) {{'),
-                'while_loop': (r'while\s*\((.+?)\)\s*{', r'while ({}) {{'),
-                'vec3_type': r'Vector3f',
-                'vec2_type': r'Vector2f',
-                'float_type': r'float',
-                'int_type': r'int'
-            },
-            'python': {
-                'function_def': (r'function\s+(\w+)\s*\(([^)]*)\)\s*{', r'def {}({}):'),
-                'variable_decl': (r'var\s+(\w+)\s*:\s*(\w+)', r'{} = None  # : {}'),
-                'return_stmt': (r'return\s+(.+?);', r'return {}'),
-                'if_stmt': (r'if\s*\((.+?)\)\s*{', r'if {}:'),
-                'for_loop': (r'for\s+(\w+)\s+in\s+range\s*\((.+?)\)\s*{', r'for {} in range({}):'),
-                'while_loop': (r'while\s*\((.+?)\)\s*{', r'while {}:'),
-                'vec3_type': r'numpy.array',  # Using numpy
-                'vec2_type': r'numpy.array',
-                'float_type': r'float',
-                'int_type': r'int'
+            'c_cpp': {
+                'function_start': self._c_cpp_function_start,
+                'function_end': self._c_cpp_function_end,
+                'data_types': self._c_cpp_data_types,
+                'vector_types': self._c_cpp_vector_types,
+                'math_functions': self._c_cpp_math_functions,
+                'syntax': self._c_cpp_syntax
             }
         }
     
-    def translate_pseudocode(self, pseudocode, target_language):
-        """Translate pseudocode to the target language."""
-        if target_language not in self.translators:
-            raise ValueError(f"Unsupported target language: {target_language}")
+    def _glsl_data_types(self, pseudocode):
+        """Convert data types to GLSL"""
+        # Common type replacements
+        replacements = {
+            r'\bvec3\b': 'vec3',
+            r'\bvec2\b': 'vec2',
+            r'\bvec4\b': 'vec4',
+            r'\bfloat\b': 'float',
+            r'\bint\b': 'int',
+            r'\bbool\b': 'bool',
+            r'\bsampler2D\b': 'sampler2D',
+            r'\bsamplerCube\b': 'samplerCube'
+        }
         
-        return self.translators[target_language](pseudocode)
+        result = pseudocode
+        for pattern, replacement in replacements.items():
+            result = re.sub(pattern, replacement, result)
+        
+        return result
+    
+    def _glsl_vector_types(self, pseudocode):
+        """Handle GLSL vector operations"""
+        # Only modify vector constructor patterns, not function calls
+        # Look for patterns like vec3(0.0, 0.0, 0.0) but not function calls
+        # This is a simplified version - in a full implementation, we'd be more specific
+        
+        return pseudocode
+    
+    def _glsl_math_functions(self, pseudocode):
+        """Convert math functions to GLSL equivalents"""
+        # GLSL has the same basic math functions as the pseudocode
+        # But we might need to handle specific cases
+        return pseudocode
+    
+    def _glsl_syntax(self, pseudocode):
+        """Apply GLSL specific syntax rules"""
+        # GLSL uses specific structures
+        lines = pseudocode.split('\n')
+        processed_lines = []
+        
+        for line in lines:
+            # Skip pseudocode comments that aren't GLSL ready
+            if line.strip().startswith('//') and '//' in line:
+                processed_lines.append(line)
+            elif line.strip():
+                # Process the line for GLSL compatibility
+                processed_lines.append(line)
+        
+        return '\n'.join(processed_lines)
+    
+    def _glsl_function_start(self, pseudocode):
+        """Process function start for GLSL"""
+        # In GLSL, functions are defined with specific syntax
+        return pseudocode
+    
+    def _glsl_function_end(self, pseudocode):
+        """Process function end for GLSL"""
+        return pseudocode
+    
+    # HLSL implementations (simplified)
+    def _hlsl_data_types(self, pseudocode):
+        return pseudocode  # Simplified for this example
+    
+    def _hlsl_vector_types(self, pseudocode):
+        return pseudocode
+    
+    def _hlsl_math_functions(self, pseudocode):
+        return pseudocode
+    
+    def _hlsl_syntax(self, pseudocode):
+        return pseudocode
+    
+    def _hlsl_function_start(self, pseudocode):
+        return pseudocode
+    
+    def _hlsl_function_end(self, pseudocode):
+        return pseudocode
+    
+    # C/C++ implementations (simplified)
+    def _c_cpp_data_types(self, pseudocode):
+        return pseudocode
+    
+    def _c_cpp_vector_types(self, pseudocode):
+        return pseudocode
+    
+    def _c_cpp_math_functions(self, pseudocode):
+        return pseudocode
+    
+    def _c_cpp_syntax(self, pseudocode):
+        return pseudocode
+    
+    def _c_cpp_function_start(self, pseudocode):
+        return pseudocode
+    
+    def _c_cpp_function_end(self, pseudocode):
+        return pseudocode
     
     def translate_to_glsl(self, pseudocode):
-        """Translate pseudocode to GLSL."""
-        code = pseudocode
+        """Translate pseudocode to GLSL"""
+        # Apply translations in order
+        result = pseudocode
+        result = self._glsl_data_types(result)
+        result = self._glsl_vector_types(result)
+        result = self._glsl_math_functions(result)
+        result = self._glsl_syntax(result)
+        result = self._glsl_function_start(result)
+        result = self._glsl_function_end(result)
         
-        # Replace type definitions
-        code = re.sub(r'(\W)vec3(\W)', r'\g<1>vec3\g<2>', code)
-        code = re.sub(r'(\W)vec2(\W)', r'\g<1>vec2\g<2>', code)
-        code = re.sub(r'(\W)float(\W)', r'\g<1>float\g<2>', code)
-        code = re.sub(r'(\W)int(\W)', r'\g<1>int\g<2>', code)
-        
-        # Replace function definitions
-        def replace_function_def(match):
-            params = match.group(2)  # Second capture group contains parameters
-            func_name = match.group(1)  # First capture group contains function name
-            mapped_params = self.map_parameters(params, 'glsl')
-            # For GLSL, we need to determine return type - simple heuristic
-            return_type = 'void'  # Default
-            if 'return ' in pseudocode:  # Simple check - in real implementation, this would be more sophisticated
-                # Look at the function to determine return type
-                func_part = pseudocode[pseudocode.find(match.group(0)):pseudocode.find('}', pseudocode.find(match.group(0)))]
-                if 'vec3' in func_part:
-                    return_type = 'vec3'
-                elif 'vec2' in func_part:
-                    return_type = 'vec2'
-                elif 'float' in func_part:
-                    return_type = 'float'
-                else:
-                    return_type = 'void'
-            return f"{return_type} {func_name}({mapped_params}) {{"
-        
-        code = re.sub(self.mappings['glsl']['function_def'][0], replace_function_def, code)
-        
-        # Replace variable declarations
-        code = re.sub(self.mappings['glsl']['variable_decl'][0], 
-                     lambda m: self.mappings['glsl']['variable_decl'][1].format(
-                         self.map_type(m.group(2), 'glsl'), m.group(1)), 
-                     code)
-        
-        # Replace return statements
-        code = re.sub(self.mappings['glsl']['return_stmt'][0], 
-                     lambda m: self.mappings['glsl']['return_stmt'][1].format(m.group(1)), 
-                     code)
-        
-        # Replace control structures
-        code = re.sub(self.mappings['glsl']['if_stmt'][0], 
-                     lambda m: self.mappings['glsl']['if_stmt'][1].format(m.group(1)), 
-                     code)
-        code = re.sub(self.mappings['glsl']['for_loop'][0], 
-                     lambda m: self.mappings['glsl']['for_loop'][1].format(
-                         m.group(1), m.group(1), m.group(2), m.group(1)), 
-                     code)
-        code = re.sub(self.mappings['glsl']['while_loop'][0], 
-                     lambda m: self.mappings['glsl']['while_loop'][1].format(m.group(1)), 
-                     code)
-        
-        return code
+        return result
     
-    def translate_to_cpp(self, pseudocode):
-        """Translate pseudocode to C++."""
-        code = pseudocode
-        
-        # Add necessary includes
-        header = "#include <glm/glm.hpp>\n#include <glm/gtc/matrix_transform.hpp>\n\n"
-        
-        # Replace type definitions
-        code = re.sub(r'(\W)vec3(\W)', r'\g<1>glm::vec3\g<2>', code)
-        code = re.sub(r'(\W)vec2(\W)', r'\g<1>glm::vec2\g<2>', code)
-        
-        # Replace function definitions
-        def replace_function_def_cpp(match):
-            params = match.group(2)
-            func_name = match.group(1)
-            mapped_params = self.map_parameters(params, 'cpp')
-            # For C++, determine return type similarly to GLSL
-            return_type = 'auto'  # Default
-            if 'return ' in pseudocode:
-                func_part = pseudocode[pseudocode.find(match.group(0)):pseudocode.find('}', pseudocode.find(match.group(0)))]
-                if 'vec3' in func_part:
-                    return_type = 'glm::vec3'
-                elif 'vec2' in func_part:
-                    return_type = 'glm::vec2'
-                elif 'float' in func_part:
-                    return_type = 'float'
-                else:
-                    return_type = 'void'
-            return f"{return_type} {func_name}({mapped_params}) {{"
-        
-        code = re.sub(self.mappings['cpp']['function_def'][0], replace_function_def_cpp, code)
-        
-        # Replace variable declarations
-        code = re.sub(self.mappings['cpp']['variable_decl'][0], 
-                     lambda m: self.mappings['cpp']['variable_decl'][1].format(
-                         self.map_type(m.group(2), 'cpp'), m.group(1)), 
-                     code)
-        
-        # Replace return statements
-        code = re.sub(self.mappings['cpp']['return_stmt'][0], 
-                     lambda m: self.mappings['cpp']['return_stmt'][1].format(m.group(1)), 
-                     code)
-        
-        # Replace control structures
-        code = re.sub(self.mappings['cpp']['if_stmt'][0], 
-                     lambda m: self.mappings['cpp']['if_stmt'][1].format(m.group(1)), 
-                     code)
-        code = re.sub(self.mappings['cpp']['for_loop'][0], 
-                     lambda m: self.mappings['cpp']['for_loop'][1].format(
-                         m.group(1), m.group(1), m.group(2), m.group(1)), 
-                     code)
-        code = re.sub(self.mappings['cpp']['while_loop'][0], 
-                     lambda m: self.mappings['cpp']['while_loop'][1].format(m.group(1)), 
-                     code)
-        
-        return header + code
+    def translate(self, pseudocode, target_language='glsl'):
+        """Translate pseudocode to target language"""
+        if target_language in self.translations:
+            translation = self.translations[target_language]
+            
+            result = pseudocode
+            result = translation['data_types'](result)
+            result = translation['vector_types'](result)
+            result = translation['math_functions'](result)
+            result = translation['syntax'](result)
+            result = translation['function_start'](result)
+            result = translation['function_end'](result)
+            
+            return result
+        else:
+            raise ValueError(f"Unsupported target language: {target_language}")
     
-    def translate_to_java(self, pseudocode):
-        """Translate pseudocode to Java."""
-        code = pseudocode
+    def create_glsl_shader_from_modules(self, module_names):
+        """Create a complete GLSL shader from module pseudocodes"""
+        import sys
+        import os
+        sys.path.append(os.path.join(os.path.dirname(__file__), '.'))
+        from modules.lighting.registry import get_module_by_name
         
-        # Add class wrapper
-        class_wrapper = "public class ShaderFunctions {\n\n"
+        shader_parts = {
+            'header': '#version 330 core\n\n',
+            'uniforms': '// Uniforms\nuniform vec3 viewPos;\nuniform vec3 lightPos;\nuniform vec3 lightColor;\nuniform sampler2D normalMap;\nuniform sampler2D shadowMap;\n\n',
+            'inputs': '// Input variables\nin vec3 FragPos;\nin vec3 Normal;\nin vec2 TexCoords;\n\n',
+            'outputs': '// Output\nout vec4 FragColor;\n\n',
+            'functions': [],
+            'main': ''
+        }
         
-        # Replace type definitions
-        code = re.sub(r'(\W)vec3(\W)', r'\g<1>Vector3f\g<2>', code)
-        code = re.sub(r'(\W)vec2(\W)', r'\g<1>Vector2f\g<2>', code)
+        # Collect all functions from modules
+        for module_name in module_names:
+            module = get_module_by_name(module_name)
+            if module and 'pseudocode' in module:
+                # Translate the pseudocode to GLSL
+                glsl_code = self.translate_to_glsl(module['pseudocode'])
+                # Extract functions and add to shader
+                shader_parts['functions'].append(glsl_code)
         
-        # Replace function definitions
-        def replace_function_def_java(match):
-            params = match.group(2)
-            func_name = match.group(1)
-            mapped_params = self.map_parameters(params, 'java')
-            # For Java, determine return type
-            return_type = 'void'  # Default
-            if 'return ' in pseudocode:
-                func_part = pseudocode[pseudocode.find(match.group(0)):pseudocode.find('}', pseudocode.find(match.group(0)))]
-                if 'vec3' in func_part:
-                    return_type = 'Vector3f'
-                elif 'vec2' in func_part:
-                    return_type = 'Vector2f'
-                elif 'float' in func_part:
-                    return_type = 'float'
-                else:
-                    return_type = 'void'
-            return f"{return_type} {func_name}({mapped_params}) {{"
+        # Create the main function
+        main_content = self._create_main_from_modules(module_names)
+        shader_parts['main'] = main_content
         
-        code = re.sub(self.mappings['java']['function_def'][0], replace_function_def_java, code)
+        # Combine all parts
+        shader_code = shader_parts['header']
+        shader_code += shader_parts['uniforms']
+        shader_code += shader_parts['inputs']
+        shader_code += shader_parts['outputs']
         
-        # Replace variable declarations
-        code = re.sub(self.mappings['java']['variable_decl'][0], 
-                     lambda m: self.mappings['java']['variable_decl'][1].format(
-                         self.map_type(m.group(2), 'java'), m.group(1)), 
-                     code)
+        # Add all the functions
+        for func in shader_parts['functions']:
+            shader_code += func + "\n"
         
-        # Replace return statements
-        code = re.sub(self.mappings['java']['return_stmt'][0], 
-                     lambda m: self.mappings['java']['return_stmt'][1].format(m.group(1)), 
-                     code)
+        shader_code += shader_parts['main']
         
-        # Replace control structures
-        code = re.sub(self.mappings['java']['if_stmt'][0], 
-                     lambda m: self.mappings['java']['if_stmt'][1].format(m.group(1)), 
-                     code)
-        code = re.sub(self.mappings['java']['for_loop'][0], 
-                     lambda m: self.mappings['java']['for_loop'][1].format(
-                         m.group(1), m.group(1), m.group(2), m.group(1)), 
-                     code)
-        code = re.sub(self.mappings['java']['while_loop'][0], 
-                     lambda m: self.mappings['java']['while_loop'][1].format(m.group(1)), 
-                     code)
-        
-        return class_wrapper + code + "\n}"
+        return shader_code
     
-    def translate_to_python(self, pseudocode):
-        """Translate pseudocode to Python."""
-        code = pseudocode
-        
-        # Add necessary imports
-        header = "import numpy as np\n\n"
-        
-        # Replace function definitions
-        code = re.sub(self.mappings['python']['function_def'][0], 
-                     lambda m: self.mappings['python']['function_def'][1].format(
-                         m.group(1), self.map_parameters(m.group(2), 'python')), 
-                     code)
-        
-        # Replace variable declarations
-        code = re.sub(self.mappings['python']['variable_decl'][0], 
-                     lambda m: self.mappings['python']['variable_decl'][1].format(
-                         m.group(1), m.group(2)), 
-                     code)
-        
-        # Replace return statements
-        code = re.sub(self.mappings['python']['return_stmt'][0], 
-                     lambda m: self.mappings['python']['return_stmt'][1].format(m.group(1)), 
-                     code)
-        
-        # Replace control structures
-        code = re.sub(self.mappings['python']['if_stmt'][0], 
-                     lambda m: self.mappings['python']['if_stmt'][1].format(m.group(1)), 
-                     code)
-        code = re.sub(self.mappings['python']['for_loop'][0], 
-                     lambda m: self.mappings['python']['for_loop'][1].format(
-                         m.group(1), m.group(2)), 
-                     code)
-        code = re.sub(self.mappings['python']['while_loop'][0], 
-                     lambda m: self.mappings['python']['while_loop'][1].format(m.group(1)), 
-                     code)
-        
-        return header + code
+    def _create_main_from_modules(self, module_names):
+        """Create main function based on selected modules"""
+        main_func = """
+void main() {
+    // Normalize the normal vector
+    vec3 norm = normalize(Normal);
+    vec3 viewDir = normalize(viewPos - FragPos);
     
-    def map_parameters(self, params, target_language):
-        """Map pseudocode parameters to target language parameters."""
-        if not params.strip():
-            return ""
+    // Initialize color
+    vec3 result = vec3(0.0);
+"""
         
-        # Parse parameters: "param1: type1, param2: type2" -> [("param1", "type1"), ("param2", "type2")]
-        param_pairs = []
-        for p in params.split(","):
-            p = p.strip()
-            if ":" in p:
-                name, ptype = p.split(":", 1)
-                name = name.strip()
-                ptype = ptype.strip()
-                mapped_type = self.map_type(ptype, target_language)
-                param_pairs.append(f"{mapped_type} {name}")
-        
-        return ", ".join(param_pairs)
+        # Add logic based on modules
+        if 'basic_point_light' in module_names:
+            main_func += """    
+    // Basic point light calculation
+    vec3 lightDir = normalize(lightPos - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 pointLight = diff * lightColor;
     
-    def map_type(self, ptype, target_language):
-        """Map pseudocode type to target language type."""
-        if target_language == 'glsl':
-            if ptype == 'vec3':
-                return 'vec3'
-            elif ptype == 'vec2':
-                return 'vec2'
-            elif ptype == 'float':
-                return 'float'
-            elif ptype == 'int':
-                return 'int'
-        elif target_language == 'cpp':
-            if ptype == 'vec3':
-                return 'glm::vec3'
-            elif ptype == 'vec2':
-                return 'glm::vec2'
-            elif ptype == 'float':
-                return 'float'
-            elif ptype == 'int':
-                return 'int'
-        elif target_language == 'java':
-            if ptype == 'vec3':
-                return 'Vector3f'
-            elif ptype == 'vec2':
-                return 'Vector2f'
-            elif ptype == 'float':
-                return 'float'
-            elif ptype == 'int':
-                return 'int'
-        elif target_language == 'python':
-            if ptype == 'vec3':
-                return 'np.ndarray'
-            elif ptype == 'vec2':
-                return 'np.ndarray'
-            elif ptype == 'float':
-                return 'float'
-            elif ptype == 'int':
-                return 'int'
-        
-        return ptype  # Return original if no mapping found
+    // Apply distance attenuation
+    float distance = length(lightPos - FragPos);
+    float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance);
+    pointLight *= attenuation;
     
-    def map_return_type(self, params, target_language):
-        """Map return type from parameters."""
-        # Simple heuristic: return the type of the first parameter
-        if params.strip():
-            parts = params.split(":")
-            if len(parts) > 1:
-                return self.map_type(parts[1].strip().split()[0], target_language)
+    result += pointLight;
+"""
         
-        return self.map_type('float', target_language)  # Default to float
+        if 'diffuse_lighting' in module_names and 'basic_point_light' not in module_names:
+            main_func += """    
+    // Diffuse lighting if point light module is not used
+    vec3 lightDir = normalize(lightPos - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
+    result += diffuse;
+"""
+        
+        if 'specular_lighting' in module_names:
+            main_func += """    
+    // Specular lighting
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+    vec3 specular = spec * lightColor;
+    result += specular;
+"""
+        
+        if 'normal_mapping' in module_names:
+            main_func += """    
+    // Normal mapping if available
+    vec3 tangentNormal = texture(normalMap, TexCoords).xyz * 2.0 - 1.0;
+    tangentNormal = normalize(tangentNormal);
+    // Use tangentNormal instead of norm for lighting calculations
+    float diff = max(dot(tangentNormal, lightDir), 0.0);
+    vec3 normalMappedDiffuse = diff * lightColor;
+    result = mix(result, normalMappedDiffuse, 0.5); // Blend with original
+"""
+        
+        if 'pbr_lighting' in module_names:
+            main_func += """    
+    // PBR lighting model (overrides other lighting if present)
+    // Simplified PBR calculation
+    vec3 albedo = vec3(0.5);
+    float metallic = 0.0;
+    float roughness = 0.5;
+    
+    // Direct calculation without full Cook-Torrance for simplicity
+    float NdotL = max(dot(norm, lightDir), 0.0);
+    result = albedo * lightColor * NdotL;
+"""
+        
+        if 'cel_shading' in module_names:
+            main_func += """    
+    // Apply cel shading effect
+    float NdotL = dot(norm, lightDir);
+    float intensity = smoothstep(0.0, 0.01, NdotL);
+    intensity += step(0.5, NdotL);
+    intensity += step(0.8, NdotL);
+    intensity = min(intensity, 1.0);
+    
+    result = result * vec3(intensity);
+"""
+        
+        if 'shadow_mapping' in module_names:
+            main_func += """    
+    // Simple shadow calculation if needed
+    vec3 projCoords = /* light space transformation */;
+    float closestDepth = texture(shadowMap, projCoords.xy).r;
+    float currentDepth = projCoords.z;
+    float shadow = currentDepth > closestDepth + 0.0005 ? 1.0 : 0.0;
+    
+    result *= (1.0 - shadow * 0.5); // Apply shadow with 50% intensity
+"""
+        
+        main_func += """    
+    // Final color
+    FragColor = vec4(result, 1.0);
+}
+"""
+        return main_func
 
 
-def create_pseudocode_examples():
-    """Create example pseudocode files for testing the translator."""
-    examples = {
-        'lighting.pseudo': '''function calculate_diffuse_lighting(normal: vec3, light_dir: vec3, light_color: vec3) {
-    var intensity: float = max(dot(normal, light_dir), 0.0);
-    var diffuse: vec3 = intensity * light_color;
+def test_translator():
+    """Test the pseudocode translator"""
+    print("Testing Pseudocode Translator...")
+    
+    # Sample pseudocode from one of our modules
+    sample_pseudocode = """
+// Basic Point Light Implementation
+vec3 calculatePointLight(vec3 position, vec3 normal, vec3 lightPos, vec3 lightColor) {
+    // Calculate light direction
+    vec3 lightDir = normalize(lightPos - position);
+    
+    // Calculate distance and attenuation
+    float distance = length(lightPos - position);
+    float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance);
+    
+    // Diffuse lighting
+    float diff = max(dot(normal, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
+    
+    // Apply attenuation
+    diffuse *= attenuation;
+    
     return diffuse;
-}''',
-        
-        'sdf_sphere.pseudo': '''function sdf_sphere(position: vec3, center: vec3, radius: float) {
-    var distance: float = length(position - center) - radius;
-    return distance;
-}''',
-        
-        'color_adjustment.pseudo': '''function adjust_brightness_contrast(color: vec3, brightness: float, contrast: float) {
-    var adjusted: vec3 = color + brightness;
-    adjusted = (adjusted - 0.5) * contrast + 0.5;
-    return adjusted;
-}'''
-    }
+}
+"""
     
-    os.makedirs('pseudocode_examples', exist_ok=True)
-    
-    for filename, code in examples.items():
-        with open(f'pseudocode_examples/{filename}', 'w') as f:
-            f.write(code)
-    
-    print(f"Created {len(examples)} pseudocode examples")
-
-
-def translate_examples():
-    """Translate example pseudocode to different languages."""
     translator = PseudocodeTranslator()
-    languages = ['glsl', 'cpp', 'java', 'python']
     
-    os.makedirs('translated_examples', exist_ok=True)
-    
-    example_files = list(Path('pseudocode_examples').glob('*.pseudo'))
-    
-    for example_file in example_files:
-        pseudocode = example_file.read_text()
-        
-        for lang in languages:
-            try:
-                translated = translator.translate_pseudocode(pseudocode, lang)
-                output_file = f"translated_examples/{example_file.stem}_to_{lang}.{get_file_extension(lang)}"
-                with open(output_file, 'w') as f:
-                    f.write(translated)
-                print(f"Translated {example_file.name} to {lang} -> {output_file}")
-            except Exception as e:
-                print(f"Error translating {example_file.name} to {lang}: {str(e)}")
-
-
-def get_file_extension(language):
-    """Get appropriate file extension for the language."""
-    extensions = {
-        'glsl': 'glsl',
-        'cpp': 'cpp',
-        'java': 'java',
-        'python': 'py'
-    }
-    return extensions.get(language, 'txt')
-
-
-def create_translation_api():
-    """Create a simple API for pseudocode translation."""
-    api_code = '''# Pseudocode Translation API
-
-from pseudocode_translator import PseudocodeTranslator
-
-def translate_pseudocode_file(input_file, target_language, output_file):
-    """
-    Translate a pseudocode file to a target language.
-    
-    Args:
-        input_file (str): Path to the input pseudocode file
-        target_language (str): Target language ('glsl', 'cpp', 'java', 'python')
-        output_file (str): Path to the output file
-    
-    Returns:
-        bool: True if successful, False otherwise
-    """
-    try:
-        with open(input_file, 'r') as f:
-            pseudocode = f.read()
-        
-        translator = PseudocodeTranslator()
-        translated_code = translator.translate_pseudocode(pseudocode, target_language)
-        
-        with open(output_file, 'w') as f:
-            f.write(translated_code)
-        
-        return True
-    except Exception as e:
-        print(f"Translation error: {str(e)}")
-        return False
-
-
-def translate_pseudocode_string(pseudocode, target_language):
-    """
-    Translate pseudocode string to a target language.
-    
-    Args:
-        pseudocode (str): Pseudocode string to translate
-        target_language (str): Target language ('glsl', 'cpp', 'java', 'python')
-    
-    Returns:
-        str: Translated code, or empty string if error
-    """
-    try:
-        translator = PseudocodeTranslator()
-        return translator.translate_pseudocode(pseudocode, target_language)
-    except Exception as e:
-        print(f"Translation error: {str(e)}")
-        return ""
-
-
-# Example usage
-if __name__ == "__main__":
-    # Example of translating a small piece of pseudocode
-    sample_pseudocode = """function simple_function(input: float) {
-    var result: float = input * 2.0;
-    return result;
-}"""
-
-    glsl_code = translate_pseudocode_string(sample_pseudocode, 'glsl')
-    print("Translated to GLSL:")
+    # Translate to GLSL (should be mostly the same)
+    glsl_code = translator.translate_to_glsl(sample_pseudocode)
+    print("GLSL Translation:")
     print(glsl_code)
-'''
     
-    with open('pseudocode_api.py', 'w') as f:
-        f.write(api_code)
+    # Create a complete shader from modules
+    print("\nCreating shader from modules...")
+    shader_code = translator.create_glsl_shader_from_modules([
+        'basic_point_light', 
+        'diffuse_lighting', 
+        'specular_lighting', 
+        'normal_mapping'
+    ])
     
-    print("Created pseudocode translation API")
-
-
-def main():
-    print("Creating pseudocode translation system...")
+    print("Complete GLSL Shader:")
+    print(shader_code)
     
-    # Create example pseudocode files
-    create_pseudocode_examples()
-    
-    # Translate examples to different languages
-    translate_examples()
-    
-    # Create translation API
-    create_translation_api()
-    
-    print("\nPseudocode translation system created successfully!")
-    
-    # Show example translation
-    translator = PseudocodeTranslator()
-    sample_code = '''function calculate_normal(position: vec3) {
-    var epsilon: float = 0.001;
-    var dx: float = sdf(position + vec3(epsilon, 0, 0)) - sdf(position - vec3(epsilon, 0, 0));
-    var dy: float = sdf(position + vec3(0, epsilon, 0)) - sdf(position - vec3(0, epsilon, 0));
-    var dz: float = sdf(position + vec3(0, 0, epsilon)) - sdf(position - vec3(0, 0, epsilon));
-    return normalize(vec3(dx, dy, dz));
-}'''
-    
-    print("\nExample translation:")
-    print("Original pseudocode:")
-    print(sample_code)
-    print("\nTranslated to GLSL:")
-    try:
-        print(translator.translate_pseudocode(sample_code, 'glsl'))
-    except Exception as e:
-        print(f"Error in translation: {str(e)}")
+    # Save the shader
+    with open('generated_shader.glsl', 'w') as f:
+        f.write(shader_code)
+    print("\nSaved complete shader to generated_shader.glsl")
 
 
 if __name__ == "__main__":
-    main()
+    test_translator()

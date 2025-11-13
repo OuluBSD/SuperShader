@@ -1,0 +1,21 @@
+{
+  "selected_branches": {
+    "lighting_approach": "pbr",
+    "light_types": [
+      "point_light",
+      "directional_light"
+    ],
+    "effects": [
+      "shadows"
+    ]
+  },
+  "modules": [
+    "basic_point_light",
+    "normal_mapping",
+    "shadow_mapping",
+    "specular_lighting",
+    "pbr_lighting",
+    "diffuse_lighting",
+    "directional_light"
+  ]
+}
