@@ -247,3 +247,35 @@
 - [ ] Create installation and setup scripts
 - [ ] Prepare documentation for users
 - [ ] Create initial module library for distribution
+
+## Phase 5: Application Integration and Advanced Features
+
+### Task 5.1: Application Builder (build_app.py)
+- [ ] Create `build_app.py` with configuration switches for scene content
+- [ ] Add options for different lighting models (PBR, Phong, Blinn-Phong, etc.)
+- [ ] Add options for post-processing effects (bloom, DOF, motion blur, etc.)
+- [ ] Add neural network model integration options
+- [ ] Add camera control systems (static, following, free movement)
+- [ ] Add entity movement systems (cars, characters, particles)
+- [ ] Add changeable camera views (first-person, third-person, overhead, etc.)
+- [ ] Integrate with shader module system for dynamic shader configuration
+
+### Task 5.2: Specialized Target Platforms
+- [ ] Create software C/C++ shader implementations
+- [ ] Create Epiphany Parallella multicore chip shader implementations
+- [ ] Optimize for specific hardware constraints
+- [ ] Implement parallel processing patterns for multicore chips
+
+## Phase 6: Advanced Target Implementations
+
+### Task 6.1: Software C/C++ Shader Implementations
+- [ ] Create CPU-based shader execution engine
+- [ ] Implement software rendering pipeline
+- [ ] Add compute shader equivalents in C/C++
+- [ ] Optimize for multi-threading
+
+### Task 6.2: Epiphany Parallella C Shaders
+- [ ] Create shader implementations for Epiphany architecture
+- [ ] Implement data parallel processing patterns
+- [ ] Optimize for Epiphany's distributed memory model
+- [ ] Create communication patterns between cores

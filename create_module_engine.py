@@ -141,7 +141,7 @@ class ModuleEngine:
                     break
         
         # Generate shader using the translator
-        shader_code = self.translator.create_glsl_shader_from_modules(self.selected_modules)
+        shader_code = self.translator.create_shader_from_modules(self.selected_modules, 'glsl')
         
         return shader_code
     
