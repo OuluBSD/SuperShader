@@ -1,0 +1,352 @@
+Detailed Raymarching Shader Analysis
+==================================================
+
+Shader ID: XdSSRw
+Name: Parametrics
+Author: nimitz
+Tags: parametric, tone, tonemap, param, mapping
+Patterns: Distance Function, Ray Intersection, Early Termination
+------------------------------
+
+Shader ID: wtfSzH
+Name: Galaxy Test
+Author: Zeliss
+Tags: galaxy
+Patterns: Raymarching Loop, Distance Function, Ray Generation, Camera Ray, Sphere Primitive, Ray Intersection, Ray Normal, Raymarching Lighting, Early Termination
+------------------------------
+
+Shader ID: Wld3zM
+Name: Inside an Infinity Mirror
+Author: RobRob
+Tags: bloom, mirror, rainbow
+Patterns: Raymarching Loop, Distance Function, Ray Generation, Camera Ray, Sphere Primitive, Plane Primitive, Ray Intersection, Ray Normal, Raymarching Lighting
+------------------------------
+
+Shader ID: 4sBGDy
+Name: Torus - intersection
+Author: iq
+Tags: analytic, racing
+Patterns: Raymarching Loop, Distance Function, Camera Ray, Sphere Primitive, Box Primitive, Plane Primitive, Torus Primitive, Cylinder Primitive, Cone Primitive, Ray Intersection, Ray Normal, Raymarching Lighting, Raytracing
+------------------------------
+
+Shader ID: WtKSzR
+Name: Marching Nyans
+Author: hanabi
+Tags: nyan
+Patterns: 
+------------------------------
+
+Shader ID: 4sKGDK
+Name: Hot liquid metal
+Author: Nrx
+Tags: physics, liquid
+Patterns: Distance Function, Signed Distance Field, Early Termination
+------------------------------
+
+Shader ID: XtGGWw
+Name: Normal mapping comparison
+Author: pheelicks
+Tags: normal
+Patterns: Distance Function
+------------------------------
+
+Shader ID: lsdXDB
+Name: basicRT
+Author: DimitryK
+Tags: basic
+Patterns: Ray Generation, Ray Intersection, Ray Normal
+------------------------------
+
+Shader ID: MsX3zr
+Name: Cubes and Spheres
+Author: PauloFalcao
+Tags: distance, distancefield, mouse, 3d
+Patterns: Raymarching Loop, Distance Function, Camera Ray, Sphere Primitive, Box Primitive, Ray Normal, Ray Reflection, Raymarching Lighting, Ao Ray, Early Termination
+------------------------------
+
+Shader ID: 4d2XD3
+Name: My First Distance-Field Raymarch
+Author: ddoodm
+Tags: function
+Patterns: Raymarching Loop, Distance Function, Ray Generation, Camera Ray, Box Primitive, Plane Primitive, Ray Normal, Ray Reflection, Raymarching Lighting, Ao Ray, Early Termination
+------------------------------
+
+Shader ID: 4djSD3
+Name: Texture flow II
+Author: iq
+Tags: text, texture
+Patterns: Distance Function
+------------------------------
+
+Shader ID: 4s3XD2
+Name: This Is Not A Pipe
+Author: dr2
+Tags: smoke
+Patterns: Raymarching Loop, Ray Generation, Ray Normal, Ray Reflection, Shadow Ray, Early Termination
+------------------------------
+
+Shader ID: ldSBRV
+Name: Pseudo Mandelbox Fold
+Author: Slyth
+Tags: a_man
+Patterns: Distance Function, Sphere Primitive, Ray Normal, Early Termination
+------------------------------
+
+Shader ID: ltlSRj
+Name: Heat map color palettes
+Author: fibre
+Tags: heat
+Patterns: Distance Function
+------------------------------
+
+Shader ID: XtGXDm
+Name: marble_sphere
+Author: sanctify
+Tags: marble
+Patterns: Raymarching Loop, Ray Generation, Ray Intersection, Ray Normal, Raymarching Lighting
+------------------------------
+
+Shader ID: XdX3zN
+Name: Flying Logo
+Author: Dave_Hoskins
+Tags: cube, cubemap, map
+Patterns: Raymarching Loop, Distance Function, Ray Generation, Ray Normal, Ray Reflection, Raymarching Lighting, Early Termination
+------------------------------
+
+Shader ID: XsBXW3
+Name: monkey saddle
+Author: joates
+Tags: parametric, param, sad
+Patterns: Distance Function, Ray Normal
+------------------------------
+
+Shader ID: slXGRH
+Name: Shadertoy 2021
+Author: iapafoto
+Tags: 
+Patterns: Raymarching Loop, Distance Function, Signed Distance Field, Ray Generation, Camera Ray, Sphere Primitive, Plane Primitive, Cylinder Primitive, Cone Primitive, Ray Intersection, Ray Normal, Ray Reflection, Raymarching Lighting, Shadow Ray, Ao Ray, Early Termination
+------------------------------
+
+Shader ID: tdXBRf
+Name: Super SPH 
+Author: michael0884
+Tags: 
+Patterns: Raymarching Loop, Distance Function, Ray Generation
+------------------------------
+
+Shader ID: wtVyW3
+Name: Path-Tracing: Stanford Bunny
+Author: Zi7ar21
+Tags: 
+Patterns: Raymarching Loop, Distance Function, Signed Distance Field, Ray Generation, Camera Ray, Sphere Primitive, Box Primitive, Plane Primitive, Ray Normal, Ray Reflection, Raymarching Lighting, Raytracing, Path Tracing, Early Termination
+------------------------------
+
+Shader ID: wlVyWG
+Name: FFT -  where the river flows 2
+Author: MaxGraph
+Tags: 
+Patterns: Raymarching Loop, Distance Function, Ray Generation, Camera Ray, Cone Primitive, Ray Intersection, Ray Normal, Ray Reflection, Ray Refraction, Raymarching Lighting, Shadow Ray, Raytracing, Early Termination
+------------------------------
+
+Shader ID: ttVBWR
+Name: 4D Rounded Cuboid
+Author: sahemera
+Tags: 
+Patterns: Raymarching Loop, Distance Function, Ray Generation, Sphere Primitive, Plane Primitive, Ray Normal, Raymarching Lighting, Shadow Ray, Early Termination
+------------------------------
+
+Shader ID: 4stBzN
+Name: Triplanar mapping
+Author: dust
+Tags: uv, projection
+Patterns: Raymarching Loop, Distance Function, Signed Distance Field, Ray Generation, Sphere Primitive, Box Primitive, Torus Primitive, Ray Normal, Early Termination
+------------------------------
+
+Shader ID: 7sS3Dm
+Name: Learning via Mandelbulb SDF
+Author: piqey
+Tags: 
+Patterns: Raymarching Loop, Signed Distance Field, Ray Generation, Camera Ray, Sphere Primitive, Box Primitive, Ray Normal, Ray Reflection, Raymarching Lighting
+------------------------------
+
+Shader ID: Xd2yWh
+Name: Sketch_Cherry
+Author: cexlearning
+Tags: sketch
+Patterns: Distance Function
+------------------------------
+
+Shader ID: tl3BR4
+Name: Path-Tracing: Volumetric Cloud
+Author: Zi7ar21
+Tags: pathtracer
+Patterns: Raymarching Loop, Distance Function, Ray Generation, Camera Ray, Ray Normal, Raymarching Lighting, Raytracing, Path Tracing, Early Termination
+------------------------------
+
+Shader ID: Xd3fzB
+Name: Cannon-Thurston fig 8 knot zoom
+Author: henryseg
+Tags: hyperbolic
+Patterns: Distance Function, Early Termination
+------------------------------
+
+Shader ID: NdcSzn
+Name: Memory & Aging
+Author: chenglou
+Tags: 
+Patterns: Distance Function
+------------------------------
+
+Shader ID: 4d23Wd
+Name: [SH2014] Oh god what have I done
+Author: DelvarWorld
+Tags: blob
+Patterns: Distance Function, Ray Normal
+------------------------------
+
+Shader ID: tdXyDN
+Name: Tetrahedra SDF tessellation
+Author: flockaroo
+Tags: tessellation
+Patterns: Raymarching Loop, Distance Function, Signed Distance Field, Ray Generation, Camera Ray, Box Primitive, Plane Primitive, Torus Primitive, Ray Normal, Early Termination
+------------------------------
+
+Shader ID: MdlyDH
+Name: CGA Palette Swapper
+Author: Heavybrush
+Tags: castle
+Patterns: Distance Function
+------------------------------
+
+Shader ID: WdffRn
+Name: Voxel Game (Sandbox)
+Author: kastorp
+Tags: minecraft
+Patterns: Raymarching Loop, Distance Function, Signed Distance Field, Ray Generation, Camera Ray, Box Primitive, Plane Primitive, Ray Normal, Raymarching Lighting, Shadow Ray, Ao Ray, Early Termination
+------------------------------
+
+Shader ID: XtyXzt
+Name: Basic bitmap sinus scroll
+Author: Himred
+Tags: basic, amiga, style
+Patterns: 
+------------------------------
+
+Shader ID: tdKSRR
+Name: All possible quadratics
+Author: iq
+Tags: mapping, quadratic
+Patterns: Distance Function, Sphere Primitive, Plane Primitive, Ray Intersection
+------------------------------
+
+Shader ID: WsXXDj
+Name: 4D Rotating Hipercube.
+Author: Txoka
+Tags: 4d
+Patterns: Distance Function
+------------------------------
+
+Shader ID: tdsfR4
+Name: Fly Camera
+Author: spalmer
+Tags: fly
+Patterns: Raymarching Loop, Distance Function, Signed Distance Field, Ray Generation, Camera Ray, Sphere Primitive, Box Primitive, Plane Primitive, Ray Intersection, Ray Normal, Ray Reflection, Raymarching Lighting, Shadow Ray, Ao Ray, Raytracing, Global Illumination, Early Termination
+------------------------------
+
+Shader ID: MlsSzS
+Name: Water in a box
+Author: adam27
+Tags: box, ai
+Patterns: Raymarching Loop, Distance Function, Ray Generation, Box Primitive, Ray Normal, Ray Refraction, Raymarching Lighting
+------------------------------
+
+Shader ID: 4dtGWM
+Name: Arlo
+Author: iq
+Tags: procedural, distance, distancefield, 3d
+Patterns: Raymarching Loop, Distance Function, Ray Generation, Camera Ray, Sphere Primitive, Ray Intersection, Ray Normal, Ray Reflection, Shadow Ray, Early Termination
+------------------------------
+
+Shader ID: 4s23DG
+Name: 2D Vector Field Flow
+Author: morgan3d
+Tags: city, ui, vector, visualization
+Patterns: Distance Function, Signed Distance Field
+------------------------------
+
+Shader ID: WtSyWw
+Name: Heightmap Cone Tracing
+Author: Mathis
+Tags: 
+Patterns: Raymarching Loop, Distance Function, Ray Generation, Box Primitive, Cone Primitive, Ray Intersection, Ray Normal, Raytracing, Early Termination
+------------------------------
+
+Shader ID: ttKXzR
+Name: Sampling cylindrical light
+Author: koiava
+Tags: cylinder, nation
+Patterns: Raymarching Loop, Distance Function, Ray Generation, Camera Ray, Sphere Primitive, Box Primitive, Plane Primitive, Cylinder Primitive, Cone Primitive, Ray Intersection, Ray Normal, Raymarching Lighting, Shadow Ray
+------------------------------
+
+Shader ID: MsfGzM
+Name: Two Tweets
+Author: iq
+Tags: raymarch, distance, distancefield, 3d
+Patterns: 
+------------------------------
+
+Shader ID: MtcBDM
+Name: truchet quadtree distance
+Author: abje
+Tags: quadtree
+Patterns: Distance Function
+------------------------------
+
+Shader ID: ssc3zj
+Name: 2 much drugs again
+Author: xenn
+Tags: 
+Patterns: Distance Function, Cone Primitive, Ray Normal, Ray Reflection, Early Termination
+------------------------------
+
+Shader ID: XstXD2
+Name: Darksine
+Author: finalman
+Tags: glitch
+Patterns: Distance Function
+------------------------------
+
+Shader ID: sdy3Dy
+Name: at the roseflower accretion disk
+Author: pali6
+Tags: 
+Patterns: 
+------------------------------
+
+Shader ID: Ms33R4
+Name: glsl bug: clamp
+Author: FabriceNeyret2
+Tags: bug
+Patterns: 
+------------------------------
+
+Shader ID: 4lSczc
+Name: Hypsometric map generator - il
+Author: jmpep
+Tags: generat, arp, graph, fbm, cartography, map_generator, gene
+Patterns: Distance Function
+------------------------------
+
+Shader ID: Mt3XD2
+Name: dead-pixel/screen-dirt test
+Author: MacSlow
+Tags: screen
+Patterns: Distance Function
+------------------------------
+
+Shader ID: Wl3SDM
+Name: filtering hue 2
+Author: FabriceNeyret2
+Tags: hue
+Patterns: 
+------------------------------

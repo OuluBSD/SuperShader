@@ -1,0 +1,33 @@
+Effect Pattern Statistics
+==================================================
+Color Grading: 2984
+Color Adjustments: 523
+Gamma Correction: 401
+Pixelation: 378
+Brightness Contrast: 305
+Filter: 261
+Hue Saturation: 260
+Distortion: 196
+Vignette: 193
+Glow: 183
+Dof: 165
+Threshold: 161
+Box Blur: 107
+Bloom: 103
+Displacement: 100
+Warping: 93
+Motion Blur: 81
+Gaussian Blur: 78
+Glitch: 57
+Ssr: 45
+Scanlines: 44
+Ssao: 42
+Composite: 39
+Edge Detection: 37
+Glitch Artifacts: 34
+Taa: 32
+Chromatic Aberration: 27
+Fxaa: 24
+Lens Flare: 22
+Film Grain: 13
+Bilateral Blur: 2

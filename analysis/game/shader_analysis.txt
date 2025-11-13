@@ -1,0 +1,352 @@
+Detailed Game/Interactive Shader Analysis
+==================================================
+
+Shader ID: XdSSRw
+Name: Parametrics
+Author: nimitz
+Tags: parametric, tone, tonemap, param, mapping
+Patterns: Minimap Display
+------------------------------
+
+Shader ID: wtfSzH
+Name: Galaxy Test
+Author: Zeliss
+Tags: galaxy
+Patterns: Mouse Input, Minimap Display
+------------------------------
+
+Shader ID: llSBRD
+Name: Soulstone pt1
+Author: mmerchante
+Tags: crystal
+Patterns: Ui Elements, Pulse Effect, Glow Effect
+------------------------------
+
+Shader ID: XllXD8
+Name: Sierpinski Fractals, Chaos Game
+Author: 4rknova
+Tags: triangle, sierpinski
+Patterns: Keyboard Input
+------------------------------
+
+Shader ID: Wld3zM
+Name: Inside an Infinity Mirror
+Author: RobRob
+Tags: bloom, mirror, rainbow
+Patterns: Input Handling, Ui Elements
+------------------------------
+
+Shader ID: XsjyzW
+Name: maze worms / graffitis 2
+Author: FabriceNeyret2
+Tags: auto, maze
+Patterns: Mouse Input, Game State
+------------------------------
+
+Shader ID: 4sKGDK
+Name: Hot liquid metal
+Author: Nrx
+Tags: physics, liquid
+Patterns: Mouse Input, Keyboard Input, Input Handling, Touch Input, Ui Elements, Player Indicator, Level Transition
+------------------------------
+
+Shader ID: XtGGWw
+Name: Normal mapping comparison
+Author: pheelicks
+Tags: normal
+Patterns: Mouse Input, Minimap Display, Select Highlight
+------------------------------
+
+Shader ID: MsX3zr
+Name: Cubes and Spheres
+Author: PauloFalcao
+Tags: distance, distancefield, mouse, 3d
+Patterns: Mouse Input, Input Handling, Ui Elements
+------------------------------
+
+Shader ID: 4tB3RG
+Name: ngEyeWarp0
+Author: netgrind
+Tags: arp, netgrind, trippy
+Patterns: 
+------------------------------
+
+Shader ID: Xd3yWX
+Name: Cosmic Storm
+Author: Ebanflo
+Tags: 
+Patterns: Mouse Input, Ui Elements
+------------------------------
+
+Shader ID: Mlc3D7
+Name: Another Maze
+Author: aiekick
+Tags: maze
+Patterns: Mouse Input, Ui Elements
+------------------------------
+
+Shader ID: 4d23Rc
+Name: Indie Impression Mar
+Author: antonOTI
+Tags: logo, motion
+Patterns: 
+------------------------------
+
+Shader ID: ltlSRj
+Name: Heat map color palettes
+Author: fibre
+Tags: heat
+Patterns: Minimap Display
+------------------------------
+
+Shader ID: XdX3zN
+Name: Flying Logo
+Author: Dave_Hoskins
+Tags: cube, cubemap, map
+Patterns: 
+------------------------------
+
+Shader ID: 4sccWr
+Name: Into You
+Author: BigWIngs
+Tags: art, heart
+Patterns: Mouse Input, Ui Elements
+------------------------------
+
+Shader ID: XsBXW3
+Name: monkey saddle
+Author: joates
+Tags: parametric, param, sad
+Patterns: Mouse Input, Keyboard Input, Minimap Display
+------------------------------
+
+Shader ID: slXGRH
+Name: Shadertoy 2021
+Author: iapafoto
+Tags: 
+Patterns: Score Display, Minimap Display, Select Highlight, Game State, Pulse Effect
+------------------------------
+
+Shader ID: 4dKXDG
+Name: Crossy Penguin [MIGJRV]
+Author: RobotPenguin
+Tags: game, road, gui, ui
+Patterns: Keyboard Input, Score Display, Ui Elements, Player Indicator, Game State
+------------------------------
+
+Shader ID: 3sdyDS
+Name: 3D inversion 2
+Author: FabriceNeyret2
+Tags: integration
+Patterns: Mouse Input, Ui Elements, Minimap Display, Level Transition
+------------------------------
+
+Shader ID: tdXBRf
+Name: Super SPH 
+Author: michael0884
+Tags: 
+Patterns: Mouse Input
+------------------------------
+
+Shader ID: ltXSRf
+Name: deconstructed+kirby of the stars
+Author: visy
+Tags: construct
+Patterns: 
+------------------------------
+
+Shader ID: tsXGzN
+Name: Canyon surveyor
+Author: mensab
+Tags: parallax
+Patterns: 
+------------------------------
+
+Shader ID: 4stBzN
+Name: Triplanar mapping
+Author: dust
+Tags: uv, projection
+Patterns: Ui Elements, Minimap Display
+------------------------------
+
+Shader ID: tl3BR4
+Name: Path-Tracing: Volumetric Cloud
+Author: Zi7ar21
+Tags: pathtracer
+Patterns: Mouse Input, Input Handling, Ui Elements, Click Detection, Game State
+------------------------------
+
+Shader ID: Xd3fzB
+Name: Cannon-Thurston fig 8 knot zoom
+Author: henryseg
+Tags: hyperbolic
+Patterns: Score Display, Minimap Display
+------------------------------
+
+Shader ID: 4tyGWK
+Name: Texture bombing 3 samples
+Author: huwb
+Tags: bomb
+Patterns: Mouse Input, Ui Elements, Click Detection
+------------------------------
+
+Shader ID: NdcSzn
+Name: Memory & Aging
+Author: chenglou
+Tags: 
+Patterns: Mouse Input, Minimap Display
+------------------------------
+
+Shader ID: fdfGDS
+Name: Fork2
+Author: videolab
+Tags: 
+Patterns: Mouse Input, Ui Elements, Minimap Display, Level Transition, Glow Effect
+------------------------------
+
+Shader ID: Md2yWh
+Name: Tileable noise
+Author: noby
+Tags: tileable
+Patterns: Mouse Input
+------------------------------
+
+Shader ID: MdlyDH
+Name: CGA Palette Swapper
+Author: Heavybrush
+Tags: castle
+Patterns: 
+------------------------------
+
+Shader ID: wsc3Rj
+Name: 大龙猫 - Quicky#012
+Author: totetmatt
+Tags: road
+Patterns: 
+------------------------------
+
+Shader ID: wslfD7
+Name: Hosek-Wilkie Skylight Model
+Author: pajunen
+Tags: mac, machine
+Patterns: Mouse Input, Score Display, Ui Elements
+------------------------------
+
+Shader ID: WdffRn
+Name: Voxel Game (Sandbox)
+Author: kastorp
+Tags: minecraft
+Patterns: Mouse Input, Keyboard Input, Health Bar, Ui Elements, Button Elements, Player Indicator, Inventory Display, Minimap Display, Click Detection, Select Highlight, Level Transition
+------------------------------
+
+Shader ID: ss33Rj
+Name: Seifert surface (implicit)
+Author: arifr123
+Tags: 
+Patterns: Mouse Input, Keyboard Input, Game State
+------------------------------
+
+Shader ID: XtyXzt
+Name: Basic bitmap sinus scroll
+Author: Himred
+Tags: basic, amiga, style
+Patterns: 
+------------------------------
+
+Shader ID: 4lXcDl
+Name: difference of 2 identities
+Author: ollj
+Tags: mirror
+Patterns: Mouse Input, Select Highlight
+------------------------------
+
+Shader ID: Xds3WS
+Name: UV Spikes
+Author: sasmaster
+Tags: uv
+Patterns: Mouse Input
+------------------------------
+
+Shader ID: tdKSRR
+Name: All possible quadratics
+Author: iq
+Tags: mapping, quadratic
+Patterns: Ui Elements, Crosshair, Minimap Display
+------------------------------
+
+Shader ID: tt23WK
+Name: infinite zoom
+Author: FabriceNeyret2
+Tags: screen
+Patterns: Score Display
+------------------------------
+
+Shader ID: llcBDs
+Name: Dark when Wet
+Author: MoltenQwartz
+Tags: wet
+Patterns: Ui Elements
+------------------------------
+
+Shader ID: tdsfR4
+Name: Fly Camera
+Author: spalmer
+Tags: fly
+Patterns: Mouse Input, Keyboard Input, Input Handling, Ui Elements, Button Elements, Crosshair, Click Detection, Level Transition, Game State
+------------------------------
+
+Shader ID: ldByDV
+Name: Flower Renderer
+Author: public_int_i
+Tags: flower
+Patterns: Score Display
+------------------------------
+
+Shader ID: 7tSGDh
+Name: Atmospheric Scattering - Andrew
+Author: andrew741
+Tags: 
+Patterns: Mouse Input, Score Display, Minimap Display, Select Highlight
+------------------------------
+
+Shader ID: 7dSXWh
+Name: Shader Jam
+Author: fancyzero
+Tags: 
+Patterns: Mouse Input, Keyboard Input, Input Handling, Health Bar, Score Display, Ui Elements, Minimap Display, Level Transition, Game State, Glow Effect
+------------------------------
+
+Shader ID: 4dtGWM
+Name: Arlo
+Author: iq
+Tags: procedural, distance, distancefield, 3d
+Patterns: Ui Elements, Minimap Display
+------------------------------
+
+Shader ID: 4dtGzS
+Name: alien chars
+Author: RenoM
+Tags: character, pseudo, char
+Patterns: 
+------------------------------
+
+Shader ID: ldyXzt
+Name: Interacting with Fractals
+Author: dr2
+Tags: interactive
+Patterns: Mouse Input, Click Detection
+------------------------------
+
+Shader ID: wlffDf
+Name: Liquid Metal2
+Author: wickiss
+Tags: 
+Patterns: Ui Elements, Level Transition
+------------------------------
+
+Shader ID: tsd3zf
+Name: Black body spectral density
+Author: NirT
+Tags: body
+Patterns: Mouse Input
+------------------------------

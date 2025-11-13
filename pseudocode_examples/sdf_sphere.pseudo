@@ -1,0 +1,4 @@
+function sdf_sphere(position: vec3, center: vec3, radius: float) {
+    var distance: float = length(position - center) - radius;
+    return distance;
+}

@@ -1,0 +1,352 @@
+Detailed Texturing/Mapping Shader Analysis
+==================================================
+
+Shader ID: XdSSRw
+Name: Parametrics
+Author: nimitz
+Tags: parametric, tone, tonemap, param, mapping
+Patterns: Uv Coordinates, Texture Sampling, Texture2D Sampling, Texture3D Sampling, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: wtsBDr
+Name: Hue Expansion
+Author: JackKalish
+Tags: wheel
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Normal Mapping, Multiply Blend, Additive Blend, Texture Offset
+------------------------------
+
+Shader ID: XtGGWw
+Name: Normal mapping comparison
+Author: pheelicks
+Tags: normal
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Normal Mapping, Triplanar Mapping, Multiply Blend, Additive Blend, Texture Scale, Packing Unpacking
+------------------------------
+
+Shader ID: ltXyzM
+Name: reprojection AA
+Author: Daedelus
+Tags: aliasing, projection
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Texture2D Sampling, Texture3D Sampling, Normal Mapping, Triplanar Mapping, Texture Blend, Multiply Blend, Additive Blend, Texture Offset, Texture Rotation
+------------------------------
+
+Shader ID: 4djSD3
+Name: Texture flow II
+Author: iq
+Tags: text, texture
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Tangent Space, Triplanar Mapping, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: WdSBDc
+Name: textured icosahedron frame
+Author: darkfox
+Tags: ship
+Patterns: Uv Coordinates, Normal Mapping, Triplanar Mapping, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: ltlSRj
+Name: Heat map color palettes
+Author: fibre
+Tags: heat
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: tlBfz1
+Name: Parallax Nightsky
+Author: hugoaboud
+Tags: parallax
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: XdX3zN
+Name: Flying Logo
+Author: Dave_Hoskins
+Tags: cube, cubemap, map
+Patterns: Uv Coordinates, Texture Sampling, Triplanar Mapping, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: tsXGzN
+Name: Canyon surveyor
+Author: mensab
+Tags: parallax
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Multiply Blend, Additive Blend, Texture Offset, Texture Scale
+------------------------------
+
+Shader ID: 4stBzN
+Name: Triplanar mapping
+Author: dust
+Tags: uv, projection
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Normal Mapping, Triplanar Mapping, Spherical Mapping, Multiply Blend, Additive Blend, Tiling, Texture Rotation
+------------------------------
+
+Shader ID: 4tyGWK
+Name: Texture bombing 3 samples
+Author: huwb
+Tags: bomb
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Texture2D Sampling, Texture Blend, Multiply Blend, Additive Blend, Tiling, Texture Offset, Texture Scale
+------------------------------
+
+Shader ID: 4lXXWn
+Name: Gaussian Blur (Edited)
+Author: anastadunbar
+Tags: text, texture, blur
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend, Tiling
+------------------------------
+
+Shader ID: Md2yWh
+Name: Tileable noise
+Author: noby
+Tags: tileable
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Multiply Blend, Additive Blend, Tiling, Texture Scale
+------------------------------
+
+Shader ID: wd3GWM
+Name: Organic Dodecahedron
+Author: lsdlive
+Tags: 
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Texture Blend, Alphablend, Multiply Blend, Additive Blend, Texture Offset, Texture Scale
+------------------------------
+
+Shader ID: Xds3WS
+Name: UV Spikes
+Author: sasmaster
+Tags: uv
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend, Texture Offset, Texture Scale
+------------------------------
+
+Shader ID: tdKSRR
+Name: All possible quadratics
+Author: iq
+Tags: mapping, quadratic
+Patterns: Uv Coordinates, Normal Mapping, Triplanar Mapping, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: tt23WK
+Name: infinite zoom
+Author: FabriceNeyret2
+Tags: screen
+Patterns: Texture Sampling, Additive Blend
+------------------------------
+
+Shader ID: 4dtGWM
+Name: Arlo
+Author: iq
+Tags: procedural, distance, distancefield, 3d
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Texture2D Sampling, Cubemap Sampling, Normal Mapping, Triplanar Mapping, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: XtjXDW
+Name: Waves Sound Visualiser
+Author: ChazMeister
+Tags: wave, color, music
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: 4sjfzm
+Name: RYB Color wheel
+Author: pthextract
+Tags: wheel, color
+Patterns: Uv Mapping, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: MscSWj
+Name: Hideously inefficient 3D voronoi
+Author: tomator
+Tags: new
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend, Texture Offset
+------------------------------
+
+Shader ID: 4tfyW4
+Name: webgl2 grid noise
+Author: victor_shepardson
+Tags: pseudo
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Triplanar Mapping, Multiply Blend, Additive Blend, Texture Scale
+------------------------------
+
+Shader ID: tlsyRN
+Name: 2.5D Water Progress Bar 2
+Author: salvicode
+Tags: 25d
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Texture2D Sampling, Texture3D Sampling, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: ttKXzR
+Name: Sampling cylindrical light
+Author: koiava
+Tags: cylinder, nation
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Tangent Space, Triplanar Mapping, Multiply Blend, Additive Blend, Texture Rotation
+------------------------------
+
+Shader ID: ssc3zj
+Name: 2 much drugs again
+Author: xenn
+Tags: 
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Triplanar Mapping, Multiply Blend, Additive Blend, Texture Scale, Texture Rotation
+------------------------------
+
+Shader ID: 4sjBzK
+Name: Hopf Fibration
+Author: starea
+Tags: 4d
+Patterns: Uv Coordinates, Normal Mapping, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: Wl3SDM
+Name: filtering hue 2
+Author: FabriceNeyret2
+Tags: hue
+Patterns: Texture Sampling, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: wdXyWf
+Name: Bring's surface - null rotation
+Author: sl2c
+Tags: poincare
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: MlfczN
+Name: Funky fake water
+Author: cmwdexint
+Tags: distort, blend
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend, Texture Scale
+------------------------------
+
+Shader ID: WtVyWw
+Name: Color Adjust, HSL
+Author: eipporko
+Tags: 
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: XsjBWR
+Name: [SH17A] Rocky Planes
+Author: aiekick
+Tags: rock
+Patterns: Texture Sampling, Additive Blend
+------------------------------
+
+Shader ID: MtlcWX
+Name: Cartesian Grid
+Author: Reedbeta
+Tags: grid
+Patterns: Uv Coordinates, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: ltlGRB
+Name: ColoredWaves
+Author: tholzer
+Tags: animated
+Patterns: Uv Coordinates, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: Wll3z7
+Name: AD27 sin(sin())dx³ 
+Author: ollj
+Tags: curvature, automati, run
+Patterns: Uv Mapping, Uv Manipulation, Triplanar Mapping, Multiply Blend, Additive Blend, Tiling, Texture Offset, Texture Scale
+------------------------------
+
+Shader ID: Mll3Wl
+Name: Raymarching displacement test
+Author: jcanabald
+Tags: displacement
+Patterns: Uv Coordinates, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: Mlf3zl
+Name: Curvature - Parametric 2D
+Author: iq
+Tags: parametric, param
+Patterns: Uv Coordinates, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: XdtyzM
+Name: Color Blindness Simulation
+Author: Tynach
+Tags: orb
+Patterns: Uv Coordinates, Texture Sampling, Texture3D Sampling, Triplanar Mapping, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: ldjyWm
+Name: Colored Light Painting (easy)
+Author: Palakis
+Tags: painting
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: tsSfWd
+Name: Infinite XOR tunnel
+Author: StaticSaga
+Tags: fly
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: XsVBDR
+Name: Blue Noise One Sample Blur
+Author: demofox
+Tags: blur
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: ls2GWc
+Name: disparity4
+Author: FabriceNeyret2
+Tags: auto, autostereogram, illusion, stereogram
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend, Tiling
+------------------------------
+
+Shader ID: ll33W8
+Name: Displacement Mapping Test
+Author: geoff
+Tags: displacement
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Normal Mapping, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: WstBzN
+Name: Metallic caves
+Author: jarble
+Tags: 
+Patterns: Uv Coordinates, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: XlB3Wz
+Name: Rainbow soft brush draw 
+Author: klk
+Tags: brush, rainbow
+Patterns: Uv Coordinates, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: NssGWj
+Name: Simple Halftone - CMYK Colors
+Author: choxi
+Tags: 
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Triplanar Mapping, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: fdcXDH
+Name: Watercolor (no worky)
+Author: Protowalker
+Tags: 
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Triplanar Mapping, Multiply Blend, Additive Blend, Texture Scale
+------------------------------
+
+Shader ID: MdB3Dd
+Name: Random Blob Movement
+Author: Raxvan
+Tags: blob
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: tlBBRV
+Name: Piston Ball
+Author: snolot
+Tags: cylinder
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Texture2D Sampling, Triplanar Mapping, Multiply Blend, Additive Blend
+------------------------------
+
+Shader ID: NljGWd
+Name: Mipmap Diffusion
+Author: oneshade
+Tags: 
+Patterns: Uv Mapping, Uv Coordinates, Uv Manipulation, Texture Sampling, Multiply Blend, Additive Blend
+------------------------------

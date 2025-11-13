@@ -1,0 +1,20 @@
+Procedural Pattern Statistics
+==================================================
+Trigonometric Functions: 3896
+Oscillation: 3777
+Time Based Animation: 3692
+Noise Functions: 1469
+Fractional Brownian Motion: 717
+Value Noise: 595
+Tiling Patterns: 462
+Wave Functions: 440
+Pattern Generation: 402
+Fractals: 352
+Cellular Noise: 258
+Mathematical Patterns: 229
+Particle Systems: 217
+Perlin Noise: 200
+Physics Simulation: 167
+Simplex Noise: 144
+Procedural Textures: 105
+Flow Fields: 76

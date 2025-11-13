@@ -1,0 +1,352 @@
+Detailed UI/2D Graphics Shader Analysis
+==================================================
+
+Shader ID: 4t2Gzz
+Name: [NV15] 18/3/15
+Author: hughsk
+Tags: edge, triangle
+Patterns: Rectangle Draw, Circle Draw, Line Draw, Gradient Fill, Text Render, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: wtfSzH
+Name: Galaxy Test
+Author: Zeliss
+Tags: galaxy
+Patterns: Line Draw, Text Render, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: MlGSz3
+Name: Fourier vs Spline interpolation 
+Author: revers
+Tags: cat, line
+Patterns: Circle Draw, Line Draw, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: llSBRD
+Name: Soulstone pt1
+Author: mmerchante
+Tags: crystal
+Patterns: Rectangle Draw, Circle Draw, Gradient Fill, Text Render, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: XllXD8
+Name: Sierpinski Fractals, Chaos Game
+Author: 4rknova
+Tags: triangle, sierpinski
+Patterns: Text Render
+------------------------------
+
+Shader ID: Wld3zM
+Name: Inside an Infinity Mirror
+Author: RobRob
+Tags: bloom, mirror, rainbow
+Patterns: Rectangle Draw, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: XsjyzW
+Name: maze worms / graffitis 2
+Author: FabriceNeyret2
+Tags: auto, maze
+Patterns: Text Render, Positioning
+------------------------------
+
+Shader ID: 4sKGDK
+Name: Hot liquid metal
+Author: Nrx
+Tags: physics, liquid
+Patterns: Rectangle Draw, Circle Draw, Window Draw, Text Render, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: XtGGWw
+Name: Normal mapping comparison
+Author: pheelicks
+Tags: normal
+Patterns: Text Render, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: 3sXSD2
+Name: Sparkle sparkle little lightning
+Author: MacSlow
+Tags: lightning
+Patterns: Circle Draw, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: MsX3zr
+Name: Cubes and Spheres
+Author: PauloFalcao
+Tags: distance, distancefield, mouse, 3d
+Patterns: Rectangle Draw, Circle Draw, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: 4djSD3
+Name: Texture flow II
+Author: iq
+Tags: text, texture
+Patterns: Line Draw, Gradient Fill, Text Render, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: 4tB3RG
+Name: ngEyeWarp0
+Author: netgrind
+Tags: arp, netgrind, trippy
+Patterns: Blur Effect, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: Xd3yWX
+Name: Cosmic Storm
+Author: Ebanflo
+Tags: 
+Patterns: Rectangle Draw, Circle Draw, Text Render, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: llcXW7
+Name: Foamy water
+Author: k_mouse
+Tags: water
+Patterns: Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: Mlc3D7
+Name: Another Maze
+Author: aiekick
+Tags: maze
+Patterns: Rectangle Draw, Text Render, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: WdSBDc
+Name: textured icosahedron frame
+Author: darkfox
+Tags: ship
+Patterns: Rectangle Draw, Circle Draw, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: 4t3yDn
+Name: Orbit Noise
+Author: nimitz
+Tags: orb, orbit
+Patterns: Line Draw, Gradient Fill, Linear Gradient, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: ldSBRV
+Name: Pseudo Mandelbox Fold
+Author: Slyth
+Tags: a_man
+Patterns: Shadow Effect, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: fljSDz
+Name: Canyon Fog
+Author: Ubiquitous
+Tags: 
+Patterns: Rectangle Draw, Circle Draw, Line Draw, Triangle Draw, Gradient Fill, Linear Gradient, Text Render, Shadow Effect, Blur Effect, Coordinate Transform, Positioning, Pixel Shader, Color Blend
+------------------------------
+
+Shader ID: 4d23Rc
+Name: Indie Impression Mar
+Author: antonOTI
+Tags: logo, motion
+Patterns: Rectangle Draw, Blur Effect, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: tlBfz1
+Name: Parallax Nightsky
+Author: hugoaboud
+Tags: parallax
+Patterns: Circle Draw, Gradient Fill, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: XdX3zN
+Name: Flying Logo
+Author: Dave_Hoskins
+Tags: cube, cubemap, map
+Patterns: Circle Draw, Text Render, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: 4sccWr
+Name: Into You
+Author: BigWIngs
+Tags: art, heart
+Patterns: Blur Effect, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: XsBXW3
+Name: monkey saddle
+Author: joates
+Tags: parametric, param, sad
+Patterns: Rectangle Draw, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: 4dKXDG
+Name: Crossy Penguin [MIGJRV]
+Author: RobotPenguin
+Tags: game, road, gui, ui
+Patterns: Rectangle Draw, Circle Draw, Text Render, Font Render, Shadow Effect, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: 3sdyDS
+Name: 3D inversion 2
+Author: FabriceNeyret2
+Tags: integration
+Patterns: Rectangle Draw, Circle Draw, Shadow Effect, Coordinate Transform, Positioning, Color Blend
+------------------------------
+
+Shader ID: tdXBRf
+Name: Super SPH 
+Author: michael0884
+Tags: 
+Patterns: Rectangle Draw, Gradient Fill, Text Render, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: wtVyW3
+Name: Path-Tracing: Stanford Bunny
+Author: Zi7ar21
+Tags: 
+Patterns: Rectangle Draw, Icon Draw, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: XsdXDj
+Name: Sun and Moon Dynamic
+Author: Danich
+Tags: gradient, moon, sun, radial
+Patterns: Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: ttVBWR
+Name: 4D Rounded Cuboid
+Author: sahemera
+Tags: 
+Patterns: Rectangle Draw, Circle Draw, Shadow Effect, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: tsXGzN
+Name: Canyon surveyor
+Author: mensab
+Tags: parallax
+Patterns: Circle Draw, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: 4slGRH
+Name: Primes
+Author: iq
+Tags: math
+Patterns: Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: 4stBzN
+Name: Triplanar mapping
+Author: dust
+Tags: uv, projection
+Patterns: Rectangle Draw, Text Render, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: tl3BR4
+Name: Path-Tracing: Volumetric Cloud
+Author: Zi7ar21
+Tags: pathtracer
+Patterns: Rectangle Draw, Circle Draw, Icon Draw, Gradient Fill, Text Render, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: Xd3fzB
+Name: Cannon-Thurston fig 8 knot zoom
+Author: henryseg
+Tags: hyperbolic
+Patterns: Circle Draw, Fill Draw, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: MsdXzM
+Name: Boat drawing
+Author: gael
+Tags: drawing, boat
+Patterns: Circle Draw, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: 4tyGWK
+Name: Texture bombing 3 samples
+Author: huwb
+Tags: bomb
+Patterns: Text Render, Coordinate Transform, Positioning, Pixel Shader, Color Blend
+------------------------------
+
+Shader ID: NdcSzn
+Name: Memory & Aging
+Author: chenglou
+Tags: 
+Patterns: Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: 4lXXWn
+Name: Gaussian Blur (Edited)
+Author: anastadunbar
+Tags: text, texture, blur
+Patterns: Text Render, Blur Effect, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: Md2yWh
+Name: Tileable noise
+Author: noby
+Tags: tileable
+Patterns: Circle Draw, Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: 3sVGRD
+Name: Wave simulation w/ refraction
+Author: id523
+Tags: pde, equation
+Patterns: Rectangle Draw, Circle Draw, Text Render, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: Mtt3zl
+Name: meteor shower
+Author: cabbibo
+Tags: smooth
+Patterns: Rectangle Draw, Text Render, Coordinate Transform, Positioning, Pixel Shader, Color Blend
+------------------------------
+
+Shader ID: wsc3Rj
+Name: 大龙猫 - Quicky#012
+Author: totetmatt
+Tags: road
+Patterns: Coordinate Transform, Pixel Shader
+------------------------------
+
+Shader ID: WdffRn
+Name: Voxel Game (Sandbox)
+Author: kastorp
+Tags: minecraft
+Patterns: Rectangle Draw, Button Draw, Panel Draw, Text Render, Font Render, Shadow Effect, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: ss33Rj
+Name: Seifert surface (implicit)
+Author: arifr123
+Tags: 
+Patterns: Circle Draw, Coordinate Transform, Positioning, Pixel Shader, Alpha Composite
+------------------------------
+
+Shader ID: XtyXzt
+Name: Basic bitmap sinus scroll
+Author: Himred
+Tags: basic, amiga, style
+Patterns: Text Render, Font Render, Coordinate Transform, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: wd3GWM
+Name: Organic Dodecahedron
+Author: lsdlive
+Tags: 
+Patterns: Rectangle Draw, Text Render, Blur Effect, Coordinate Transform, Positioning, Pixel Shader, Color Blend, Alpha Composite
+------------------------------
+
+Shader ID: 4lXcDl
+Name: difference of 2 identities
+Author: ollj
+Tags: mirror
+Patterns: Rectangle Draw, Circle Draw, Blur Effect, Positioning, Pixel Shader
+------------------------------
+
+Shader ID: tt23WK
+Name: infinite zoom
+Author: FabriceNeyret2
+Tags: screen
+Patterns: Text Render
+------------------------------

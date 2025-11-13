@@ -1,0 +1,29 @@
+Physics Pattern Statistics
+==================================================
+F Ma: 2180
+Particle Attributes: 739
+Velocity Property: 300
+Particle System: 228
+Gravity Force: 157
+Drag: 115
+Mass Property: 108
+Damping: 84
+Spring Force: 73
+Particle Update: 64
+Acceleration Property: 64
+Particle Render: 59
+Friction: 50
+Wave Equation: 36
+Momentum: 25
+Collision Detection: 24
+Verlet Integration: 19
+Rk4 Integration: 17
+Navier Stokes: 12
+Fluid Simulation: 10
+Euler Integration: 8
+Collision Response: 5
+Rigid Body: 4
+Constraint Solver: 4
+Smoke Simulation: 4
+Energy Conservation: 3
+Cloth Simulation: 1

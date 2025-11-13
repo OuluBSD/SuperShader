@@ -1,0 +1,5 @@
+function adjust_brightness_contrast(color: vec3, brightness: float, contrast: float) {
+    var adjusted: vec3 = color + brightness;
+    adjusted = (adjusted - 0.5) * contrast + 0.5;
+    return adjusted;
+}

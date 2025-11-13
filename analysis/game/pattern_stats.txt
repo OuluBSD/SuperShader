@@ -1,0 +1,26 @@
+Game Pattern Statistics
+==================================================
+Mouse Input: 3167
+Ui Elements: 1766
+Minimap Display: 1715
+Keyboard Input: 650
+Score Display: 548
+Level Transition: 471
+Input Handling: 461
+Game State: 454
+Select Highlight: 344
+Click Detection: 296
+Glow Effect: 287
+Player Indicator: 250
+Crosshair: 209
+Health Bar: 146
+Button Elements: 134
+Pulse Effect: 129
+Touch Input: 83
+Feedback Visual: 76
+Selection Effect: 50
+Ammo Display: 49
+Menu System: 25
+Hud Elements: 22
+Hover Effect: 9
+Inventory Display: 8

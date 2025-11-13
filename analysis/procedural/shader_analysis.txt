@@ -1,0 +1,352 @@
+Detailed Procedural Shader Analysis
+==================================================
+
+Shader ID: MlGSz3
+Name: Fourier vs Spline interpolation 
+Author: revers
+Tags: cat, line
+Patterns: Time Based Animation, Oscillation, Wave Functions, Trigonometric Functions
+------------------------------
+
+Shader ID: XllXD8
+Name: Sierpinski Fractals, Chaos Game
+Author: 4rknova
+Tags: triangle, sierpinski
+Patterns: Fractional Brownian Motion, Time Based Animation, Oscillation, Fractals, Trigonometric Functions
+------------------------------
+
+Shader ID: Wld3zM
+Name: Inside an Infinity Mirror
+Author: RobRob
+Tags: bloom, mirror, rainbow
+Patterns: Time Based Animation, Oscillation, Tiling Patterns, Trigonometric Functions
+------------------------------
+
+Shader ID: wtsBDr
+Name: Hue Expansion
+Author: JackKalish
+Tags: wheel
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: 4sKGDK
+Name: Hot liquid metal
+Author: Nrx
+Tags: physics, liquid
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions, Particle Systems
+------------------------------
+
+Shader ID: 3sfyW2
+Name: Moebius Gears
+Author: dr2
+Tags: wheel, kinematics
+Patterns: Fractional Brownian Motion, Noise Functions, Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: 3sXSD2
+Name: Sparkle sparkle little lightning
+Author: MacSlow
+Tags: lightning
+Patterns: Simplex Noise, Fractional Brownian Motion, Noise Functions, Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: 4djSD3
+Name: Texture flow II
+Author: iq
+Tags: text, texture
+Patterns: Time Based Animation, Trigonometric Functions
+------------------------------
+
+Shader ID: 4t3yDn
+Name: Orbit Noise
+Author: nimitz
+Tags: orb, orbit
+Patterns: Perlin Noise, Value Noise, Cellular Noise, Fractional Brownian Motion, Noise Functions, Time Based Animation, Oscillation, Pattern Generation, Trigonometric Functions
+------------------------------
+
+Shader ID: 4d23Rc
+Name: Indie Impression Mar
+Author: antonOTI
+Tags: logo, motion
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: tlBfz1
+Name: Parallax Nightsky
+Author: hugoaboud
+Tags: parallax
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: 4sScWK
+Name: Hue Flower
+Author: gilesruscoe
+Tags: hue
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions, Particle Systems
+------------------------------
+
+Shader ID: slXGRH
+Name: Shadertoy 2021
+Author: iapafoto
+Tags: 
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions, Mathematical Patterns, Physics Simulation
+------------------------------
+
+Shader ID: tdXBRf
+Name: Super SPH 
+Author: michael0884
+Tags: 
+Patterns: Cellular Noise, Time Based Animation, Oscillation, Trigonometric Functions, Particle Systems
+------------------------------
+
+Shader ID: 4tfGDB
+Name: ngWaves02
+Author: netgrind
+Tags: netgrind, hyperbolic, mobius
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: wtVyW3
+Name: Path-Tracing: Stanford Bunny
+Author: Zi7ar21
+Tags: 
+Patterns: Fractional Brownian Motion, Time Based Animation, Oscillation, Fractals, Trigonometric Functions
+------------------------------
+
+Shader ID: MtKfRc
+Name: noise marble
+Author: guowei
+Tags: marble
+Patterns: Noise Functions, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: wlVyWG
+Name: FFT -  where the river flows 2
+Author: MaxGraph
+Tags: 
+Patterns: Fractional Brownian Motion, Noise Functions, Time Based Animation, Oscillation, Trigonometric Functions, Flow Fields
+------------------------------
+
+Shader ID: XsdXDj
+Name: Sun and Moon Dynamic
+Author: Danich
+Tags: gradient, moon, sun, radial
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: wsKXDh
+Name: Butterfly (2004)
+Author: iq
+Tags: 
+Patterns: Perlin Noise, Fractional Brownian Motion, Noise Functions, Time Based Animation, Oscillation, Pattern Generation, Trigonometric Functions
+------------------------------
+
+Shader ID: ttVBWR
+Name: 4D Rounded Cuboid
+Author: sahemera
+Tags: 
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: 4slGRH
+Name: Primes
+Author: iq
+Tags: math
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: 4stBzN
+Name: Triplanar mapping
+Author: dust
+Tags: uv, projection
+Patterns: Time Based Animation, Oscillation, Tiling Patterns, Trigonometric Functions
+------------------------------
+
+Shader ID: 7sS3Dm
+Name: Learning via Mandelbulb SDF
+Author: piqey
+Tags: 
+Patterns: Noise Functions, Time Based Animation, Oscillation, Trigonometric Functions, Mathematical Patterns
+------------------------------
+
+Shader ID: Wl2XRc
+Name: Mandelbrot Art
+Author: 96logda
+Tags: painting
+Patterns: Fractional Brownian Motion, Fractals
+------------------------------
+
+Shader ID: tl3BR4
+Name: Path-Tracing: Volumetric Cloud
+Author: Zi7ar21
+Tags: pathtracer
+Patterns: Fractional Brownian Motion, Noise Functions, Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: tdXyDN
+Name: Tetrahedra SDF tessellation
+Author: flockaroo
+Tags: tessellation
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: lljXz1
+Name: Animated Julia Set
+Author: roombarampage
+Tags: animation
+Patterns: Fractional Brownian Motion, Time Based Animation, Oscillation, Fractals, Trigonometric Functions
+------------------------------
+
+Shader ID: Md2yWh
+Name: Tileable noise
+Author: noby
+Tags: tileable
+Patterns: Noise Functions, Time Based Animation, Oscillation, Tiling Patterns, Trigonometric Functions
+------------------------------
+
+Shader ID: 3sVGRD
+Name: Wave simulation w/ refraction
+Author: id523
+Tags: pde, equation
+Patterns: Wave Functions, Physics Simulation
+------------------------------
+
+Shader ID: wd3GWM
+Name: Organic Dodecahedron
+Author: lsdlive
+Tags: 
+Patterns: Fractional Brownian Motion, Noise Functions, Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: 4lXcDl
+Name: difference of 2 identities
+Author: ollj
+Tags: mirror
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: Mls3DB
+Name: ngWaves05
+Author: netgrind
+Tags: netgrind
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: ldByDV
+Name: Flower Renderer
+Author: public_int_i
+Tags: flower
+Patterns: Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: 4tGfWR
+Name: Moon gleam
+Author: jsen
+Tags: moon
+Patterns: Noise Functions, Time Based Animation, Oscillation, Wave Functions, Trigonometric Functions
+------------------------------
+
+Shader ID: 4dtGWM
+Name: Arlo
+Author: iq
+Tags: procedural, distance, distancefield, 3d
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: ldyXzt
+Name: Interacting with Fractals
+Author: dr2
+Tags: interactive
+Patterns: Fractional Brownian Motion, Noise Functions, Time Based Animation, Oscillation, Fractals, Trigonometric Functions
+------------------------------
+
+Shader ID: wtyGWy
+Name: boring n-body simulation thing
+Author: DJDoomz
+Tags: gravity
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: XtjXDW
+Name: Waves Sound Visualiser
+Author: ChazMeister
+Tags: wave, color, music
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: 4sKfWh
+Name: Connected Cellular Nodes
+Author: Shane
+Tags: reaction
+Patterns: Value Noise, Cellular Noise, Noise Functions, Time Based Animation, Oscillation, Procedural Textures, Pattern Generation, Tiling Patterns, Trigonometric Functions, Mathematical Patterns, Particle Systems
+------------------------------
+
+Shader ID: MscSWj
+Name: Hideously inefficient 3D voronoi
+Author: tomator
+Tags: new
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: ssyXDw
+Name: Extruded Circle Animation
+Author: Shane
+Tags: 
+Patterns: Value Noise, Fractional Brownian Motion, Noise Functions, Time Based Animation, Oscillation, Tiling Patterns, Trigonometric Functions
+------------------------------
+
+Shader ID: 4tfyW4
+Name: webgl2 grid noise
+Author: victor_shepardson
+Tags: pseudo
+Patterns: Value Noise, Noise Functions
+------------------------------
+
+Shader ID: XtGcDK
+Name: Interactive Fluid Simulation
+Author: wyatt
+Tags: fluid
+Patterns: Time Based Animation, Oscillation, Wave Functions, Trigonometric Functions, Particle Systems, Physics Simulation
+------------------------------
+
+Shader ID: tsSXW3
+Name: Disco ripples
+Author: jblanper
+Tags: sketch
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: 4s23DG
+Name: 2D Vector Field Flow
+Author: morgan3d
+Tags: city, ui, vector, visualization
+Patterns: Time Based Animation, Oscillation, Tiling Patterns, Trigonometric Functions
+------------------------------
+
+Shader ID: Mlt3z8
+Name: Procedural Bayer Matrix
+Author: Patapom
+Tags: matrix
+Patterns: Time Based Animation, Oscillation, Procedural Textures, Pattern Generation, Trigonometric Functions
+------------------------------
+
+Shader ID: MdyGRD
+Name: Lost
+Author: Nrx
+Tags: maze
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions, Mathematical Patterns, Physics Simulation
+------------------------------
+
+Shader ID: ssc3zj
+Name: 2 much drugs again
+Author: xenn
+Tags: 
+Patterns: Value Noise, Noise Functions, Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------
+
+Shader ID: XstXD2
+Name: Darksine
+Author: finalman
+Tags: glitch
+Patterns: Time Based Animation, Oscillation, Trigonometric Functions
+------------------------------

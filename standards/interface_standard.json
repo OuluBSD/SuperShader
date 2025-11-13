@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "standards": {
+    "naming_conventions": {
+      "function_names": "use_underscores_and_descriptive_names",
+      "variables": "use_underscores",
+      "constants": "ALL_CAPS_WITH_UNDERSCORES"
+    },
+    "function_signatures": [
+      "vec3 lighting_function(vec3 normal, vec3 lightDir, vec3 viewDir)",
+      "vec4 effect_function(vec4 color, vec2 uv, float time)",
+      "float sdf_function(vec3 position)",
+      "vec3 transformation_function(vec3 position, float time)"
+    ],
+    "required_comments": [
+      "Purpose of the module",
+      "Input parameters",
+      "Output description",
+      "Dependencies if any"
+    ],
+    "compatibility_guidelines": {
+      "uniform_variables": "use standard SuperShader uniforms",
+      "global_variables": "avoid if possible",
+      "performance": "aim for minimal instructions"
+    }
+  }
+}

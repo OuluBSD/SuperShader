@@ -1,0 +1,352 @@
+Detailed Particle/Physics Shader Analysis
+==================================================
+
+Shader ID: ltSyRG
+Name: prettyboi
+Author: allanlavell
+Tags: fx, hue
+Patterns: F Ma
+------------------------------
+
+Shader ID: 4sKGDK
+Name: Hot liquid metal
+Author: Nrx
+Tags: physics, liquid
+Patterns: Particle System, Particle Update, Particle Attributes, Gravity Force, Spring Force, Velocity Property, Acceleration Property, F Ma, Damping
+------------------------------
+
+Shader ID: 3sfyW2
+Name: Moebius Gears
+Author: dr2
+Tags: wheel, kinematics
+Patterns: F Ma
+------------------------------
+
+Shader ID: 4djSD3
+Name: Texture flow II
+Author: iq
+Tags: text, texture
+Patterns: F Ma
+------------------------------
+
+Shader ID: llcXW7
+Name: Foamy water
+Author: k_mouse
+Tags: water
+Patterns: F Ma
+------------------------------
+
+Shader ID: 4s3XD2
+Name: This Is Not A Pipe
+Author: dr2
+Tags: smoke
+Patterns: F Ma
+------------------------------
+
+Shader ID: 4d23Rc
+Name: Indie Impression Mar
+Author: antonOTI
+Tags: logo, motion
+Patterns: F Ma
+------------------------------
+
+Shader ID: lsdGDH
+Name: ♫ sA.2 - wave
+Author: patu
+Tags: visualizer
+Patterns: F Ma
+------------------------------
+
+Shader ID: ltKSRc
+Name: Gravity Shielding (sound)
+Author: srtuss
+Tags: scifi
+Patterns: F Ma
+------------------------------
+
+Shader ID: XsBXW3
+Name: monkey saddle
+Author: joates
+Tags: parametric, param, sad
+Patterns: F Ma
+------------------------------
+
+Shader ID: slXGRH
+Name: Shadertoy 2021
+Author: iapafoto
+Tags: 
+Patterns: Particle Attributes, Gravity Force, Collision Response, Mass Property, Velocity Property, F Ma, Momentum, Friction
+------------------------------
+
+Shader ID: 3sdyDS
+Name: 3D inversion 2
+Author: FabriceNeyret2
+Tags: integration
+Patterns: F Ma
+------------------------------
+
+Shader ID: tdXBRf
+Name: Super SPH 
+Author: michael0884
+Tags: 
+Patterns: Particle System, Particle Render, Particle Attributes, Velocity Property, F Ma
+------------------------------
+
+Shader ID: 4tfGDB
+Name: ngWaves02
+Author: netgrind
+Tags: netgrind, hyperbolic, mobius
+Patterns: F Ma
+------------------------------
+
+Shader ID: 4slGRH
+Name: Primes
+Author: iq
+Tags: math
+Patterns: F Ma
+------------------------------
+
+Shader ID: NdcSzn
+Name: Memory & Aging
+Author: chenglou
+Tags: 
+Patterns: F Ma
+------------------------------
+
+Shader ID: 3sVGRD
+Name: Wave simulation w/ refraction
+Author: id523
+Tags: pde, equation
+Patterns: F Ma, Damping
+------------------------------
+
+Shader ID: Xds3WS
+Name: UV Spikes
+Author: sasmaster
+Tags: uv
+Patterns: F Ma
+------------------------------
+
+Shader ID: Mls3DB
+Name: ngWaves05
+Author: netgrind
+Tags: netgrind
+Patterns: F Ma
+------------------------------
+
+Shader ID: tdsfR4
+Name: Fly Camera
+Author: spalmer
+Tags: fly
+Patterns: Particle Attributes, Euler Integration, Gravity Force, Velocity Property, Acceleration Property, F Ma, Damping
+------------------------------
+
+Shader ID: 4tGfWR
+Name: Moon gleam
+Author: jsen
+Tags: moon
+Patterns: F Ma
+------------------------------
+
+Shader ID: wtyGWy
+Name: boring n-body simulation thing
+Author: DJDoomz
+Tags: gravity
+Patterns: F Ma
+------------------------------
+
+Shader ID: tsd3zf
+Name: Black body spectral density
+Author: NirT
+Tags: body
+Patterns: F Ma
+------------------------------
+
+Shader ID: XtjXDW
+Name: Waves Sound Visualiser
+Author: ChazMeister
+Tags: wave, color, music
+Patterns: F Ma
+------------------------------
+
+Shader ID: XtGcDK
+Name: Interactive Fluid Simulation
+Author: wyatt
+Tags: fluid
+Patterns: Particle System, Particle Update, Particle Attributes, Fluid Simulation, Velocity Property, F Ma
+------------------------------
+
+Shader ID: ldS3Rh
+Name: Icosahedron
+Author: WouterVanNifterick
+Tags: wave
+Patterns: F Ma
+------------------------------
+
+Shader ID: 4s23DG
+Name: 2D Vector Field Flow
+Author: morgan3d
+Tags: city, ui, vector, visualization
+Patterns: Particle Attributes, Velocity Property, F Ma
+------------------------------
+
+Shader ID: ltccRl
+Name: Outrun The Rain
+Author: irwatts
+Tags: particle, particles, art, refracti, ai, run, rain
+Patterns: Particle System, Particle Render, F Ma
+------------------------------
+
+Shader ID: wsByzG
+Name: River of Fire
+Author: jarble
+Tags: river, pseudo
+Patterns: F Ma
+------------------------------
+
+Shader ID: Wl3SDM
+Name: filtering hue 2
+Author: FabriceNeyret2
+Tags: hue
+Patterns: F Ma
+------------------------------
+
+Shader ID: lsSXRD
+Name: 3d Graphing
+Author: nimitz
+Tags: plott
+Patterns: F Ma
+------------------------------
+
+Shader ID: 3l2fzm
+Name: Fractal Reactor
+Author: pjkarlik
+Tags: neon
+Patterns: F Ma
+------------------------------
+
+Shader ID: wtcXRs
+Name: AangHead
+Author: samhattangady
+Tags: character, char
+Patterns: Particle Attributes, F Ma
+------------------------------
+
+Shader ID: tdBSWR
+Name: Channel Soup
+Author: Blokatt
+Tags: smoke
+Patterns: F Ma
+------------------------------
+
+Shader ID: 3df3Ds
+Name: Interactive water surface
+Author: hypnothalamus
+Tags: buffer
+Patterns: Particle Attributes, Mass Property, Velocity Property, Acceleration Property, F Ma
+------------------------------
+
+Shader ID: tdsSRr
+Name: faster glitchy julia fog
+Author: pde
+Tags: mac
+Patterns: F Ma
+------------------------------
+
+Shader ID: ltlGRB
+Name: ColoredWaves
+Author: tholzer
+Tags: animated
+Patterns: F Ma
+------------------------------
+
+Shader ID: XtKyRK
+Name: Physically-Based Soap Bubble
+Author: totimannino
+Tags: soap
+Patterns: F Ma
+------------------------------
+
+Shader ID: lsy3zR
+Name: vortex simulation 2
+Author: FabriceNeyret2
+Tags: vortex, gi, particle, particles, city, simulation, new, art
+Patterns: Particle System, Particle Attributes, Gravity Force, Velocity Property, F Ma
+------------------------------
+
+Shader ID: 4l2cWD
+Name: Fractal Fireworks 1.3
+Author: AustinSpafford
+Tags: mouse
+Patterns: Particle System, F Ma
+------------------------------
+
+Shader ID: Xdy3RR
+Name: 2D MPass MBlur 4 : Meteor
+Author: aiekick
+Tags: meteo
+Patterns: F Ma
+------------------------------
+
+Shader ID: WlGBzw
+Name: interference frenzy 
+Author: not_a_user
+Tags: 
+Patterns: F Ma
+------------------------------
+
+Shader ID: XdtyzM
+Name: Color Blindness Simulation
+Author: Tynach
+Tags: orb
+Patterns: F Ma
+------------------------------
+
+Shader ID: 3dlGDM
+Name: Motion Vectors Visualization
+Author: boksajak
+Tags: debug
+Patterns: F Ma
+------------------------------
+
+Shader ID: tll3Wr
+Name: synthwave sunset
+Author: jijis_duty
+Tags: synth, synthwave
+Patterns: F Ma
+------------------------------
+
+Shader ID: MtSSRz
+Name: Burning Runes
+Author: revers
+Tags: font, fire, run, pseudo
+Patterns: F Ma
+------------------------------
+
+Shader ID: ftlXW8
+Name: Fluidy fluid
+Author: michael0884
+Tags: 
+Patterns: Particle System, Particle Update, Particle Attributes, Gravity Force, Mass Property, Velocity Property, F Ma, Momentum
+------------------------------
+
+Shader ID: wlGSWh
+Name: Trilobyte @ Radiant Reef
+Author: Flexi
+Tags: integration, spring
+Patterns: Particle Attributes, Verlet Integration, Gravity Force, Spring Force, Velocity Property, F Ma, Damping, Friction
+------------------------------
+
+Shader ID: MdGXRR
+Name: Animated candle
+Author: TambakoJaguar
+Tags: wood, face, fire, flame, burning, candle, animated, scattering, metal
+Patterns: Particle Attributes, F Ma
+------------------------------
+
+Shader ID: lljcDm
+Name: free freq decomposition
+Author: FabriceNeyret2
+Tags: integration
+Patterns: F Ma
+------------------------------

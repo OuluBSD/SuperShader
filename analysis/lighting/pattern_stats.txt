@@ -1,0 +1,23 @@
+Lighting Pattern Statistics
+==================================================
+Normal Mapping: 533
+Point Light: 405
+Diffuse: 378
+Pbr: 341
+Specular: 310
+Ray Tracing: 295
+Ray Marching: 282
+Shadow Mapping: 282
+Ambient: 270
+Fresnel: 230
+Cel Shading: 181
+Light Direction: 133
+Light Attenuation: 125
+Lambert: 85
+Light Color: 72
+Spot Light: 63
+Directional Light: 60
+Multiple Lights: 40
+Phong: 38
+Blinn Phong: 13
+Toon Shading: 4

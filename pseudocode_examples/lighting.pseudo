@@ -1,0 +1,5 @@
+function calculate_diffuse_lighting(normal: vec3, light_dir: vec3, light_color: vec3) {
+    var intensity: float = max(dot(normal, light_dir), 0.0);
+    var diffuse: vec3 = intensity * light_color;
+    return diffuse;
+}

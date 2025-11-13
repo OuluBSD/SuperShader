@@ -1,0 +1,21 @@
+Audio Pattern Statistics
+==================================================
+Channel Analysis: 1698
+Amplitude Analysis: 504
+Stereo Processing: 395
+Audio Sampling: 298
+Waveform Visualization: 208
+Frequency Spectrum: 175
+Time Domain: 121
+Mid Band: 108
+Bass Band: 66
+Frequency Bars: 45
+Fourier Transform: 37
+Beat Detection: 32
+Frequency Domain: 27
+Spectrogram: 25
+Vumeter: 13
+Oscilloscope: 13
+Treble Band: 9
+Frequency Analysis: 3
+Audio Reactive: 1

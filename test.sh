@@ -259,3 +259,17 @@ echo "- Incorrect function calls (missing & operator)"
 echo "- Type mismatches"
 echo "- Missing header files"
 echo "- Unresolved external symbols"
+echo
+
+# Run Python unit tests for SuperShader components
+echo "Running SuperShader Python unit tests..."
+cd "$PWD"
+python3 core_tests.py
+echo
+
+# Run pseudocode functionality tests
+echo "Running SuperShader pseudocode tests..."
+python3 test_pseudocode.py
+echo
+
+echo "All tests completed successfully!"

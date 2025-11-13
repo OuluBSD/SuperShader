@@ -1,0 +1,352 @@
+Detailed Audio Visualization Shader Analysis
+==================================================
+
+Shader ID: MlGSz3
+Name: Fourier vs Spline interpolation 
+Author: revers
+Tags: cat, line
+Patterns: Waveform Visualization, Fourier Transform
+------------------------------
+
+Shader ID: 4sKGDK
+Name: Hot liquid metal
+Author: Nrx
+Tags: physics, liquid
+Patterns: Stereo Processing, Channel Analysis
+------------------------------
+
+Shader ID: XtGGWw
+Name: Normal mapping comparison
+Author: pheelicks
+Tags: normal
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: MdcSDB
+Name: dance dots
+Author: mds2
+Tags: dot, cam
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: 4sccWr
+Name: Into You
+Author: BigWIngs
+Tags: art, heart
+Patterns: 
+------------------------------
+
+Shader ID: lsdGDH
+Name: ♫ sA.2 - wave
+Author: patu
+Tags: visualizer
+Patterns: Frequency Spectrum, Channel Analysis
+------------------------------
+
+Shader ID: ltKSRc
+Name: Gravity Shielding (sound)
+Author: srtuss
+Tags: scifi
+Patterns: Audio Sampling, Channel Analysis
+------------------------------
+
+Shader ID: 4dKXDG
+Name: Crossy Penguin [MIGJRV]
+Author: RobotPenguin
+Tags: game, road, gui, ui
+Patterns: Stereo Processing, Channel Analysis
+------------------------------
+
+Shader ID: 4tfGDB
+Name: ngWaves02
+Author: netgrind
+Tags: netgrind, hyperbolic, mobius
+Patterns: 
+------------------------------
+
+Shader ID: wlVyWG
+Name: FFT -  where the river flows 2
+Author: MaxGraph
+Tags: 
+Patterns: Audio Sampling, Frequency Spectrum, Amplitude Analysis, Channel Analysis, Mid Band
+------------------------------
+
+Shader ID: MdlBzH
+Name: Audioreactive Spider
+Author: apazat
+Tags: fft
+Patterns: Audio Sampling, Channel Analysis
+------------------------------
+
+Shader ID: tl3BR4
+Name: Path-Tracing: Volumetric Cloud
+Author: Zi7ar21
+Tags: pathtracer
+Patterns: Amplitude Analysis, Channel Analysis
+------------------------------
+
+Shader ID: 4tyGWK
+Name: Texture bombing 3 samples
+Author: huwb
+Tags: bomb
+Patterns: Stereo Processing, Channel Analysis
+------------------------------
+
+Shader ID: 3sVGRD
+Name: Wave simulation w/ refraction
+Author: id523
+Tags: pde, equation
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: 7sSXRR
+Name: Refractive Superellipsoid
+Author: Holeum
+Tags: 
+Patterns: Stereo Processing
+------------------------------
+
+Shader ID: wd3GWM
+Name: Organic Dodecahedron
+Author: lsdlive
+Tags: 
+Patterns: Amplitude Analysis, Channel Analysis
+------------------------------
+
+Shader ID: Mls3DB
+Name: ngWaves05
+Author: netgrind
+Tags: netgrind
+Patterns: 
+------------------------------
+
+Shader ID: tt23WK
+Name: infinite zoom
+Author: FabriceNeyret2
+Tags: screen
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: 7dSXWh
+Name: Shader Jam
+Author: fancyzero
+Tags: 
+Patterns: Audio Sampling, Channel Analysis, Bass Band
+------------------------------
+
+Shader ID: 4tGfWR
+Name: Moon gleam
+Author: jsen
+Tags: moon
+Patterns: 
+------------------------------
+
+Shader ID: tsd3zf
+Name: Black body spectral density
+Author: NirT
+Tags: body
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: XtjXDW
+Name: Waves Sound Visualiser
+Author: ChazMeister
+Tags: wave, color, music
+Patterns: Amplitude Analysis, Channel Analysis
+------------------------------
+
+Shader ID: XsfcD8
+Name: ZX Spectrum attribute clash
+Author: XIX
+Tags: spectrum, filter
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: lt33Df
+Name: Rainbow Audio Visualiser
+Author: geoff
+Tags: audio
+Patterns: Channel Analysis, Mid Band
+------------------------------
+
+Shader ID: ldS3Rh
+Name: Icosahedron
+Author: WouterVanNifterick
+Tags: wave
+Patterns: 
+------------------------------
+
+Shader ID: 4s23DG
+Name: 2D Vector Field Flow
+Author: morgan3d
+Tags: city, ui, vector, visualization
+Patterns: Stereo Processing, Channel Analysis
+------------------------------
+
+Shader ID: 4ssSWs
+Name: Italian Job
+Author: Dave_Hoskins
+Tags: speech, audio
+Patterns: Audio Sampling, Amplitude Analysis, Channel Analysis
+------------------------------
+
+Shader ID: Ms33R4
+Name: glsl bug: clamp
+Author: FabriceNeyret2
+Tags: bug
+Patterns: 
+------------------------------
+
+Shader ID: Wl3SDM
+Name: filtering hue 2
+Author: FabriceNeyret2
+Tags: hue
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: 3sfXzr
+Name: Sword in the Stone
+Author: BackwardsCap
+Tags: sword
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: 4dBXzK
+Name: Laser Party (not for epileptics)
+Author: darxkies
+Tags: music, box
+Patterns: 
+------------------------------
+
+Shader ID: XtVcRK
+Name: fm bass
+Author: nabr
+Tags: fm, bass
+Patterns: Audio Sampling, Frequency Spectrum, Stereo Processing, Channel Analysis, Bass Band, Mid Band
+------------------------------
+
+Shader ID: WtVyWw
+Name: Color Adjust, HSL
+Author: eipporko
+Tags: 
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: Xdffzl
+Name: The Dogs
+Author: pix
+Tags: visualization
+Patterns: Audio Sampling, Channel Analysis
+------------------------------
+
+Shader ID: tdBSWR
+Name: Channel Soup
+Author: Blokatt
+Tags: smoke
+Patterns: 
+------------------------------
+
+Shader ID: lstSRS
+Name: Gargantua With HDR Bloom
+Author: sonicether
+Tags: hdr, bloom
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: 4d2SWy
+Name: Triangles Mosaic
+Author: tiagosr
+Tags: triangle
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: ltlGRB
+Name: ColoredWaves
+Author: tholzer
+Tags: animated
+Patterns: 
+------------------------------
+
+Shader ID: XtKyRK
+Name: Physically-Based Soap Bubble
+Author: totimannino
+Tags: soap
+Patterns: Amplitude Analysis, Waveform Visualization, Channel Analysis, Fourier Transform
+------------------------------
+
+Shader ID: 3dGyRc
+Name: Distress Flare
+Author: athibaul
+Tags: 
+Patterns: Amplitude Analysis, Channel Analysis
+------------------------------
+
+Shader ID: lsy3zR
+Name: vortex simulation 2
+Author: FabriceNeyret2
+Tags: vortex, gi, particle, particles, city, simulation, new, art
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: ls2Bz1
+Name: Spectral Colour Schemes
+Author: AlanZucconi
+Tags: spectrum
+Patterns: Waveform Visualization
+------------------------------
+
+Shader ID: 4sjfDh
+Name: [SH17A]  Minimal is visual
+Author: dj_himp
+Tags: abstract
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: WlGBzw
+Name: interference frenzy 
+Author: not_a_user
+Tags: 
+Patterns: 
+------------------------------
+
+Shader ID: XdtyzM
+Name: Color Blindness Simulation
+Author: Tynach
+Tags: orb
+Patterns: Frequency Spectrum, Channel Analysis
+------------------------------
+
+Shader ID: 3ssfDl
+Name: Minecraft Subwoofer Lullaby
+Author: jetp250
+Tags: minecraft
+Patterns: Amplitude Analysis, Bass Band
+------------------------------
+
+Shader ID: 3dlGDM
+Name: Motion Vectors Visualization
+Author: boksajak
+Tags: debug
+Patterns: 
+------------------------------
+
+Shader ID: XsVBDR
+Name: Blue Noise One Sample Blur
+Author: demofox
+Tags: blur
+Patterns: Channel Analysis
+------------------------------
+
+Shader ID: tll3Wr
+Name: synthwave sunset
+Author: jijis_duty
+Tags: synth, synthwave
+Patterns: 
+------------------------------
+
+Shader ID: wlcSDB
+Name: MC Visualizer (Beta)
+Author: Antify
+Tags: monster
+Patterns: Frequency Spectrum, Amplitude Analysis, Frequency Bars, Channel Analysis
+------------------------------

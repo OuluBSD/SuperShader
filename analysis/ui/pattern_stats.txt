@@ -1,0 +1,29 @@
+UI/2D Pattern Statistics
+==================================================
+Coordinate Transform: 6496
+Pixel Shader: 6484
+Text Render: 4076
+Positioning: 3950
+Rectangle Draw: 2861
+Circle Draw: 2687
+Line Draw: 2233
+Shadow Effect: 1141
+Gradient Fill: 819
+Blur Effect: 691
+Color Blend: 642
+Triangle Draw: 540
+Antialiasing: 486
+Window Draw: 368
+Alpha Composite: 363
+Fill Draw: 295
+Linear Gradient: 205
+Font Render: 198
+Outline Effect: 158
+Ellipse Draw: 132
+Button Draw: 123
+Stroke Draw: 120
+Glyph Render: 79
+Radial Gradient: 76
+Icon Draw: 75
+Panel Draw: 41
+Menu Draw: 20

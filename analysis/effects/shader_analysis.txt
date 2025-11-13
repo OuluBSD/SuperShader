@@ -1,0 +1,352 @@
+Detailed Effect Shader Analysis
+==================================================
+
+Shader ID: XdSSRw
+Name: Parametrics
+Author: nimitz
+Tags: parametric, tone, tonemap, param, mapping
+Patterns: Color Adjustments, Gamma Correction, Color Grading, Ssr
+------------------------------
+
+Shader ID: llSBRD
+Name: Soulstone pt1
+Author: mmerchante
+Tags: crystal
+Patterns: Color Grading, Distortion, Warping, Glow, Vignette
+------------------------------
+
+Shader ID: Wld3zM
+Name: Inside an Infinity Mirror
+Author: RobRob
+Tags: bloom, mirror, rainbow
+Patterns: Color Grading, Bloom
+------------------------------
+
+Shader ID: XsjyzW
+Name: maze worms / graffitis 2
+Author: FabriceNeyret2
+Tags: auto, maze
+Patterns: Color Grading
+------------------------------
+
+Shader ID: ltSyRG
+Name: prettyboi
+Author: allanlavell
+Tags: fx, hue
+Patterns: Brightness Contrast, Color Grading
+------------------------------
+
+Shader ID: wtsBDr
+Name: Hue Expansion
+Author: JackKalish
+Tags: wheel
+Patterns: Hue Saturation, Color Grading
+------------------------------
+
+Shader ID: 3sfyW2
+Name: Moebius Gears
+Author: dr2
+Tags: wheel, kinematics
+Patterns: Color Grading
+------------------------------
+
+Shader ID: fljSDz
+Name: Canyon Fog
+Author: Ubiquitous
+Tags: 
+Patterns: Color Adjustments, Gamma Correction, Color Grading, Box Blur, Distortion, Glow, Vignette, Ssao, Dof, Pixelation
+------------------------------
+
+Shader ID: 4d23Rc
+Name: Indie Impression Mar
+Author: antonOTI
+Tags: logo, motion
+Patterns: Color Adjustments, Color Grading
+------------------------------
+
+Shader ID: ltlSRj
+Name: Heat map color palettes
+Author: fibre
+Tags: heat
+Patterns: Color Grading
+------------------------------
+
+Shader ID: ldVGRt
+Name: Unex learning Contrast
+Author: blfunex
+Tags: contrast
+Patterns: Color Adjustments, Brightness Contrast, Color Grading
+------------------------------
+
+Shader ID: 4tlBWH
+Name: Morning city & aurora & bloom
+Author: uqone
+Tags: city
+Patterns: Color Grading, Bloom, Glow, Pixelation
+------------------------------
+
+Shader ID: 4lXXWn
+Name: Gaussian Blur (Edited)
+Author: anastadunbar
+Tags: text, texture, blur
+Patterns: Color Grading
+------------------------------
+
+Shader ID: wldGWj
+Name: Precious marble 2.0
+Author: loicvdb
+Tags: bloom
+Patterns: Color Grading, Bloom, Dof, Threshold
+------------------------------
+
+Shader ID: 3sVGRD
+Name: Wave simulation w/ refraction
+Author: id523
+Tags: pde, equation
+Patterns: Color Grading
+------------------------------
+
+Shader ID: llcBDs
+Name: Dark when Wet
+Author: MoltenQwartz
+Tags: wet
+Patterns: Color Grading
+------------------------------
+
+Shader ID: 7dSXWh
+Name: Shader Jam
+Author: fancyzero
+Tags: 
+Patterns: Color Grading, Glow, Pixelation
+------------------------------
+
+Shader ID: 4dtGWM
+Name: Arlo
+Author: iq
+Tags: procedural, distance, distancefield, 3d
+Patterns: Color Grading, Filter
+------------------------------
+
+Shader ID: Mt2czG
+Name: prettyboi2
+Author: allanlavell
+Tags: fx
+Patterns: Brightness Contrast, Hue Saturation, Color Grading
+------------------------------
+
+Shader ID: XtjXDW
+Name: Waves Sound Visualiser
+Author: ChazMeister
+Tags: wave, color, music
+Patterns: Color Grading, Glow
+------------------------------
+
+Shader ID: XsfcD8
+Name: ZX Spectrum attribute clash
+Author: XIX
+Tags: spectrum, filter
+Patterns: Color Adjustments, Gamma Correction, Brightness Contrast, Color Grading, Pixelation
+------------------------------
+
+Shader ID: 4sjfzm
+Name: RYB Color wheel
+Author: pthextract
+Tags: wheel, color
+Patterns: Color Grading
+------------------------------
+
+Shader ID: 4stSz8
+Name: A Simple Vignette
+Author: VoidChicken
+Tags: vignette
+Patterns: Color Grading
+------------------------------
+
+Shader ID: WdfcR7
+Name: Comic book halftone
+Author: voax
+Tags: comic
+Patterns: Gamma Correction, Color Grading, Edge Detection
+------------------------------
+
+Shader ID: XstXD2
+Name: Darksine
+Author: finalman
+Tags: glitch
+Patterns: Color Grading, Glitch
+------------------------------
+
+Shader ID: 4sjBzK
+Name: Hopf Fibration
+Author: starea
+Tags: 4d
+Patterns: Color Grading
+------------------------------
+
+Shader ID: tls3RM
+Name: Friendy Gargantua With HDR Bloom
+Author: RaduBT
+Tags: hdr
+Patterns: Color Adjustments, Color Grading, Gaussian Blur, Warping, Bloom, Glow, Filter
+------------------------------
+
+Shader ID: sdy3Dy
+Name: at the roseflower accretion disk
+Author: pali6
+Tags: 
+Patterns: Color Grading
+------------------------------
+
+Shader ID: Wl3SDM
+Name: filtering hue 2
+Author: FabriceNeyret2
+Tags: hue
+Patterns: Hue Saturation, Color Grading, Filter
+------------------------------
+
+Shader ID: ssySDh
+Name: Mean filters
+Author: Envy24
+Tags: 
+Patterns: Filter
+------------------------------
+
+Shader ID: 3sfXzr
+Name: Sword in the Stone
+Author: BackwardsCap
+Tags: sword
+Patterns: Color Grading
+------------------------------
+
+Shader ID: 4dBXzK
+Name: Laser Party (not for epileptics)
+Author: darxkies
+Tags: music, box
+Patterns: Color Grading
+------------------------------
+
+Shader ID: wdXyWf
+Name: Bring's surface - null rotation
+Author: sl2c
+Tags: poincare
+Patterns: Color Grading
+------------------------------
+
+Shader ID: XtVcRK
+Name: fm bass
+Author: nabr
+Tags: fm, bass
+Patterns: Color Grading, Distortion, Filter
+------------------------------
+
+Shader ID: ldlcWs
+Name: Sketch Book
+Author: sofiene71
+Tags: pencil, post, postprocess, sketch, process, drawing, hand
+Patterns: Color Grading
+------------------------------
+
+Shader ID: WtVyWw
+Name: Color Adjust, HSL
+Author: eipporko
+Tags: 
+Patterns: Gamma Correction, Brightness Contrast, Hue Saturation, Color Grading
+------------------------------
+
+Shader ID: 3l2fzm
+Name: Fractal Reactor
+Author: pjkarlik
+Tags: neon
+Patterns: Hue Saturation, Color Grading, Glow
+------------------------------
+
+Shader ID: 4sXyW7
+Name: Chuck Close Effect
+Author: netgrind
+Tags: process, cam
+Patterns: Color Grading
+------------------------------
+
+Shader ID: lstSRS
+Name: Gargantua With HDR Bloom
+Author: sonicether
+Tags: hdr, bloom
+Patterns: Color Adjustments, Color Grading, Gaussian Blur, Warping, Bloom, Glow, Filter
+------------------------------
+
+Shader ID: lstSzj
+Name: curvaticEmpire2
+Author: dello32
+Tags: glow, space
+Patterns: Color Grading
+------------------------------
+
+Shader ID: XdG3RR
+Name: Everyday015 - gilthcse
+Author: Makio64
+Tags: glitch, mirror, tv
+Patterns: Color Grading
+------------------------------
+
+Shader ID: tdsSRr
+Name: faster glitchy julia fog
+Author: pde
+Tags: mac
+Patterns: Color Grading
+------------------------------
+
+Shader ID: ltlGRB
+Name: ColoredWaves
+Author: tholzer
+Tags: animated
+Patterns: Color Grading
+------------------------------
+
+Shader ID: 4lKyzc
+Name: White vignette
+Author: mj_
+Tags: vignette
+Patterns: Color Grading
+------------------------------
+
+Shader ID: XtKyRK
+Name: Physically-Based Soap Bubble
+Author: totimannino
+Tags: soap
+Patterns: Color Adjustments, Gamma Correction, Color Grading, Warping, Filter
+------------------------------
+
+Shader ID: Wll3z7
+Name: AD27 sin(sin())dx³ 
+Author: ollj
+Tags: curvature, automati, run
+Patterns: Color Grading, Filter, Composite
+------------------------------
+
+Shader ID: MdVfRc
+Name: OldSchool FX : RotoZoom
+Author: CoyHot
+Tags: oldschool
+Patterns: Color Grading, Distortion
+------------------------------
+
+Shader ID: XsBGWw
+Name: barrel distortion test
+Author: Impossible
+Tags: barrel_distortion
+Patterns: Color Grading, Warping
+------------------------------
+
+Shader ID: Xdy3RR
+Name: 2D MPass MBlur 4 : Meteor
+Author: aiekick
+Tags: meteo
+Patterns: 
+------------------------------
+
+Shader ID: Mlf3zl
+Name: Curvature - Parametric 2D
+Author: iq
+Tags: parametric, param
+Patterns: Color Grading
+------------------------------

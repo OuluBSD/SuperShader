@@ -1,0 +1,25 @@
+Raymarching Pattern Statistics
+==================================================
+Distance Function: 3831
+Ray Normal: 2728
+Raymarching Loop: 2606
+Ray Generation: 2204
+Early Termination: 1956
+Raymarching Lighting: 1809
+Camera Ray: 1769
+Ray Reflection: 1631
+Sphere Primitive: 1487
+Box Primitive: 1259
+Ray Intersection: 1204
+Plane Primitive: 1168
+Shadow Ray: 1023
+Signed Distance Field: 954
+Raytracing: 785
+Ao Ray: 600
+Cylinder Primitive: 461
+Ray Refraction: 340
+Torus Primitive: 333
+Cone Primitive: 299
+Path Tracing: 215
+Global Illumination: 45
+Adaptive Stepping: 22

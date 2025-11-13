@@ -1,0 +1,30 @@
+Texturing Pattern Statistics
+==================================================
+Additive Blend: 2990
+Multiply Blend: 2723
+Uv Coordinates: 2649
+Uv Mapping: 2236
+Uv Manipulation: 2236
+Texture Sampling: 2011
+Triplanar Mapping: 990
+Normal Mapping: 795
+Texture Scale: 657
+Texture2D Sampling: 487
+Texture Offset: 481
+Texture Rotation: 379
+Tiling: 361
+Texture3D Sampling: 327
+Texture Blend: 243
+Cubemap Sampling: 210
+Spherical Mapping: 106
+Tangent Space: 104
+Mipmapping: 99
+Packing Unpacking: 79
+Alphablend: 63
+Procedural Texture: 62
+Bilinear Filtering: 54
+Anisotropic Filtering: 22
+Trilinear Filtering: 15
+Cylindrical Mapping: 12
+Seamless Texture: 6
+Texture Atlas: 5
