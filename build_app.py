@@ -528,6 +528,10 @@ def main():
     parser.add_argument('--shadows', action='store_true', help='Enable shadows')
     parser.add_argument('--target', type=str, choices=['glsl', 'hlsl', 'metal', 'wgsl'], default='glsl', help='Target language')
     
+    # Show help if no arguments provided
+    if len(sys.argv) == 1:
+        parser.print_help()
+        return 0
     args = parser.parse_args()
     
     # Create application builder
