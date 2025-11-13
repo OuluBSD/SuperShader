@@ -10,10 +10,10 @@
     ]
   },
   "modules": [
-    "basic_point_light",
+    "diffuse_lighting",
     "spot_light",
-    "shadow_mapping",
     "specular_lighting",
-    "diffuse_lighting"
+    "basic_point_light",
+    "shadow_mapping"
   ]
 }

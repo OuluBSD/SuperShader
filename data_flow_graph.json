@@ -1,0 +1,223 @@
+{
+  "nodes": [
+    {
+      "id": "lighting/point_light/basic_point_light",
+      "label": "basic_point_light",
+      "inputs": [
+        {
+          "name": "FragPos",
+          "type": "vec3",
+          "direction": "in",
+          "semantic": "position"
+        },
+        {
+          "name": "Normal",
+          "type": "vec3",
+          "direction": "in",
+          "semantic": "normal"
+        },
+        {
+          "name": "lightPos",
+          "type": "vec3",
+          "direction": "uniform",
+          "semantic": "light_position"
+        },
+        {
+          "name": "lightColor",
+          "type": "vec3",
+          "direction": "uniform",
+          "semantic": "light_color"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "lightColorOut",
+          "type": "vec3",
+          "direction": "out",
+          "semantic": "light_contribution"
+        }
+      ],
+      "uniforms": [
+        {
+          "name": "lightPos",
+          "type": "vec3",
+          "semantic": "light_position"
+        },
+        {
+          "name": "lightColor",
+          "type": "vec3",
+          "semantic": "light_color"
+        }
+      ]
+    },
+    {
+      "id": "lighting/normal_mapping/normal_mapping",
+      "label": "normal_mapping",
+      "inputs": [
+        {
+          "name": "TexCoords",
+          "type": "vec2",
+          "direction": "in",
+          "semantic": "tex_coords"
+        },
+        {
+          "name": "FragPos",
+          "type": "vec3",
+          "direction": "in",
+          "semantic": "position"
+        },
+        {
+          "name": "Normal",
+          "type": "vec3",
+          "direction": "in",
+          "semantic": "normal"
+        },
+        {
+          "name": "Tangent",
+          "type": "vec3",
+          "direction": "in",
+          "semantic": "tangent"
+        },
+        {
+          "name": "normalMap",
+          "type": "sampler2D",
+          "direction": "uniform",
+          "semantic": "normal_texture"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "normalOut",
+          "type": "vec3",
+          "direction": "out",
+          "semantic": "normal_world_space"
+        }
+      ],
+      "uniforms": [
+        {
+          "name": "normalMap",
+          "type": "sampler2D",
+          "semantic": "normal_texture"
+        }
+      ]
+    },
+    {
+      "id": "lighting/diffuse/diffuse_lighting",
+      "label": "diffuse_lighting",
+      "inputs": [],
+      "outputs": [],
+      "uniforms": []
+    },
+    {
+      "id": "lighting/specular/specular_lighting",
+      "label": "specular_lighting",
+      "inputs": [],
+      "outputs": [],
+      "uniforms": []
+    },
+    {
+      "id": "lighting/pbr/pbr_lighting",
+      "label": "pbr_lighting",
+      "inputs": [],
+      "outputs": [],
+      "uniforms": []
+    }
+  ],
+  "edges": [
+    {
+      "source": "lighting/point_light/basic_point_light",
+      "target": "lighting/normal_mapping/normal_mapping",
+      "source_port": "lightColorOut",
+      "target_port": "FragPos",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": [],
+        "source_type": "vec3",
+        "target_type": "vec3"
+      }
+    },
+    {
+      "source": "lighting/point_light/basic_point_light",
+      "target": "lighting/normal_mapping/normal_mapping",
+      "source_port": "lightColorOut",
+      "target_port": "Normal",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": [],
+        "source_type": "vec3",
+        "target_type": "vec3"
+      }
+    },
+    {
+      "source": "lighting/point_light/basic_point_light",
+      "target": "lighting/normal_mapping/normal_mapping",
+      "source_port": "lightColorOut",
+      "target_port": "Tangent",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": [],
+        "source_type": "vec3",
+        "target_type": "vec3"
+      }
+    },
+    {
+      "source": "lighting/normal_mapping/normal_mapping",
+      "target": "lighting/point_light/basic_point_light",
+      "source_port": "normalOut",
+      "target_port": "FragPos",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": [],
+        "source_type": "vec3",
+        "target_type": "vec3"
+      }
+    },
+    {
+      "source": "lighting/normal_mapping/normal_mapping",
+      "target": "lighting/point_light/basic_point_light",
+      "source_port": "normalOut",
+      "target_port": "Normal",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": [],
+        "source_type": "vec3",
+        "target_type": "vec3"
+      }
+    },
+    {
+      "source": "lighting/normal_mapping/normal_mapping",
+      "target": "lighting/point_light/basic_point_light",
+      "source_port": "normalOut",
+      "target_port": "lightPos",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": [],
+        "source_type": "vec3",
+        "target_type": "vec3"
+      }
+    },
+    {
+      "source": "lighting/normal_mapping/normal_mapping",
+      "target": "lighting/point_light/basic_point_light",
+      "source_port": "normalOut",
+      "target_port": "lightColor",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": [],
+        "source_type": "vec3",
+        "target_type": "vec3"
+      }
+    }
+  ],
+  "validation": {
+    "errors": [],
+    "warnings": []
+  }
+}

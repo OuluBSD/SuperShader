@@ -1,0 +1,18 @@
+@startuml
+title SuperShader Module Data Flow
+
+component [basic_point_light] as lighting_point_light_basic_point_light
+component [normal_mapping] as lighting_normal_mapping_normal_mapping
+component [diffuse_lighting] as lighting_diffuse_diffuse_lighting
+component [specular_lighting] as lighting_specular_specular_lighting
+component [pbr_lighting] as lighting_pbr_pbr_lighting
+
+lighting_point_light_basic_point_light --> lighting_normal_mapping_normal_mapping : lightColorOut -> FragPos
+lighting_point_light_basic_point_light --> lighting_normal_mapping_normal_mapping : lightColorOut -> Normal
+lighting_point_light_basic_point_light --> lighting_normal_mapping_normal_mapping : lightColorOut -> Tangent
+lighting_normal_mapping_normal_mapping --> lighting_point_light_basic_point_light : normalOut -> FragPos
+lighting_normal_mapping_normal_mapping --> lighting_point_light_basic_point_light : normalOut -> Normal
+lighting_normal_mapping_normal_mapping --> lighting_point_light_basic_point_light : normalOut -> lightPos
+lighting_normal_mapping_normal_mapping --> lighting_point_light_basic_point_light : normalOut -> lightColor
+
+@enduml

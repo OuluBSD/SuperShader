@@ -10,12 +10,12 @@
     ]
   },
   "modules": [
-    "basic_point_light",
-    "normal_mapping",
-    "shadow_mapping",
-    "specular_lighting",
-    "pbr_lighting",
     "diffuse_lighting",
-    "directional_light"
+    "directional_light",
+    "pbr_lighting",
+    "specular_lighting",
+    "basic_point_light",
+    "shadow_mapping",
+    "normal_mapping"
   ]
 }
