@@ -8,12 +8,6 @@ bool is_demo_stage_composite()
 }
 
 // Function 2
-bool is_demo_stage_composite(int stage)
-{
-    return uint(stage - DEMO_STAGE_DEPTH) >= uint(DEMO_STAGE_COMPOSITE - DEMO_STAGE_DEPTH);
-}
-
-// Function 3
 vec4 CompositeSample(vec2 UV) {
 	vec2 InverseRes = 1.0 / iResolution.xy;
 	vec2 InverseP = vec2(P, 0.0) * InverseRes;
@@ -61,7 +55,7 @@ vec4 CompositeSample(vec2 UV) {
 	return (Encoded - MinC) / CRange;
 }
 
-// Function 4
+// Function 3
 vec4 CompositeSample(vec2 UV, vec2 InverseRes) {
 	vec2 InverseP = vec2(P, 0.0) * InverseRes;
 	
@@ -91,6 +85,12 @@ vec4 CompositeSample(vec2 UV, vec2 InverseRes) {
 
 	vec4 Encoded = Y + I * cos(TW) + Q * sin(TW);
 	return (Encoded - MinC) * InvCRange;
+}
+
+// Function 4
+bool is_demo_stage_composite(int stage)
+{
+    return uint(stage - DEMO_STAGE_DEPTH) >= uint(DEMO_STAGE_COMPOSITE - DEMO_STAGE_DEPTH);
 }
 
 // Function 5

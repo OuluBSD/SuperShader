@@ -20,10 +20,10 @@ void main() {
     // Normalize the normal vector
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
-    
+
     // Initialize color
     vec3 result = vec3(0.0);
-    
+
     // Final color
     FragColor = vec4(result, 1.0);
 }

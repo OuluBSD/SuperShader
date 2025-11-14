@@ -2,133 +2,29 @@
 // Automatically extracted from particle/physics simulation-related shaders
 
 // Function 1
-void ResolveGroundCollision (inout vec2 point, inout bool pointTouchingGround)
+void CollideEye(inout vec3 p)
 {
-    vec2 gradient;
-    float dist = EstimatedDistanceFromPointToGround (point, 1.0, 1.0, gradient) * -1.0;
-    if (dist < c_wheelRadius)
-    {
-        float distanceAdjust = c_wheelRadius - dist;
-        point -= normalize(gradient) * distanceAdjust;
-        pointTouchingGround = true;
-    }
+	// FIXME should actually distribute the movement throughout all these iterations - see fixes in Plumbing Maze
+	// multiple collision iterations to prevent tunnelling at low fps
+	for (int i = 3; --i >= 0; ) { // repeating helps with getting stuck in crevices
+    	CollideSphere(p, eyeradius);
+//		pos.y = max(pos.y, radius); // HACK prevent going beneath ground plane just in case
+	}
 }
 
 // Function 2
-void collide (in vec2 offset) {
-
-	// Get the position of the cell
-	vec2 cellPosition = floor (particlePosition + offset) + 0.5;
-
-	// Get the particle ID and the collider
-	vec4 data = texture (iChannel1, cellPosition / iResolution.xy);
-	vec2 particleId = data.rg;
-	float collider = data.a;
-
-	// Check whether there is a particle here
-	if (offset == vec2 (0.0)) {
-
-		// This is the current particle
-		particleIdCheck = particleId;
+void CollideCapsule(inout vec3 pos, vec3 ofs, float radius)
+{
+    vec3 p = pos, no; float d = 3.4e38;
+	int ncapsph = IZERO + 5; //7; //9; //3; //
+	for (float d2, st = 2./float(ncapsph), j = -1.; j <= 1.; j += st) {
+		vec3 ns = SceneNormal(p + j * ofs, .1*radius, d2, IZERO);
+		if (d2 < d) { d = d2; no = ns; }
 	}
-	else if (particleId.x > 0.0) {
-
-		// Get the velocity and position of this other particle
-		data = texture (iChannel0, particleId / iResolution.xy);
-		vec2 otherParticleVelocity = data.rg;
-		vec2 otherParticlePosition = data.ba;
-
-		// Compute the distance between these 2 particles
-		vec2 direction = otherParticlePosition - particlePosition;
-		float distSquared = dot (direction, direction);
-
-		// Check whether these 2 particles touch each other
-		if (distSquared < 4.0 * RADIUS_PARTICLE * RADIUS_PARTICLE) {
-
-			// Normalize the direction
-			float dist = sqrt (distSquared);
-			direction /= dist;
-
-			// Apply the collision force (spring)
-			float compression = 2.0 * RADIUS_PARTICLE - dist;
-			particleForce -= direction * (compression * COLLISION_SPRING_STIFFNESS_PARTICLE - dot (otherParticleVelocity - particleVelocity, direction) * COLLISION_SPRING_DAMPING);
-		}
-	}
-
-	// Collision with a collider?
-	if (collider > 0.5) {
-
-		// Compute the distance between the center of the particle and the collider
-		vec2 direction = cellPosition - particlePosition;
-		vec2 distCollider = max (abs (direction) - RADIUS_COLLIDER, 0.0);
-		float distSquared = dot (distCollider, distCollider);
-
-		// Check whether the particle touches the collider
-		if (distSquared < RADIUS_PARTICLE * RADIUS_PARTICLE) {
-
-			// Normalize the direction
-			float dist = sqrt (distSquared);
-			direction = sign (direction) * distCollider / dist;
-
-			// Apply the collision force (spring)
-			float compression = RADIUS_PARTICLE - dist;
-			particleForce -= direction * (compression * COLLISION_SPRING_STIFFNESS_COLLIDER + dot (particleVelocity, direction) * COLLISION_SPRING_DAMPING);
-		}
-	}
+	pos -= no * min(0., d  - radius);
 }
 
 // Function 3
-vec2 collisionWithPlane(inout Body b0, vec3 plane) {
-    vec2 normal = normalize(plane.xy);
-    float dist = dot(b0.pos,normal) + plane.z;
-    float penetration = BALL_SIZE - dist;
-    if(penetration > 0.0) {
-        vec2 r0 = -normal * BALL_SIZE;        
-
-        // normal
-        vec2 vel0 = b0.vel + cross2(b0.ang_vel,r0);
-        vec2 rel_vel = vel0;  
-        
-        float w1 = cross2(r0,normal);
-
-        float a = (1.0 + ELASTICITY) * dot(normal,rel_vel);
-        float b = b0.inv_mass + w1 * w1 * b0.inv_inertia;
-        float lambda = max(-a / b, 0.0);
-
-        b0.vel += normal * (lambda * b0.inv_mass);
-        b0.ang_vel += cross2(r0, normal) * lambda * b0.inv_inertia;
-
-        // friction
-        vel0 = b0.vel + cross2(b0.ang_vel,r0);
-        rel_vel = vel0;  
-
-        vec2 tangent = cross2(normal,1.0);
-        w1 = cross2(r0,tangent);
-
-        a = (1.0 + ELASTICITY) * dot(tangent,rel_vel);
-        b = b0.inv_mass + w1 * w1 * b0.inv_inertia;
-        float lambdaF = clamp(-a / b, -lambda, lambda);
-
-        b0.vel += tangent * (lambdaF * b0.inv_mass);
-        b0.ang_vel += cross2(r0, tangent) * lambdaF * b0.inv_inertia;
-        
-        return normal * penetration;
-    }
-    return vec2(0.0);
-}
-
-// Function 4
-bool Collision(vec3 p, vec3 v, vec3 omega, vec4 n_and_d, out float vrel) {
-    if (n_and_d.w < 0.01) { 
-    	vrel = dot(n_and_d.xyz, v + cross(omega, p));
-        
-        return vrel < 0.0;
-    }
-    
-    return false;
-}
-
-// Function 5
 bool Collide( vec2 p0, vec2 s0, vec2 p1, vec2 s1 )
 {
     // pivot x in the middle, and y in the bottom
@@ -141,382 +37,12 @@ bool Collide( vec2 p0, vec2 s0, vec2 p1, vec2 s1 )
         	&& 	p1.y <= p0.y + s0.y;
 }
 
-// Function 6
-void collision(vec2 f, vec2 R, inout particle parts)
-{
-    vec2 np = parts.pos + parts.vit;
-    vec2 cp = vec2(.45, .0);
-    vec2 dd = np -cp;
-	if (length(dd) < .25+parts.ma/24.)
-    {
-        //parts.vit *= -.95;
-        parts.acc *= -.75;
-        parts.vit *= -1./(length(dd)+.505);
-    }
-
-}
-
-// Function 7
-vec4 findCollisionPouint()
-{
-    uint ci = pixelx/12u;
-    uint cj = pixely/4u;
-    if (cj>=ci) discard;
-    
-    if (length(getCubePos(ci)-getCubePos(cj))>6.0 && cj!=0u) // bounding check
-    {
-        return vec4(0.,0.,0.,0.);
-    }
-    
-    uint j = pixelx%12u;
-    
-    if (pixely%4u<2u) // swap the two cubes to check collision both ways
-    {
-        uint t = ci;
-        ci = cj;
-        cj = t;
-    }
-
-    vec3 pa = cubeTransform(cj,edge(j,0u)); // a world space edge of cube j
-    vec3 pb = cubeTransform(cj,edge(j,1u));
-    float ea=0.0;
-    float eb=1.0;
-    for(uint l=0u;l<((ci==0u)?1u:6u);l++) // clamp it with the 6 planes of cube i
-    {
-        vec4 pl = getCubePlane(ci,l);
-        pl/=length(pl.xyz);
-        if (abs(dot(pl.xyz,pb-pa))>0.0001)
-        {
-            float e = -(dot(pl.xyz,pa)-pl.w)/dot(pl.xyz,pb-pa);
-            if (dot(pb-pa,pl.xyz)>0.0)
-            {
-                eb=min(eb,e);
-            }
-            else
-            {
-                ea=max(ea,e);
-            }
-        }
-        else
-        {
-            ea=999999.0; // edge is parallel to plane
-        }
-    }
-    
-    vec3 coll = pa+(pb-pa)*((pixely%2u==0u)?ea:eb);
-    if (eb<=ea || cj==0u)
-    {
-        coll = vec3(0.,0.,0.);
-    }
-    
-    
-    return  vec4(coll,0.0);
-}
-
-// Function 8
-void CollideSphere(inout vec3 pos, float radius)
-{
-    float d;
-    vec3 n = SceneNormal(pos, radius, d, IZERO);
-    pos -= n * min(0., d - radius);
-}
-
-// Function 9
-void BodyCollideShapeSphere( inout Body body, vec3 vSphereOrigin, float fSphereRadius, float dT )
-{    
-    vec3 vSphereWorld = ObjToWorld( vSphereOrigin, body.mRot) + body.vPos;
-    
-    ClosestSurface closest = GetSceneClosestSurface( vSphereWorld );
-    
-    float fDepth = fSphereRadius - closest.fDist;
-    
-    if ( fDepth < 0.0 )
-        return;
-    
-    vec3 vNormal = GetSceneNormal( vSphereWorld );
-    vec3 vHitPos = vSphereWorld - vNormal * closest.fDist;    
-    vec3 vPointVel = BodyPointVelocity( body, vHitPos );
-    
-    float fDot = dot( vPointVel, vNormal );
-    
-    if( fDot >= 0.0 )
-        return;
-    
-    float fRestitution = 0.5;
-    
-    vec3 vRelativePos = (vHitPos - body.vPos);
-    float fDenom = (1.0/body.fMass );
-    float fCr = dot( cross( cross( vRelativePos, vNormal ), vRelativePos), vNormal);
-    fDenom += fCr / body.fIT;
-    
-    float fImpulse = -((1.0 + fRestitution) * fDot) / fDenom;
-    
-    fImpulse += fDepth / fDenom;
-    
-    vec3 vImpulse = vNormal * fImpulse;
-    
-    vec3 vFriction = Vec3Perp( vPointVel, vNormal ) * body.fMass;
-    float fLimit = 100000.0;
-    float fMag = length(vFriction);
-    if( fMag > 0.0 )
-    {	        
-        vFriction = normalize( vFriction );
-
-        fMag = min( fMag, fLimit );
-        vFriction = vFriction * fMag;
-
-        //BodyApplyForce( body, vHitPos, vFriction );
-        vImpulse += vFriction * dT;        
-    }
-    else
-    {
-        vFriction = vec3(0.0);
-    }
-    
-    BodyApplyImpulse( body, vHitPos, vImpulse );
-}
-
-// Function 10
-void CollideCapsule(inout vec3 pos, vec3 ofs, float radius)
-{
-    vec3 p = pos, no; float d = 3.4e38;
-	int ncapsph = IZERO + 5; //7; //9; //3; //
-	for (float d2, st = 2./float(ncapsph), j = -1.; j <= 1.; j += st) {
-		vec3 ns = SceneNormal(p + j * ofs, .1*radius, d2, IZERO);
-		if (d2 < d) { d = d2; no = ns; }
-	}
-	pos -= no * min(0., d  - radius);
-}
-
-// Function 11
+// Function 4
 void Collision(vec3 prev, inout vec3 p) {
     if (p.y < 1.0) p = vec3(prev.xz, min(1.0, prev.y)).xzy;
 }
 
-// Function 12
-void CollideEye(inout vec3 p)
-{
-	// FIXME should actually distribute the movement throughout all these iterations - see fixes in Plumbing Maze
-	// multiple collision iterations to prevent tunnelling at low fps
-	for (int i = 3; --i >= 0; ) { // repeating helps with getting stuck in crevices
-    	CollideSphere(p, eyeradius);
-//		pos.y = max(pos.y, radius); // HACK prevent going beneath ground plane just in case
-	}
-}
-
-// Function 13
-float Collide( in vec3 pos, in vec3 destination, in float radius )
-{
-    radius -= collisionThreshold;
-    
-    float d = length(destination-pos);
-    vec3 r = (destination-pos)/d;
-    
-	// DON'T do SDF+radius - SDF's gradient is <= 1.0 so ball will hover!
-    // instead, sample at the front of the ball
-    // this means it won't collide properly in tight nooks
-//    pos += r*radius;
-//AARGH! that ruins rolling!
-// => maybe we need a correct, analytical gradient
-// or maybe we can correct it because we have more time
-    vec3 n = GetNormal(pos,.001,false);
-    pos -= n*radius; // aha! displace it toward closest surface
-    
-    float h = SDF(pos,false);
-    
-    // early out
-    if ( h >= d
-       || ( h < collisionThreshold && dot(r,n) > 0. ) ) // hack, don't collide if we're below the ground & moving outward
-    {
-        return 1.0;
-    }
-    
-    float t = 0.;
-    for ( int i=0; i < 20; i++ )
-    {
-        t += h;
-        h = SDF(pos+r*t,false);
-        if ( t > d || h < collisionThreshold )
-            break;
-    }
-    
-    t /= d;
-    return min(t,1.0);
-}
-
-// Function 14
-bool CollideEye(inout vec3 p)
-{
-	float eh = .5 * eyeh - eyeradius;
-	vec3 po = p; // HACK not best way to detect collision; too late anyway
-	// FIXME should actually distribute the movement throughout all these iterations - see fixes in Plumbing Maze
-	// multiple collision iterations to prevent tunnelling at low fps
-	for (int i = 3; --i >= 0; ) { // repeating helps with getting stuck in crevices
-		p.y -= eh; // capsule center is below the eyes
-		CollideCapsule(p, vec3(0,eh,0), eyeradius);
-		p.y += eh;
-//		pos.y = max(pos.y, radius + abs(ofs.y)); // HACK prevent going beneath ground plane just in case
-	} // FIXME the response when stepping up onto steps can be extremely bouncy
-	return dot(po-p,po-p) > 1e-8; // must be very sensitive; probably breaks at high fps
-}
-
-// Function 15
-void solveCollisions(inout vec2 particlePrevPosition, inout vec2 particleCurrPosition)
-{
-    vec2 particleInertia = (particleCurrPosition - particlePrevPosition);
-    
-	if(particleCurrPosition.x < particlesSize || particleCurrPosition.x > iResolution.x - particlesSize)
-    {
-    	particleCurrPosition.x = clamp(particleCurrPosition.x, particlesSize, iResolution.x - particlesSize);
-        particlePrevPosition.x = particleCurrPosition.x + particleInertia.x * collisionDamping;
-    }
-    
-    if(particleCurrPosition.y < particlesSize || particleCurrPosition.y > iResolution.y - particlesSize)
-    {
-    	particleCurrPosition.y = clamp(particleCurrPosition.y, particlesSize, iResolution.y - particlesSize);
-        particlePrevPosition.y = particleCurrPosition.y + particleInertia.y * collisionDamping;
-    }
-}
-
-// Function 16
-void docollisions()
-{
-    ballwall(0);
-    ballwall(1);
-    ballvsball(0,1);
-    if (ballCount>2)
-    {
-    	ballwall(2);
-    	ballvsball(0,2);
-    	ballvsball(1,2);
-        if (ballCount>3)
-        {
-    		ballwall(3);
-            ballvsball(0,3);
-            ballvsball(1,3);
-            ballvsball(2,3);
-        }
-    }
-}
-
-// Function 17
-void handleWallCollisions(inout vec2 pos, inout vec2 vel)
-{
-    // If we are within distance R of the bottom, then we have hit the bottom (and likely gone past it)
-    if (pos.y < R) 
-    { 
-        pos.y = (R+R)-pos.y; // Bounce off the bottom, so that we are ALWAYS at least R away
-        vel.y = abs(vel.y * 0.9); // Make sure we are moving up, and lose some energy
-    }
-
-    // Similarly for left and right walls
-    // If we reach left/right wall, invert the speed in the x direction. 
-    if (pos.x < R) { pos.x = (R+R)-pos.x; vel.x = abs(vel.x * 0.9); }
-    if (pos.x > 1.0-R) { pos.x = (2.0-(R+R)) - pos.x; vel.x = -abs(vel.x * 0.9); }
-}
-
-// Function 18
-vec2 collisionWithBody(inout Body b0, in Body b1) {
-    vec2 normal = b0.pos - b1.pos;
-    float dist = length(normal);
-    float penetration = 2.0 * BALL_SIZE - dist;
-    if(penetration > 0.0) {
-        normal /= dist;
-
-        vec2 r0 = -normal * BALL_SIZE;
-        vec2 r1 = normal * BALL_SIZE;
-        
-        // normal
-        vec2 vel0 = b0.vel + cross2(b0.ang_vel,r0);
-        vec2 vel1 = b1.vel + cross2(b1.ang_vel,r1);
-        vec2 rel_vel = vel0 - vel1;
-        
-        float w1 = cross2(r0,normal);
-        float w2 = cross2(r1,normal);
-
-        float a = (1.0 + ELASTICITY) * dot(normal,rel_vel);
-        float b = b0.inv_mass + b1.inv_mass +
-            w1 * w1 * b0.inv_inertia +
-            w2 * w2 * b1.inv_inertia;
-        float lambda = max(-a / b, 0.0);
-
-        b0.vel += normal * (lambda * b0.inv_mass);
-        b0.ang_vel += cross2(r0, normal) * lambda * b0.inv_inertia;
-        b1.vel -= normal * (lambda * b1.inv_mass);
-        b1.ang_vel -= cross2(r1, normal) * lambda * b1.inv_inertia;
-
-        // friction
-        vel0 = b0.vel + cross2(b0.ang_vel,r0);
-        vel1 = b1.vel + cross2(b1.ang_vel,r1);
-        rel_vel = vel0 - vel1;  
-
-        vec2 tangent = cross2(normal,1.0);
-        w1 = cross2(r0,tangent);
-        w2 = cross2(r1,tangent);
-
-        a = (1.0 + ELASTICITY) * dot(tangent,rel_vel);
-        b = b0.inv_mass + b1.inv_mass +
-            w1 * w1 * b0.inv_inertia +
-            w2 * w2 * b1.inv_inertia;
-        float lambdaF = clamp(-a / b, -lambda, lambda);
-
-        b0.vel += tangent * (lambdaF * b0.inv_mass);
-        b0.ang_vel += cross2(r0, tangent) * lambdaF * b0.inv_inertia;
-        
-        return normal * penetration * 0.5;
-    }
-    return vec2(0.0);
-}
-
-// Function 19
-vec4 get_collision_plane(int index)
-{
-    ivec2 addr = ivec2(ADDR_RANGE_COLLISION_PLANES.xy);
-    addr.x += index;
-    return texelFetch(SETTINGS_CHANNEL, addr, 0);
-}
-
-// Function 20
-bool AABBCollision(vec3 ro, vec3 rd, vec3 boxMin, vec3 boxMax, out float minDist)
-{
-    vec3 invRd = 1.0 / rd;
-    vec3 t1 = (boxMin - ro) * invRd;
-    vec3 t2 = (boxMax - ro) * invRd;
-
-    vec3 mins = min(t1, t2);
-    vec3 maxs = max(t1, t2);
-
-    float tmin = max(mins.x, max(mins.y, mins.z));
-    float tmax = min(maxs.x, min(maxs.y, maxs.z));
-
-    minDist = tmin;
-    return tmax > tmin && tmax > 0.0;
-}
-
-// Function 21
-void debugCollision(int ci,int cj)
-{
-    vec4 sep = readTex0(ci+CUBECOUNT*12,cj);
-    for(int k=0;k<48;k++)
-    {
-        vec3 cpos = getCollision(ci,cj,k);
-        debugdot(cpos);
-    	debugline(cpos,cpos + readTex2(ci*12+k%12,cj*4+k/12).xyz*10.0 );
-    }
-}
-
-// Function 22
-void BodyCollide( inout Body body, float dT )
-{
-    BodyCollideShapeSphere( body, vec3( 0.7, 0.7,  1.5), 0.5, dT );
-    BodyCollideShapeSphere( body, vec3(-0.7, 0.7,  1.5), 0.5, dT );
-    BodyCollideShapeSphere( body, vec3( 0.7, 0.7, -1.5), 0.5, dT );
-    BodyCollideShapeSphere( body, vec3(-0.7, 0.7, -1.5), 0.5, dT );
-    BodyCollideShapeSphere( body, vec3( 0.5, 1.0,  0.0), 0.7, dT );
-    BodyCollideShapeSphere( body, vec3(-0.5, 1.0,  0.0), 0.7, dT );
-}
-
-// Function 23
+// Function 5
 void find_collision(inout vec3 start, inout vec3 delta, out int hit_plane, out float step_height)
 {
     const float STEP_SIZE = 18.;
@@ -631,7 +157,28 @@ void find_collision(inout vec3 start, inout vec3 delta, out int hit_plane, out f
     }
 }
 
-// Function 24
+// Function 6
+void docollisions()
+{
+    ballwall(0);
+    ballwall(1);
+    ballvsball(0,1);
+    if (ballCount>2)
+    {
+    	ballwall(2);
+    	ballvsball(0,2);
+    	ballvsball(1,2);
+        if (ballCount>3)
+        {
+    		ballwall(3);
+            ballvsball(0,3);
+            ballvsball(1,3);
+            ballvsball(2,3);
+        }
+    }
+}
+
+// Function 7
 void handleInterBallCollisions(int ballIdx, inout vec2 pos, inout vec2 vel)
 {
     // Iterate through all the other balls to see if we are colliding with any.
@@ -673,91 +220,7 @@ void handleInterBallCollisions(int ballIdx, inout vec2 pos, inout vec2 vel)
     }   
 }
 
-// Function 25
-void CollisionImpulse(vec3 x, vec4 q, vec3 v, vec3 omega, mat3 invI, inout vec3 P , inout vec3 L) {
-    vec3[8] lamp_box = vec3[](
-        vec3(-lamp.x, -lamp.y, -lamp.z),
-        vec3(lamp.x, -lamp.y, -lamp.z),
-        vec3(-lamp.x, lamp.y, -lamp.z),
-        vec3(lamp.x, lamp.y, -lamp.z),
-        vec3(-lamp.x, -lamp.y, lamp.z),
-        vec3(lamp.x, -lamp.y, lamp.z),
-        vec3(-lamp.x, lamp.y, lamp.z),
-        vec3(lamp.x, lamp.y, lamp.z));
-    
-    vec4[8] normal_and_dist;
-    for (int i = 0; i < 8; ++i) {
-        lamp_box[i] = quatRotate(q, lamp_box[i]);
-    	vec3 p = lamp_box[i] + x;
-        normal_and_dist[i] = vec4(-sdBoxNormal(p, room), -sdBox(p, room));
-        lamp_box[i].y = max(-room.y, lamp_box[i].y);
-    }
-    
-    for (int s = 0; s < 10; ++s){
-     	for (int i = 0; i < 8; ++i) {
-   			vec3 p = lamp_box[i];
-            
-            float vrel = 0.0;
-        	if (Collision(p, v, omega, normal_and_dist[i], vrel)) {
-                const float epsilon = 0.5;
-                vec3 n = normal_and_dist[i].xyz;
-                vec3 f = n*((-vrel*(1.0 + epsilon)) 
-                         / (invMass + dot(n, cross(invI*cross(p, n), p))));
-                P += f;
-                L += cross(p, f);
-                
-                v = P*invMass;
-                omega = invI*L;
-        	}
-        }
-    }
-}
-
-// Function 26
-void Entity_Collide( inout Entity entity, Entity otherEntity, float fTimestep )
-{
-    // True if we can be pushed
-    if ( CanBePushed( entity, otherEntity ) )
-    {
-        vec2 vDeltaPos = entity.vPos.xz - otherEntity.vPos.xz;
-        vec2 vDeltaVel = entity.vVel.xz - otherEntity.vVel.xz;
-
-        float fLen = length( vDeltaPos );
-        float fVelLen = length(vDeltaVel);
-        float fCombinedRadius = 20.0;
-        if ( fLen > 0.0 && fLen < fCombinedRadius )
-        {
-            vec2 vNormal = normalize(vDeltaPos);
-            
-            if ( fVelLen > 0.0 )
-            {
-                float fProj = dot( vNormal, vDeltaVel );
-
-                if ( fProj < 0.0 )
-                {
-                    // cancel vel in normal dir
-                    vec2 vImpulse = -fProj * vNormal;
-                    
-                    // Push away
-                    float fPenetration = fCombinedRadius - fLen;
-                    vImpulse += vNormal * fPenetration * 5.0 * fTimestep;
-                    
-                    
-				    if ( CanBePushed( otherEntity, entity ) )
-                    {
-                    	entity.vVel.xz += vImpulse * 0.5;
-                    }
-                    else
-                    {
-                    	entity.vVel.xz += vImpulse;
-                    }
-                }
-            }            
-        }        
-    }    
-}
-
-// Function 27
+// Function 8
 void handle_collision(inout vec3 start, vec3 delta, int slide_plane, out int hit_plane, out int ground_plane)
 {
     // We iterate again through all the collision brushes, this time performing two ray intersections:
@@ -865,5 +328,542 @@ void handle_collision(inout vec3 start, vec3 delta, int slide_plane, out int hit
         start += 1e-2 * plane.xyz;
         delta -= dot(plane.xyz, delta) * plane.xyz;
     }
+}
+
+// Function 9
+vec2 collisionWithPlane(inout Body b0, vec3 plane) {
+    vec2 normal = normalize(plane.xy);
+    float dist = dot(b0.pos,normal) + plane.z;
+    float penetration = BALL_SIZE - dist;
+    if(penetration > 0.0) {
+        vec2 r0 = -normal * BALL_SIZE;        
+
+        // normal
+        vec2 vel0 = b0.vel + cross2(b0.ang_vel,r0);
+        vec2 rel_vel = vel0;  
+        
+        float w1 = cross2(r0,normal);
+
+        float a = (1.0 + ELASTICITY) * dot(normal,rel_vel);
+        float b = b0.inv_mass + w1 * w1 * b0.inv_inertia;
+        float lambda = max(-a / b, 0.0);
+
+        b0.vel += normal * (lambda * b0.inv_mass);
+        b0.ang_vel += cross2(r0, normal) * lambda * b0.inv_inertia;
+
+        // friction
+        vel0 = b0.vel + cross2(b0.ang_vel,r0);
+        rel_vel = vel0;  
+
+        vec2 tangent = cross2(normal,1.0);
+        w1 = cross2(r0,tangent);
+
+        a = (1.0 + ELASTICITY) * dot(tangent,rel_vel);
+        b = b0.inv_mass + w1 * w1 * b0.inv_inertia;
+        float lambdaF = clamp(-a / b, -lambda, lambda);
+
+        b0.vel += tangent * (lambdaF * b0.inv_mass);
+        b0.ang_vel += cross2(r0, tangent) * lambdaF * b0.inv_inertia;
+        
+        return normal * penetration;
+    }
+    return vec2(0.0);
+}
+
+// Function 10
+void CollideSphere(inout vec3 pos, float radius)
+{
+    float d;
+    vec3 n = SceneNormal(pos, radius, d, IZERO);
+    pos -= n * min(0., d - radius);
+}
+
+// Function 11
+vec2 collisionWithBody(inout Body b0, in Body b1) {
+    vec2 normal = b0.pos - b1.pos;
+    float dist = length(normal);
+    float penetration = 2.0 * BALL_SIZE - dist;
+    if(penetration > 0.0) {
+        normal /= dist;
+
+        vec2 r0 = -normal * BALL_SIZE;
+        vec2 r1 = normal * BALL_SIZE;
+        
+        // normal
+        vec2 vel0 = b0.vel + cross2(b0.ang_vel,r0);
+        vec2 vel1 = b1.vel + cross2(b1.ang_vel,r1);
+        vec2 rel_vel = vel0 - vel1;
+        
+        float w1 = cross2(r0,normal);
+        float w2 = cross2(r1,normal);
+
+        float a = (1.0 + ELASTICITY) * dot(normal,rel_vel);
+        float b = b0.inv_mass + b1.inv_mass +
+            w1 * w1 * b0.inv_inertia +
+            w2 * w2 * b1.inv_inertia;
+        float lambda = max(-a / b, 0.0);
+
+        b0.vel += normal * (lambda * b0.inv_mass);
+        b0.ang_vel += cross2(r0, normal) * lambda * b0.inv_inertia;
+        b1.vel -= normal * (lambda * b1.inv_mass);
+        b1.ang_vel -= cross2(r1, normal) * lambda * b1.inv_inertia;
+
+        // friction
+        vel0 = b0.vel + cross2(b0.ang_vel,r0);
+        vel1 = b1.vel + cross2(b1.ang_vel,r1);
+        rel_vel = vel0 - vel1;  
+
+        vec2 tangent = cross2(normal,1.0);
+        w1 = cross2(r0,tangent);
+        w2 = cross2(r1,tangent);
+
+        a = (1.0 + ELASTICITY) * dot(tangent,rel_vel);
+        b = b0.inv_mass + b1.inv_mass +
+            w1 * w1 * b0.inv_inertia +
+            w2 * w2 * b1.inv_inertia;
+        float lambdaF = clamp(-a / b, -lambda, lambda);
+
+        b0.vel += tangent * (lambdaF * b0.inv_mass);
+        b0.ang_vel += cross2(r0, tangent) * lambdaF * b0.inv_inertia;
+        
+        return normal * penetration * 0.5;
+    }
+    return vec2(0.0);
+}
+
+// Function 12
+void CollisionImpulse(vec3 x, vec4 q, vec3 v, vec3 omega, mat3 invI, inout vec3 P , inout vec3 L) {
+    vec3[8] lamp_box = vec3[](
+        vec3(-lamp.x, -lamp.y, -lamp.z),
+        vec3(lamp.x, -lamp.y, -lamp.z),
+        vec3(-lamp.x, lamp.y, -lamp.z),
+        vec3(lamp.x, lamp.y, -lamp.z),
+        vec3(-lamp.x, -lamp.y, lamp.z),
+        vec3(lamp.x, -lamp.y, lamp.z),
+        vec3(-lamp.x, lamp.y, lamp.z),
+        vec3(lamp.x, lamp.y, lamp.z));
+    
+    vec4[8] normal_and_dist;
+    for (int i = 0; i < 8; ++i) {
+        lamp_box[i] = quatRotate(q, lamp_box[i]);
+    	vec3 p = lamp_box[i] + x;
+        normal_and_dist[i] = vec4(-sdBoxNormal(p, room), -sdBox(p, room));
+        lamp_box[i].y = max(-room.y, lamp_box[i].y);
+    }
+    
+    for (int s = 0; s < 10; ++s){
+     	for (int i = 0; i < 8; ++i) {
+   			vec3 p = lamp_box[i];
+            
+            float vrel = 0.0;
+        	if (Collision(p, v, omega, normal_and_dist[i], vrel)) {
+                const float epsilon = 0.5;
+                vec3 n = normal_and_dist[i].xyz;
+                vec3 f = n*((-vrel*(1.0 + epsilon)) 
+                         / (invMass + dot(n, cross(invI*cross(p, n), p))));
+                P += f;
+                L += cross(p, f);
+                
+                v = P*invMass;
+                omega = invI*L;
+        	}
+        }
+    }
+}
+
+// Function 13
+float Collide( in vec3 pos, in vec3 destination, in float radius )
+{
+    radius -= collisionThreshold;
+    
+    float d = length(destination-pos);
+    vec3 r = (destination-pos)/d;
+    
+	// DON'T do SDF+radius - SDF's gradient is <= 1.0 so ball will hover!
+    // instead, sample at the front of the ball
+    // this means it won't collide properly in tight nooks
+//    pos += r*radius;
+//AARGH! that ruins rolling!
+// => maybe we need a correct, analytical gradient
+// or maybe we can correct it because we have more time
+    vec3 n = GetNormal(pos,.001,false);
+    pos -= n*radius; // aha! displace it toward closest surface
+    
+    float h = SDF(pos,false);
+    
+    // early out
+    if ( h >= d
+       || ( h < collisionThreshold && dot(r,n) > 0. ) ) // hack, don't collide if we're below the ground & moving outward
+    {
+        return 1.0;
+    }
+    
+    float t = 0.;
+    for ( int i=0; i < 20; i++ )
+    {
+        t += h;
+        h = SDF(pos+r*t,false);
+        if ( t > d || h < collisionThreshold )
+            break;
+    }
+    
+    t /= d;
+    return min(t,1.0);
+}
+
+// Function 14
+void solveCollisions(inout vec2 particlePrevPosition, inout vec2 particleCurrPosition)
+{
+    vec2 particleInertia = (particleCurrPosition - particlePrevPosition);
+    
+	if(particleCurrPosition.x < particlesSize || particleCurrPosition.x > iResolution.x - particlesSize)
+    {
+    	particleCurrPosition.x = clamp(particleCurrPosition.x, particlesSize, iResolution.x - particlesSize);
+        particlePrevPosition.x = particleCurrPosition.x + particleInertia.x * collisionDamping;
+    }
+    
+    if(particleCurrPosition.y < particlesSize || particleCurrPosition.y > iResolution.y - particlesSize)
+    {
+    	particleCurrPosition.y = clamp(particleCurrPosition.y, particlesSize, iResolution.y - particlesSize);
+        particlePrevPosition.y = particleCurrPosition.y + particleInertia.y * collisionDamping;
+    }
+}
+
+// Function 15
+bool CollideEye(inout vec3 p)
+{
+	float eh = .5 * eyeh - eyeradius;
+	vec3 po = p; // HACK not best way to detect collision; too late anyway
+	// FIXME should actually distribute the movement throughout all these iterations - see fixes in Plumbing Maze
+	// multiple collision iterations to prevent tunnelling at low fps
+	for (int i = 3; --i >= 0; ) { // repeating helps with getting stuck in crevices
+		p.y -= eh; // capsule center is below the eyes
+		CollideCapsule(p, vec3(0,eh,0), eyeradius);
+		p.y += eh;
+//		pos.y = max(pos.y, radius + abs(ofs.y)); // HACK prevent going beneath ground plane just in case
+	} // FIXME the response when stepping up onto steps can be extremely bouncy
+	return dot(po-p,po-p) > 1e-8; // must be very sensitive; probably breaks at high fps
+}
+
+// Function 16
+bool Collision(vec3 p, vec3 v, vec3 omega, vec4 n_and_d, out float vrel) {
+    if (n_and_d.w < 0.01) { 
+    	vrel = dot(n_and_d.xyz, v + cross(omega, p));
+        
+        return vrel < 0.0;
+    }
+    
+    return false;
+}
+
+// Function 17
+void BodyCollideShapeSphere( inout Body body, vec3 vSphereOrigin, float fSphereRadius, float dT )
+{    
+    vec3 vSphereWorld = ObjToWorld( vSphereOrigin, body.mRot) + body.vPos;
+    
+    ClosestSurface closest = GetSceneClosestSurface( vSphereWorld );
+    
+    float fDepth = fSphereRadius - closest.fDist;
+    
+    if ( fDepth < 0.0 )
+        return;
+    
+    vec3 vNormal = GetSceneNormal( vSphereWorld );
+    vec3 vHitPos = vSphereWorld - vNormal * closest.fDist;    
+    vec3 vPointVel = BodyPointVelocity( body, vHitPos );
+    
+    float fDot = dot( vPointVel, vNormal );
+    
+    if( fDot >= 0.0 )
+        return;
+    
+    float fRestitution = 0.5;
+    
+    vec3 vRelativePos = (vHitPos - body.vPos);
+    float fDenom = (1.0/body.fMass );
+    float fCr = dot( cross( cross( vRelativePos, vNormal ), vRelativePos), vNormal);
+    fDenom += fCr / body.fIT;
+    
+    float fImpulse = -((1.0 + fRestitution) * fDot) / fDenom;
+    
+    fImpulse += fDepth / fDenom;
+    
+    vec3 vImpulse = vNormal * fImpulse;
+    
+    vec3 vFriction = Vec3Perp( vPointVel, vNormal ) * body.fMass;
+    float fLimit = 100000.0;
+    float fMag = length(vFriction);
+    if( fMag > 0.0 )
+    {	        
+        vFriction = normalize( vFriction );
+
+        fMag = min( fMag, fLimit );
+        vFriction = vFriction * fMag;
+
+        //BodyApplyForce( body, vHitPos, vFriction );
+        vImpulse += vFriction * dT;        
+    }
+    else
+    {
+        vFriction = vec3(0.0);
+    }
+    
+    BodyApplyImpulse( body, vHitPos, vImpulse );
+}
+
+// Function 18
+void ResolveGroundCollision (inout vec2 point, inout bool pointTouchingGround)
+{
+    vec2 gradient;
+    float dist = EstimatedDistanceFromPointToGround (point, 1.0, 1.0, gradient) * -1.0;
+    if (dist < c_wheelRadius)
+    {
+        float distanceAdjust = c_wheelRadius - dist;
+        point -= normalize(gradient) * distanceAdjust;
+        pointTouchingGround = true;
+    }
+}
+
+// Function 19
+bool AABBCollision(vec3 ro, vec3 rd, vec3 boxMin, vec3 boxMax, out float minDist)
+{
+    vec3 invRd = 1.0 / rd;
+    vec3 t1 = (boxMin - ro) * invRd;
+    vec3 t2 = (boxMax - ro) * invRd;
+
+    vec3 mins = min(t1, t2);
+    vec3 maxs = max(t1, t2);
+
+    float tmin = max(mins.x, max(mins.y, mins.z));
+    float tmax = min(maxs.x, min(maxs.y, maxs.z));
+
+    minDist = tmin;
+    return tmax > tmin && tmax > 0.0;
+}
+
+// Function 20
+void collision(vec2 f, vec2 R, inout particle parts)
+{
+    vec2 np = parts.pos + parts.vit;
+    vec2 cp = vec2(.45, .0);
+    vec2 dd = np -cp;
+	if (length(dd) < .25+parts.ma/24.)
+    {
+        //parts.vit *= -.95;
+        parts.acc *= -.75;
+        parts.vit *= -1./(length(dd)+.505);
+    }
+
+}
+
+// Function 21
+void Entity_Collide( inout Entity entity, Entity otherEntity, float fTimestep )
+{
+    // True if we can be pushed
+    if ( CanBePushed( entity, otherEntity ) )
+    {
+        vec2 vDeltaPos = entity.vPos.xz - otherEntity.vPos.xz;
+        vec2 vDeltaVel = entity.vVel.xz - otherEntity.vVel.xz;
+
+        float fLen = length( vDeltaPos );
+        float fVelLen = length(vDeltaVel);
+        float fCombinedRadius = 20.0;
+        if ( fLen > 0.0 && fLen < fCombinedRadius )
+        {
+            vec2 vNormal = normalize(vDeltaPos);
+            
+            if ( fVelLen > 0.0 )
+            {
+                float fProj = dot( vNormal, vDeltaVel );
+
+                if ( fProj < 0.0 )
+                {
+                    // cancel vel in normal dir
+                    vec2 vImpulse = -fProj * vNormal;
+                    
+                    // Push away
+                    float fPenetration = fCombinedRadius - fLen;
+                    vImpulse += vNormal * fPenetration * 5.0 * fTimestep;
+                    
+                    
+				    if ( CanBePushed( otherEntity, entity ) )
+                    {
+                    	entity.vVel.xz += vImpulse * 0.5;
+                    }
+                    else
+                    {
+                    	entity.vVel.xz += vImpulse;
+                    }
+                }
+            }            
+        }        
+    }    
+}
+
+// Function 22
+vec4 findCollisionPouint()
+{
+    uint ci = pixelx/12u;
+    uint cj = pixely/4u;
+    if (cj>=ci) discard;
+    
+    if (length(getCubePos(ci)-getCubePos(cj))>6.0 && cj!=0u) // bounding check
+    {
+        return vec4(0.,0.,0.,0.);
+    }
+    
+    uint j = pixelx%12u;
+    
+    if (pixely%4u<2u) // swap the two cubes to check collision both ways
+    {
+        uint t = ci;
+        ci = cj;
+        cj = t;
+    }
+
+    vec3 pa = cubeTransform(cj,edge(j,0u)); // a world space edge of cube j
+    vec3 pb = cubeTransform(cj,edge(j,1u));
+    float ea=0.0;
+    float eb=1.0;
+    for(uint l=0u;l<((ci==0u)?1u:6u);l++) // clamp it with the 6 planes of cube i
+    {
+        vec4 pl = getCubePlane(ci,l);
+        pl/=length(pl.xyz);
+        if (abs(dot(pl.xyz,pb-pa))>0.0001)
+        {
+            float e = -(dot(pl.xyz,pa)-pl.w)/dot(pl.xyz,pb-pa);
+            if (dot(pb-pa,pl.xyz)>0.0)
+            {
+                eb=min(eb,e);
+            }
+            else
+            {
+                ea=max(ea,e);
+            }
+        }
+        else
+        {
+            ea=999999.0; // edge is parallel to plane
+        }
+    }
+    
+    vec3 coll = pa+(pb-pa)*((pixely%2u==0u)?ea:eb);
+    if (eb<=ea || cj==0u)
+    {
+        coll = vec3(0.,0.,0.);
+    }
+    
+    
+    return  vec4(coll,0.0);
+}
+
+// Function 23
+vec4 get_collision_plane(int index)
+{
+    ivec2 addr = ivec2(ADDR_RANGE_COLLISION_PLANES.xy);
+    addr.x += index;
+    return texelFetch(SETTINGS_CHANNEL, addr, 0);
+}
+
+// Function 24
+void debugCollision(int ci,int cj)
+{
+    vec4 sep = readTex0(ci+CUBECOUNT*12,cj);
+    for(int k=0;k<48;k++)
+    {
+        vec3 cpos = getCollision(ci,cj,k);
+        debugdot(cpos);
+    	debugline(cpos,cpos + readTex2(ci*12+k%12,cj*4+k/12).xyz*10.0 );
+    }
+}
+
+// Function 25
+void collide (in vec2 offset) {
+
+	// Get the position of the cell
+	vec2 cellPosition = floor (particlePosition + offset) + 0.5;
+
+	// Get the particle ID and the collider
+	vec4 data = texture (iChannel1, cellPosition / iResolution.xy);
+	vec2 particleId = data.rg;
+	float collider = data.a;
+
+	// Check whether there is a particle here
+	if (offset == vec2 (0.0)) {
+
+		// This is the current particle
+		particleIdCheck = particleId;
+	}
+	else if (particleId.x > 0.0) {
+
+		// Get the velocity and position of this other particle
+		data = texture (iChannel0, particleId / iResolution.xy);
+		vec2 otherParticleVelocity = data.rg;
+		vec2 otherParticlePosition = data.ba;
+
+		// Compute the distance between these 2 particles
+		vec2 direction = otherParticlePosition - particlePosition;
+		float distSquared = dot (direction, direction);
+
+		// Check whether these 2 particles touch each other
+		if (distSquared < 4.0 * RADIUS_PARTICLE * RADIUS_PARTICLE) {
+
+			// Normalize the direction
+			float dist = sqrt (distSquared);
+			direction /= dist;
+
+			// Apply the collision force (spring)
+			float compression = 2.0 * RADIUS_PARTICLE - dist;
+			particleForce -= direction * (compression * COLLISION_SPRING_STIFFNESS_PARTICLE - dot (otherParticleVelocity - particleVelocity, direction) * COLLISION_SPRING_DAMPING);
+		}
+	}
+
+	// Collision with a collider?
+	if (collider > 0.5) {
+
+		// Compute the distance between the center of the particle and the collider
+		vec2 direction = cellPosition - particlePosition;
+		vec2 distCollider = max (abs (direction) - RADIUS_COLLIDER, 0.0);
+		float distSquared = dot (distCollider, distCollider);
+
+		// Check whether the particle touches the collider
+		if (distSquared < RADIUS_PARTICLE * RADIUS_PARTICLE) {
+
+			// Normalize the direction
+			float dist = sqrt (distSquared);
+			direction = sign (direction) * distCollider / dist;
+
+			// Apply the collision force (spring)
+			float compression = RADIUS_PARTICLE - dist;
+			particleForce -= direction * (compression * COLLISION_SPRING_STIFFNESS_COLLIDER + dot (particleVelocity, direction) * COLLISION_SPRING_DAMPING);
+		}
+	}
+}
+
+// Function 26
+void BodyCollide( inout Body body, float dT )
+{
+    BodyCollideShapeSphere( body, vec3( 0.7, 0.7,  1.5), 0.5, dT );
+    BodyCollideShapeSphere( body, vec3(-0.7, 0.7,  1.5), 0.5, dT );
+    BodyCollideShapeSphere( body, vec3( 0.7, 0.7, -1.5), 0.5, dT );
+    BodyCollideShapeSphere( body, vec3(-0.7, 0.7, -1.5), 0.5, dT );
+    BodyCollideShapeSphere( body, vec3( 0.5, 1.0,  0.0), 0.7, dT );
+    BodyCollideShapeSphere( body, vec3(-0.5, 1.0,  0.0), 0.7, dT );
+}
+
+// Function 27
+void handleWallCollisions(inout vec2 pos, inout vec2 vel)
+{
+    // If we are within distance R of the bottom, then we have hit the bottom (and likely gone past it)
+    if (pos.y < R) 
+    { 
+        pos.y = (R+R)-pos.y; // Bounce off the bottom, so that we are ALWAYS at least R away
+        vel.y = abs(vel.y * 0.9); // Make sure we are moving up, and lose some energy
+    }
+
+    // Similarly for left and right walls
+    // If we reach left/right wall, invert the speed in the x direction. 
+    if (pos.x < R) { pos.x = (R+R)-pos.x; vel.x = abs(vel.x * 0.9); }
+    if (pos.x > 1.0-R) { pos.x = (2.0-(R+R)) - pos.x; vel.x = -abs(vel.x * 0.9); }
 }
 

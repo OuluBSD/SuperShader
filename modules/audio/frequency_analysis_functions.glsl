@@ -2,78 +2,17 @@
 // Automatically extracted from audio visualization-related shaders
 
 // Function 1
-vec3 spectrum_to_rgb(in float w){
-    float a = 0.;
-    float wl = w;
-
-    return lambdatoXYZ(w)*xyz-vec3(0,0,a);
-}
-
-// Function 2
-void zxspectrum_colors( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec2 pv = floor(fragCoord.xy/LOWREZ);
-    vec2 sv = floor(iResolution.xy/LOWREZ);
-                
-    vec4 cs=smap(texture(iChannel0,pv/sv).rgb);
-    
-    if( mod(pv.x+pv.y,2.0)==1.0)
-    {
-		fragColor = vec4(fmap(vec4(floor(cs.rgb+vec3(0.5+(DITHER*0.3))),cs.a)),1.0);
-    }
-    else
-    {  
-		fragColor = vec4(fmap(vec4(floor(cs.rgb+vec3(0.5-(DITHER*0.3))),cs.a)),1.0);
-    }
-
-}
-
-// Function 3
-float spectrum(float freq, int t, int level)
-{
-    return spectrum(freq, t, level, iChannel3);
-}
-
-// Function 4
-float fft(float f,float r){
-    return fft(f,r,0.0);
-}
-
-// Function 5
-vec3 Spectrum(float x) {
-    // https://www.shadertoy.com/view/wlSBzD
-	float r, g, b;
-    
-    r = x<.16 ? S(0., .16, x)*.169 :
-    	x<.22 ? S(.22, .16, x)*.134+.035 :
-    	x<.41 ? S(.22, .41, x)*.098+.035 :
-    	x<.64 ? S(.41,.64,x)*.851+.133 :
-    			S(1., .64, x)*.984;
-    
-    g = x<.05 ? 0. :
-    	x<.15 ? S(.05, .15, x)*.047 :
-    	x<.45 ? S(.15, .45, x)*.882+.047 :
-    	x<.70 ? S(.70, .45, x)*.796+.133 :
-    			S(1.0, .70, x)*.133;
-    
-    b = x<.18 ? S(0.0, .18, x)*.5 :
-    	x<.22 ? S(.22, .18, x)*.1+.4 :
-    	x<.35 ? S(.22, .35, x)*.059+.4 :
-    	x<.54 ? S(.54, .35, x)*.334+.125 :
-    	x<.60 ? S(.54, .60, x)*.169+.125 :
-    	x<.69 ? S(.69, .60, x)*.243+.051 :
-    	x<.72 ? S(.69, .72, x)*.043+.051 :
-    	x<.89 ? S(.89, .72, x)*.094 : 0.;
-    
-    return vec3(r,g,b);
-}
-
-// Function 6
 float getfrequency(float x) {
 	return texture(iChannel0, vec2(floor(x * FREQ_RANGE + 1.0) / FREQ_RANGE, 0.0)).x + 0.06;
 }
 
-// Function 7
+// Function 2
+float frequency(float index)
+{
+return texture(iChannel0, vec2(index, 0)).x;
+}
+
+// Function 3
 vec2 spectrum( vec2 f, int iters)
 {
     
@@ -92,77 +31,238 @@ vec2 spectrum( vec2 f, int iters)
     return spec;
 }
 
-// Function 8
-vec2 DO_FFT(float u_x,float u_y,inout vec4 c)
+// Function 4
+float smoothFrequency(float x, int smoothness)
 {
-    //current index
-    u_x = floor(u_x);u_y = floor(u_y) - 1.;
-    if(u_x >= R_512){return vec2(0.);}
-    //store for next shader to visual
-    Store_T_F(u_x,u_y,c);
-    //FFT.x is real value,y is imagin value
-    //Bit Reverse Index Value
-    float index = GetBufferValue(u_x,0.).t;
-    //get domain value form Audio buffer texture and sort it
-    if(u_y == -1.){
-    	c.st = vec2(GetTimeDomain(index),0.);
-    }
-    //Do Buttfly
-    //0,1,2,3,4,5,6,7,8 is FFT Step Buttfly
-    if(u_y >= 0. && u_y <= 8.)
+    float f = 0.0;
+    int accumulated = 0;
+    for(float i = 0.0; i <= float(smoothness) / FREQ; i += 1.0 / FREQ)
     {
-        //calculate
-        float mystep = u_y;
-        bool Is_E_data = mod(floor(u_x/exp2(mystep)),2.) == 0.;
-        //è®¡ç®—æ—‹è½¬å› å­
-        float kn = mod(u_x,exp2(mystep));
-        //Cä¸ºeçš„æŒ‡æ•°
-        float C = -(_2PI/exp2(mystep+1.))*kn;
-        vec2 W = vec2(cos(C),sin(C));
-        
-        float burb = exp2(mystep);
-        
-        vec2 buffer = vec2(0.);
-        if(Is_E_data){
-			//tR[i] = FFT[i].Re+FFT[i+(1<<step)].Re*W_Re-FFT[i+(1<<step)].Im*W_Im;
-            //tI[i] = FFT[i].Im+FFT[i+(1<<step)].Re*W_Im+FFT[i+(1<<step)].Im*W_Re;
-            //Get Next pixel buffer
- 			buffer.x = GetFFT(u_x,u_y).x + GetFFT(u_x+burb,u_y).x*W.x - GetFFT(u_x+burb,u_y).y*W.y;
- 			buffer.y = GetFFT(u_x,u_y).y + GetFFT(u_x+burb,u_y).x*W.y + GetFFT(u_x+burb,u_y).y*W.x;
-            c.xy = buffer;
-        }
-        else{
-            //tR[i] = FFT[i-(1<<step)].Re-(FFT[i].Re*W_Re-FFT[i].Im*W_Im);
-            //tI[i] = FFT[i-(1<<step)].Im-(FFT[i].Re*W_Im+FFT[i].Im*W_Re);
-            //Get The Next Pixel Buffer 
-            buffer.x = GetFFT(u_x-burb,u_y).x-(GetFFT(u_x,u_y).x*W.x - GetFFT(u_x,u_y).y*W.y);
-            buffer.y = GetFFT(u_x-burb,u_y).y-(GetFFT(u_x,u_y).x*W.y + GetFFT(u_x,u_y).y*W.x);
-			c.xy = buffer;
-        }
-        
+        f += frequency(x + i);
+        ++accumulated;
     }
-	return GetFFT(u_x,9.).xy;
+    return f / float(accumulated);
 }
 
-// Function 9
+// Function 5
+void zxspectrum_clash( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 pv = floor(fragCoord.xy/LOWREZ);
+    vec2 bv = floor(pv/8.0)*8.0;
+    vec2 sv = floor(iResolution.xy/LOWREZ);
+    
+    
+    vec4 min_cs=vec4(1.0,1.0,1.0,1.0);
+    vec4 max_cs=vec4(0.0,0.0,0.0,0.0);
+    float bright=0.0;
+
+    
+    for(int py=1;py<8;py++)
+    {
+        for(int px=0;px<8;px++)
+        {
+		    vec4 cs=bmap( (texture(iChannel0,(bv+vec2(px,py))/sv).rgb) );
+            bright+=cs.a;
+        	min_cs=min(min_cs,cs);
+        	max_cs=max(max_cs,cs);
+        }
+    }
+    
+    vec4 c;
+    
+    if(bright>=24.0)
+    {
+        bright=1.0;
+    }
+    else
+    {
+        bright=0.0;
+    }
+    
+    if( max_cs.rgb==min_cs.rgb )
+    {
+        min_cs.rgb=vec3(0.0,0.0,0.0);
+    }
+
+    if( max_cs.rgb==vec3(0.0,0.0,0.0) )
+    {
+        bright=0.0;
+        max_cs.rgb=vec3(0.0,0.0,1.0);
+        min_cs.rgb=vec3(0.0,0.0,0.0);
+    }
+    
+    vec3 c1=fmap(vec4(max_cs.rgb,bright));
+    vec3 c2=fmap(vec4(min_cs.rgb,bright));
+    
+    vec3 cs=texture(iChannel0,pv/sv).rgb;
+    
+    vec3 d= (cs+cs) - (c1+c2) ;
+    float dd=d.r+d.g+d.b;
+
+    if( mod(pv.x+pv.y,2.0)==1.0)
+    {
+        fragColor=vec4(
+                dd>=-(DITHER*0.5) ? c1.r : c2.r,
+                dd>=-(DITHER*0.5) ? c1.g : c2.g,
+                dd>=-(DITHER*0.5) ? c1.b : c2.b,
+                1.0);
+    }
+    else
+    {
+        fragColor=vec4(
+                dd>=(DITHER*0.5) ? c1.r : c2.r,
+                dd>=(DITHER*0.5) ? c1.g : c2.g,
+                dd>=(DITHER*0.5) ? c1.b : c2.b,
+                1.0);
+    }
+ 
+//    fragColor.rgb=c1;
+}
+
+// Function 6
+float spectrum(float freq, int t, int level)
+{
+    return spectrum(freq, t, level, iChannel3);
+}
+
+// Function 7
 vec3 hsv2rgb_spectrum(float h, float s, float v) {
 	return v* mix(vec3(1),clamp(1.- abs(1.- mod(3.* h+ vec3(1,0,2), 3.)),0.,1.),s);
 }
 
+// Function 8
+float fft(float p) {
+    return texture(iChannel0, vec2(p, 0.25)).x;
+}
+
+// Function 9
+float spectrum(float domain, int t, int level)
+{
+    float sixty_fourth = 1./32.;
+    vec2 uv = vec2(float(t)*3.*sixty_fourth + sixty_fourth, domain);
+    uv = upper_right(uv); level++;
+    for(int depth = 1; depth < 8; depth++)
+    {
+        if(depth >= level)
+        {
+            break;
+        }
+        uv = lower_right(uv);
+    }
+
+    return texture(iChannel3, uv).x;
+}
+
 // Function 10
-vec4 GetFFT(float x,float y){
-	vec4 FFTBuffer = texture(SelfBuffer,vec2(x+0.5,y+0.5)/SelfResolution);
-    //++i;
-    return FFTBuffer;
+void CPU_FFT_Visual(vec2 u,inout vec4 c){
+	//u.x -= 100.;
+    u.x = floor(u.x/iResolution.y*360.)-60.;
+    u.y = u.y/iResolution.y*350.-50.;
+    if(u.x-0.5 < 256. && u.x>=0. && u.y>0.){
+        float enegy = texture(iChannel0,vec2(u.x,10.5)/iChannelResolution[0].xy).y*50.;
+        if(u.y < enegy){
+            c.b = 1.;
+        }
+    }
 }
 
 // Function 11
+float spectrum(float domain, int t, int level)
+{
+    float sixty_fourth = 1./32.;
+    vec2 uv = vec2(float(t)*2./sixty_fourth + sixty_fourth, domain);
+    uv = upper_right(uv); level++;
+    for(int depth = 1; depth < 8; depth++)
+    {
+        if(depth >= level)
+        {
+            break;
+        }
+        uv = lower_right(uv);
+    }
+
+    return texture(iChannel3, uv).y;
+}
+
+// Function 12
+vec3 spectrum(float x) {
+    x = x * 2.1 - 0.555;
+    vec4 v = vec4(clamp(x, -.6, 0.6), clamp(x, 0.05, 1.05), clamp(x, 0.65, 1.55), clamp(x, 1.16, 1.55));
+    v += vec4(0.0, -0.55, -1.1, -1.35);
+    v *= vec4(0.8, 1.0, 1.1, 2.5);
+    v = (cos(v * v * pi * 4.) * 0.5 + 0.5);
+    v.r += v.a * 0.5;
+    return v.rgb;
+}
+
+// Function 13
+float fft(float f,float r){
+    float sum = 0.0;
+    float val = 0.0;
+    float coeff = 0.0;
+    
+    float k = 0.0;
+    
+     // loop sampling
+    for( int i = 0; i < fftSamples ; i++ ){
+        k = float(i)/float(fftSamples-1)-0.5;
+        // decreasing factor, more important around 0
+        coeff = exp(-k*k/(fftSmooth*fftSmooth)*2.0);
+        //coeff = 1.0;
+        
+		val += texture(inputSound, vec2( remapFreq(f + k * r)*fftWidth, 0.0) ).r * coeff;
+        
+        // simulation for test
+        //float freq = ( remapFreq(f + k * r)*fftWidth - 0.5 ) / 0.008;//(iMouse.x/iResolution.x);
+		//val += exp(  - freq*freq/2.0 ) * coeff;
+        
+        sum += coeff;
+    }
+    
+    return remapIntensity(f,val/sum);
+    
+}
+
+// Function 14
 float fft(vec2 uv)
 {
     return cos( uv.y * PI * (2.0*uv.x + 1.0) / 16.0 );
 }
 
-// Function 12
+// Function 15
+vec3 spectrum(float n) {
+    return pal( n, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.0,0.33,0.67) );
+}
+
+// Function 16
+float FrequencyToTexture(float Frequency){
+    return Frequency/440.*ATone;
+}
+
+// Function 17
+void GPU_FFT_Visual(vec2 u,inout vec4 c){
+	//u.x -= 100.;
+    //u.y -= (0.55*iResolution.y); //128.
+    u.x = floor(u.x/iResolution.y*180.)-30.;
+    u.y = u.y/iResolution.y*350.-170.;
+    //show visual effect
+    if(u.x-0.5 < 256. && u.x>=0. && u.y>0.){
+        vec2 xy = texture(iChannel0,vec2(u.x+0.5,9.5)/iChannelResolution[0].xy).xy;
+        //Energy
+        vec4 cc = vec4(length(xy));
+        //Really Energy 
+    	cc = u.x == 0. ? cc/512. : cc/256.;
+        cc *= u.x == 0. ? 2.: 20.;
+        cc = 20.*log(cc);
+        cc = vec4(clamp(cc.r,1.,120.),0.,0.,0.);
+        //show visual effect
+        if(floor(u.y) < cc.r ){
+    		c.g = 1.;
+        }
+    }   
+}
+
+// Function 18
 void calcFFT(inout vec4 fragColor, vec2 fragCoord)
 {
 	float x = floor(fragCoord.x);
@@ -207,196 +307,53 @@ void calcFFT(inout vec4 fragColor, vec2 fragCoord)
 	fragColor = vec4(res, 0.0, 0.0);
 }
 
-// Function 13
-float fftR(float f){
-    float sum = 0.0;
-    float val = 0.0;
-    float coeff = 0.0;
-    float k = 0.0;
-    for( int i = 0; i < fftSamplesR ; i++ ){
-        k = float(i)/float(fftSamplesR-1)-0.5;
-        coeff = exp(-k*k/(fftSmooth*fftSmooth)*2.0);
-		val += texture(sound, vec2( remapFreq(f + k * fftRadiusR)*fftWidth, 0.0) ).r * coeff;
-        sum += coeff;
-    }
-    return remapIntensity(f,val/sum);
-}
-
-// Function 14
-float spectrum(float domain, int t, int level)
-{
-    float sixty_fourth = 1./32.;
-    vec2 uv = vec2(float(t)*3.*sixty_fourth + sixty_fourth, domain);
-    uv = upper_right(uv); level++;
-    for(int depth = 1; depth < 8; depth++)
-    {
-        if(depth >= level)
-        {
-            break;
-        }
-        uv = lower_right(uv);
-    }
-
-    return texture(iChannel3, uv).x;
-}
-
-// Function 15
-float spectrum2D(vec2 uv, float thickness, int level)
-{
-    float val = spectrum(uv.x, 0, level);
-    return (abs(uv.y - val) < thickness/2.) ? (1.-abs(uv.y - val)*2./thickness) : 0.;
-}
-
-// Function 16
-void CPU_FFT_Visual(vec2 u,inout vec4 c){
-	//u.x -= 100.;
-    u.x = floor(u.x/iResolution.y*360.)-60.;
-    u.y = u.y/iResolution.y*350.-50.;
-    if(u.x-0.5 < 256. && u.x>=0. && u.y>0.){
-        float enegy = texture(iChannel0,vec2(u.x,10.5)/iChannelResolution[0].xy).y*50.;
-        if(u.y < enegy){
-            c.b = 1.;
-        }
-    }
-}
-
-// Function 17
-vec3 hsv2rgb_fl_spectrum(float hsvhue,float hsvsat,float hsvval) {
-	int hsv2hue = scale8(uint8_t(hsvhue),191);
-	return hsv2rgb_raw_C(float(hsv2hue)/ 255.,hsvsat,hsvval);
-}
-
-// Function 18
-float convert_wave_length_to_black_body_spectrum(float wave_length_nm, float temperature_in_kelvin)
-{
-    float wave_length_in_meters = wave_length_nm * 1e-9;
-    float c1                    = 2.0 * pi * plancks_constant * speed_of_light * speed_of_light;
-    float c2                    = plancks_constant * speed_of_light / boltzmanns_constant;
-    float m                     = c1 / pow(wave_length_in_meters, 5.0) * 1.0 / (exp(c2 / (wave_length_in_meters * temperature_in_kelvin)) - 1.0);
-    return m;
-}
-
 // Function 19
-vec2 GetFFT(int x,int y){
-	return texelFetch(DynamicBuffer,ivec2(x,y),0).st;
+float frequency(float x)
+{
+    return texture(iChannel0, vec2(x, 0)).r;
 }
 
 // Function 20
-float fft(float t, float resolution) {
-    return mix(
-        texture(iChannel0, vec2(floor(t * resolution) / resolution, .25)).x,
-        texture(iChannel0, vec2(floor(t * resolution + 1.) / resolution, .25)).x,
-        fract(t * resolution));
-}
-
-// Function 21
-vec3 spectrum_to_rgb(in float w){
-    float wl = w;
-
-    return lambdatoXYZ(w)*xyz;
-}
-
-// Function 22
-float getfrequency_blend(float x) {
-    return mix(getfrequency(x), getfrequency_smooth(x), 0.5);
-}
-
-// Function 23
-float ReferenceSpectrum(float x, float D)
-{
-    return x*tanh(x*D);
-}
-
-// Function 24
 float FFTBand_amplitude(FFTBand band)
 {
     return length(band.f);
 }
 
-// Function 25
-float spectrum(float domain, int t, int level)
+// Function 21
+vec3 spectrum_offset( float t ) {
+    float t0 = 3.0 * t - 1.5;
+	return clamp( vec3( -t0, 1.0-abs(t0), t0), 0.0, 1.0);
+    /*
+	vec3 ret;
+	float lo = step(t,0.5);
+	float hi = 1.0-lo;
+	float w = linterp( remap( t, 1.0/6.0, 5.0/6.0 ) );
+	float neg_w = 1.0-w;
+	ret = vec3(lo,1.0,hi) * vec3(neg_w, w, neg_w);
+	return pow( ret, vec3(1.0/2.2) );
+*/
+}
+
+// Function 22
+vec3 demo_spectrum(vec2 uv, int nslits, float spacing) {
+  vec4 rnd = paramdither(gfc, 28431);
+  vec3 color = vec3(0.);
+  for (int nw=370; nw<780; nw+=20) { 
+    float lambda = (float(nw)+.5*20.*rnd.x)*1e-9;
+    vec2 v = diffraction_pattern(uv, nslits, spacing, lambda);
+    vec3 wcol = wavelength_to_srgbl(lambda*1e9);
+    color+=wcol*dot(v,v);
+  }
+  return color*.4;
+}
+
+// Function 23
+float fft(float x)
 {
-    float sixty_fourth = 1./32.;
-    vec2 uv = vec2(float(t)*2./sixty_fourth + sixty_fourth, domain);
-    uv = upper_right(uv); level++;
-    for(int depth = 1; depth < 8; depth++)
-    {
-        if(depth >= level)
-        {
-            break;
-        }
-        uv = lower_right(uv);
-    }
-
-    return texture(iChannel3, uv).x;
+    return max( texture(iChannel1,vec2(x,.25)).x - .2 , .0 )*2.;
 }
 
-// Function 26
-vec2 GetSpectrumUV( vec2 vUV, int index )
-{
-    vec2 vSpectrumUV = vUV;
-    float fMinY = fSpMinY - float(index) * fGraphSpacing;
-    float fMaxY = fSpMaxY - float(index) * fGraphSpacing;
-    
-    vSpectrumUV.x = (vSpectrumUV.x - fSpMinX) / (fSpMaxX - fSpMinX);
-    vSpectrumUV.y = (vSpectrumUV.y - fMinY) / (fMaxY - fMinY);
-    
-    return vSpectrumUV;
-}
-
-// Function 27
-float fft(float f,float r){
-    float sum = 0.0;
-    float val = 0.0;
-    float coeff = 0.0;
-    
-    float k = 0.0;
-    
-     // loop sampling
-    for( int i = 0; i < fftSamples ; i++ ){
-        k = float(i)/float(fftSamples-1)-0.5;
-        // decreasing factor, more important around 0
-        coeff = exp(-k*k/(fftSmooth*fftSmooth)*2.0);
-        //coeff = 1.0;
-        
-		val += texture(inputSound, vec2( remapFreq(f + k * r)*fftWidth, 0.0) ).r * coeff;
-        
-        // simulation for test
-        //float freq = ( remapFreq(f + k * r)*fftWidth - 0.5 ) / 0.008;//(iMouse.x/iResolution.x);
-		//val += exp(  - freq*freq/2.0 ) * coeff;
-        
-        sum += coeff;
-    }
-    
-    return remapIntensity(f,val/sum);
-    
-}
-
-// Function 28
-float smoothFrequency(float x, int smoothness)
-{
-    float f = 0.0;
-    int accumulated = 0;
-    for(float i = 0.0; i <= float(smoothness) / FREQ; i += 1.0 / FREQ)
-    {
-        f += frequency(x + i);
-        ++accumulated;
-    }
-    return f / float(accumulated);
-}
-
-// Function 29
-vec3 spectrum(float n) {
-    return pal( n, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.0,0.33,0.67) );
-}
-
-// Function 30
-float FFTBand_angle(FFTBand band)
-{
-    return degrees(atan(band.f.y, band.f.x));
-}
-
-// Function 31
+// Function 24
 void DrawSpectrum( inout DrawContext drawContext, vec3 vColBG )
 {   
     vec2 vSpectrumUV = GetSpectrumUV( drawContext.vUV, 0 );
@@ -562,30 +519,7 @@ void DrawSpectrum( inout DrawContext drawContext, vec3 vColBG )
     drawContext.vResult = vColor;
 }
 
-// Function 32
-float fft(float p) {
-    return texture(iChannel0, vec2(p, 0.25)).x;
-}
-
-// Function 33
-vec3 demo_spectrum(vec2 uv, int nslits, float spacing) {
-  vec4 rnd = paramdither(gfc, 28431);
-  vec3 color = vec3(0.);
-  for (int nw=370; nw<780; nw+=20) { 
-    float lambda = (float(nw)+.5*20.*rnd.x)*1e-9;
-    vec2 v = diffraction_pattern(uv, nslits, spacing, lambda);
-    vec3 wcol = wavelength_to_srgbl(lambda*1e9);
-    color+=wcol*dot(v,v);
-  }
-  return color*.4;
-}
-
-// Function 34
-float getfrequency(float x) {
-	return texture(iChannel0, vec2(floor(x * FREQ_RANGE + 1.0) / FREQ_RANGE, 0.25)).x + 0.06;
-}
-
-// Function 35
+// Function 25
 float fft(float x) {
     // convert x from uv space [0..1] to fft index [0..511]
     float fft_x = logyscale(x, 0.0, 1.0, 2.0, AUDIO_IN_SIZE-1.0);
@@ -629,47 +563,18 @@ float fft(float x) {
     return pow(fft_y, FFT_POW);
 }
 
-// Function 36
-float getfrequency_smooth(float x) {
-	float index = floor(x * FREQ_RANGE) / FREQ_RANGE;
-    float next = floor(x * FREQ_RANGE + 1.0) / FREQ_RANGE;
-	return mix(getfrequency(index), getfrequency(next), smoothstep(0.0, 1.0, fract(x * FREQ_RANGE)));
-}
-
-// Function 37
-vec3 spectrum(float x) {
-    x = x * 2.1 - 0.555;
-    vec4 v = vec4(clamp(x, -.6, 0.6), clamp(x, 0.05, 1.05), clamp(x, 0.65, 1.55), clamp(x, 1.16, 1.55));
-    v += vec4(0.0, -0.55, -1.1, -1.35);
-    v *= vec4(0.8, 1.0, 1.1, 2.5);
-    v = (cos(v * v * pi * 4.) * 0.5 + 0.5);
-    v.r += v.a * 0.5;
-    return v.rgb;
-}
-
-// Function 38
-float fft(sampler2D channel) {
-    const int fftSamples = 1000;
-    const float sampleOffset =  (1.0 / float(fftSamples)) / 2.0;
-    float totalWeight = 0.0;
-    float totalFFT = 0.0;
-    
-    for(int sampleIndex = 0; sampleIndex < fftSamples; sampleIndex++) {
-        // weight: (1/10)^(x-1)
-        float samplePointer = sampleOffset + float(sampleIndex) / float(fftSamples);
-        float weight = pow(1.0 - samplePointer, 10.0);
-        totalWeight += weight;
-        totalFFT += texture(channel, vec2(samplePointer, 0.25)).x * weight;
+// Function 26
+float FrequencyToTexture(float Frequency){
+    if (Frequency>=300.0) {
+        return Frequency/440.*ATone;
+    } else if ((Frequency>=130.0) && (Frequency<300.0)) {
+        return Frequency/440.*ATone2;
+    } else{
+        return Frequency/440.*ATone3;
     }
-    
-	float fft = totalFFT / totalWeight;
-    fft = pow(fft, 1.5);
-	//float fft = texture(iChannel1, vec2(uv.x, 0.25)).x;
-    
-    return fft;
 }
 
-// Function 39
+// Function 27
 float fftG(float f){
     float sum = 0.0;
     float val = 0.0;
@@ -684,115 +589,62 @@ float fftG(float f){
     return remapIntensity(f,val/sum)*fftGBGain;
 }
 
-// Function 40
-vec3 SpectrumPoly(float x) {
-    // https://www.shadertoy.com/view/wlSBzD
-    return (vec3( 1.220023e0,-1.933277e0, 1.623776e0)
-          +(vec3(-2.965000e1, 6.806567e1,-3.606269e1)
-          +(vec3( 5.451365e2,-7.921759e2, 6.966892e2)
-          +(vec3(-4.121053e3, 4.432167e3,-4.463157e3)
-          +(vec3( 1.501655e4,-1.264621e4, 1.375260e4)
-          +(vec3(-2.904744e4, 1.969591e4,-2.330431e4)
-          +(vec3( 3.068214e4,-1.698411e4, 2.229810e4)
-          +(vec3(-1.675434e4, 7.594470e3,-1.131826e4)
-          + vec3( 3.707437e3,-1.366175e3, 2.372779e3)
-            *x)*x)*x)*x)*x)*x)*x)*x)*x;
-}
-
-// Function 41
-float FrequencyToTexture(float Frequency){
-    return Frequency/440.*ATone;
-}
-
-// Function 42
-float spectrum2D(vec2 uv, float thickness, int level)
-{
-    return spectrum2D(uv, thickness, level, iChannel3);
-}
-
-// Function 43
-float frequency(float x)
-{
-    return texture(iChannel0, vec2(x, 0)).r;
-}
-
-// Function 44
-vec2 GPUFFT(ivec2 U,inout vec2 B){
-    --U.y;
-    int index = BitReverse(U.x,9);
-    if(U.y == -1)
-    	B.st = vec2(GetTimeDomain(index),0.);
-    if(U.y >= 0 && U.y <= 8)
-    {
-        int burb = 1<<U.y; 
-        int kn = U.x & (burb-1);
-        float C = -_PI*float(kn)/float(burb);
-        vec2 W = sin(vec2(C+_Half_PI,C));
-        int E = 1-((U.x>>U.y)&1);
-        B.xy = GetFFT(U.x-burb*(1-E),U.y);
-        B.xy += mat2(W,-W.y,W.x)*GetFFT(U.x+burb*E,U.y)*float(E*2-1);
-    }
-	return GetFFT(U.x,9).xy;
-}
-
-// Function 45
-float fft_sdf(vec2 p) {
-    // convert x from uv space [0..1] to fft index [0..511]
-    #if LOG_SCALE
-    	float fft_x = logyscale(p.x, 0.0, 1.0, 1.0, AUDIO_IN_SIZE-2.0);
-	#else
-    	float fft_x = linscale(p.x, 0.0, 1.0, 1.0, AUDIO_IN_SIZE-2.0);
-    #endif
-    
-    // closest previous sample
-    float fft_x1 = floor(fft_x); 
-    float fft_y1 = texelFetch(AUDIO_IN, ivec2(fft_x1, 0), 0).x;
-
-    // closest next sample
-    float fft_x2 = ceil(fft_x); 
-    float fft_y2 = texelFetch(AUDIO_IN, ivec2(fft_x2, 0), 0).x;
-    
-    return sd_line(p, vec2(fft_x1, fft_y1), vec2(fft_x2, fft_y2));   
-}
-
-// Function 46
-float getfrequency(float x) {
-	return texture(iChannel0, vec2(floor(x * FREQ_RANGE + 1.0) / FREQ_RANGE, 0.25)).x*gain + 0.06;
-}
-
-// Function 47
-float spectrum(float domain, int t, int level)
-{
-    float sixty_fourth = 1./32.;
-    vec2 uv = vec2(float(t)*2./sixty_fourth + sixty_fourth, domain);
-    uv = upper_right(uv); level++;
-    for(int depth = 1; depth < 8; depth++)
-    {
-        if(depth >= level)
-        {
-            break;
-        }
-        uv = lower_right(uv);
-    }
-
-    return texture(iChannel3, uv).y;
-}
-
-// Function 48
-vec3 spectrum_to_xyz(in float w)
-{
-    w = clamp(w, MIN_WL, MAX_WL) - MIN_WL;
-    float n = floor(w / WL_STEP);
-    int n0 = min(SPECTRUM_SAMPLES - 1, int(n));
-    int n1 = min(SPECTRUM_SAMPLES - 1, n0 + 1);
-    float t = w - (n * WL_STEP);
-    return mix(cie[n0], cie[n1], t / WL_STEP);
-}
-
-// Function 49
+// Function 28
 float frequencyFromNotenum( float n ) { return 440.0 * pow( 2.0, ( n-49.0) / 12.0 ); }
 
-// Function 50
+// Function 29
+float fftR(float f){
+    float sum = 0.0;
+    float val = 0.0;
+    float coeff = 0.0;
+    float k = 0.0;
+    for( int i = 0; i < fftSamplesR ; i++ ){
+        k = float(i)/float(fftSamplesR-1)-0.5;
+        coeff = exp(-k*k/(fftSmooth*fftSmooth)*2.0);
+		val += texture(sound, vec2( remapFreq(f + k * fftRadiusR)*fftWidth, 0.0) ).r * coeff;
+        sum += coeff;
+    }
+    return remapIntensity(f,val/sum);
+}
+
+// Function 30
+float fft(float t, float resolution) {
+    return mix(
+        texture(iChannel0, vec2(floor(t * resolution) / resolution, .25)).x,
+        texture(iChannel0, vec2(floor(t * resolution + 1.) / resolution, .25)).x,
+        fract(t * resolution));
+}
+
+// Function 31
+float KeyToFrequency(int n){
+    return pow(Semitone,float(n-49))*440.;
+}
+
+// Function 32
+vec4 fft(float freq,float time){
+    return texture(sound,vec2(freq,time));
+}
+
+// Function 33
+void zxspectrum_colors( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 pv = floor(fragCoord.xy/LOWREZ);
+    vec2 sv = floor(iResolution.xy/LOWREZ);
+                
+    vec4 cs=smap(texture(iChannel0,pv/sv).rgb);
+    
+    if( mod(pv.x+pv.y,2.0)==1.0)
+    {
+		fragColor = vec4(fmap(vec4(floor(cs.rgb+vec3(0.5+(DITHER*0.3))),cs.a)),1.0);
+    }
+    else
+    {  
+		fragColor = vec4(fmap(vec4(floor(cs.rgb+vec3(0.5-(DITHER*0.3))),cs.a)),1.0);
+    }
+
+}
+
+// Function 34
 float spectrum(float domain, int t, int level, sampler2D bufD)
 {
     float sixty_fourth = 1./32.;
@@ -810,7 +662,162 @@ float spectrum(float domain, int t, int level, sampler2D bufD)
     return texture(bufD, uv).x;
 }
 
-// Function 51
+// Function 35
+float getfrequency_smooth(float x) {
+	float index = floor(x * FREQ_RANGE) / FREQ_RANGE;
+    float next = floor(x * FREQ_RANGE + 1.0) / FREQ_RANGE;
+	return mix(getfrequency(index), getfrequency(next), smoothstep(0.0, 1.0, fract(x * FREQ_RANGE)));
+}
+
+// Function 36
+float spectrum(float domain, int t, int level)
+{
+    float sixty_fourth = 1./32.;
+    vec2 uv = vec2(float(t)*3.*sixty_fourth + sixty_fourth, domain);
+    uv = upper_right(uv); level++;
+    for(int depth = 1; depth < 8; depth++)
+    {
+        if(depth >= level)
+        {
+            break;
+        }
+        uv = lower_right(uv);
+    }
+
+    return texture(iChannel3, uv).y;
+}
+
+// Function 37
+float spectrum(float domain, int t, int level)
+{
+    float sixty_fourth = 1./32.;
+    vec2 uv = vec2(float(t)*2./sixty_fourth + sixty_fourth, domain);
+    uv = upper_right(uv); level++;
+    for(int depth = 1; depth < 8; depth++)
+    {
+        if(depth >= level)
+        {
+            break;
+        }
+        uv = lower_right(uv);
+    }
+
+    return texture(iChannel3, uv).x;
+}
+
+// Function 38
+vec2 DO_FFT(float u_x,float u_y,inout vec4 c)
+{
+    //current index
+    u_x = floor(u_x);u_y = floor(u_y) - 1.;
+    if(u_x >= R_512){return vec2(0.);}
+    //store for next shader to visual
+    Store_T_F(u_x,u_y,c);
+    //FFT.x is real value,y is imagin value
+    //Bit Reverse Index Value
+    float index = GetBufferValue(u_x,0.).t;
+    //get domain value form Audio buffer texture and sort it
+    if(u_y == -1.){
+    	c.st = vec2(GetTimeDomain(index),0.);
+    }
+    //Do Buttfly
+    //0,1,2,3,4,5,6,7,8 is FFT Step Buttfly
+    if(u_y >= 0. && u_y <= 8.)
+    {
+        //calculate
+        float mystep = u_y;
+        bool Is_E_data = mod(floor(u_x/exp2(mystep)),2.) == 0.;
+        //è®¡ç®—æ—‹è½¬å› å­
+        float kn = mod(u_x,exp2(mystep));
+        //Cä¸ºeçš„æŒ‡æ•°
+        float C = -(_2PI/exp2(mystep+1.))*kn;
+        vec2 W = vec2(cos(C),sin(C));
+        
+        float burb = exp2(mystep);
+        
+        vec2 buffer = vec2(0.);
+        if(Is_E_data){
+			//tR[i] = FFT[i].Re+FFT[i+(1<<step)].Re*W_Re-FFT[i+(1<<step)].Im*W_Im;
+            //tI[i] = FFT[i].Im+FFT[i+(1<<step)].Re*W_Im+FFT[i+(1<<step)].Im*W_Re;
+            //Get Next pixel buffer
+ 			buffer.x = GetFFT(u_x,u_y).x + GetFFT(u_x+burb,u_y).x*W.x - GetFFT(u_x+burb,u_y).y*W.y;
+ 			buffer.y = GetFFT(u_x,u_y).y + GetFFT(u_x+burb,u_y).x*W.y + GetFFT(u_x+burb,u_y).y*W.x;
+            c.xy = buffer;
+        }
+        else{
+            //tR[i] = FFT[i-(1<<step)].Re-(FFT[i].Re*W_Re-FFT[i].Im*W_Im);
+            //tI[i] = FFT[i-(1<<step)].Im-(FFT[i].Re*W_Im+FFT[i].Im*W_Re);
+            //Get The Next Pixel Buffer 
+            buffer.x = GetFFT(u_x-burb,u_y).x-(GetFFT(u_x,u_y).x*W.x - GetFFT(u_x,u_y).y*W.y);
+            buffer.y = GetFFT(u_x-burb,u_y).y-(GetFFT(u_x,u_y).x*W.y + GetFFT(u_x,u_y).y*W.x);
+			c.xy = buffer;
+        }
+        
+    }
+	return GetFFT(u_x,9.).xy;
+}
+
+// Function 39
+float fft(float f,float r){
+    return fft(f,r,0.0);
+}
+
+// Function 40
+float FFTBand_angle(FFTBand band)
+{
+    return degrees(atan(band.f.y, band.f.x));
+}
+
+// Function 41
+float fftmul(float i){
+    return i*fftH*(i*fftH+0.8)*1.5 + 0.1;
+}
+
+// Function 42
+vec3 spectrum_to_rgb(in float w){
+    float a = 0.;
+    float wl = w;
+
+    return lambdatoXYZ(w)*xyz-vec3(0,0,a);
+}
+
+// Function 43
+vec3 spectrum_to_rgb(in float w){
+    float wl = w;
+
+    return lambdatoXYZ(w)*xyz;
+}
+
+// Function 44
+vec3 Spectrum(float x) {
+    // https://www.shadertoy.com/view/wlSBzD
+	float r, g, b;
+    
+    r = x<.16 ? S(0., .16, x)*.169 :
+    	x<.22 ? S(.22, .16, x)*.134+.035 :
+    	x<.41 ? S(.22, .41, x)*.098+.035 :
+    	x<.64 ? S(.41,.64,x)*.851+.133 :
+    			S(1., .64, x)*.984;
+    
+    g = x<.05 ? 0. :
+    	x<.15 ? S(.05, .15, x)*.047 :
+    	x<.45 ? S(.15, .45, x)*.882+.047 :
+    	x<.70 ? S(.70, .45, x)*.796+.133 :
+    			S(1.0, .70, x)*.133;
+    
+    b = x<.18 ? S(0.0, .18, x)*.5 :
+    	x<.22 ? S(.22, .18, x)*.1+.4 :
+    	x<.35 ? S(.22, .35, x)*.059+.4 :
+    	x<.54 ? S(.54, .35, x)*.334+.125 :
+    	x<.60 ? S(.54, .60, x)*.169+.125 :
+    	x<.69 ? S(.69, .60, x)*.243+.051 :
+    	x<.72 ? S(.69, .72, x)*.043+.051 :
+    	x<.89 ? S(.89, .72, x)*.094 : 0.;
+    
+    return vec3(r,g,b);
+}
+
+// Function 45
 vec2 GPUFFT(ivec2 U,inout vec2 B){
     --U.y;
     int index = BitReverse(U.x,BitWidth);
@@ -829,18 +836,159 @@ vec2 GPUFFT(ivec2 U,inout vec2 B){
 	return GetFFT(U.x,9).xy;
 }
 
+// Function 46
+FFTBand FFTBand_create(const float n, const int fft_size)
+{
+    FFTBand band;
+
+    float fi = (float(n) / float(fft_size / 2)) * float(fft_size) * 0.5;
+    float angle = 2.0 * PI * fi / float(fft_size);
+
+    band.di = vec2(cos(angle), sin(angle));
+    band.df = vec2(1.0 / float(fft_size), 0.0);
+    band.f  = vec2(0.0, 0.0);
+
+    return band;
+}
+
+// Function 47
+float ReferenceSpectrum(float x, float D)
+{
+    return x*tanh(x*D);
+}
+
+// Function 48
+vec3 SpectrumPoly(float x) {
+    // https://www.shadertoy.com/view/wlSBzD
+    return (vec3( 1.220023e0,-1.933277e0, 1.623776e0)
+          +(vec3(-2.965000e1, 6.806567e1,-3.606269e1)
+          +(vec3( 5.451365e2,-7.921759e2, 6.966892e2)
+          +(vec3(-4.121053e3, 4.432167e3,-4.463157e3)
+          +(vec3( 1.501655e4,-1.264621e4, 1.375260e4)
+          +(vec3(-2.904744e4, 1.969591e4,-2.330431e4)
+          +(vec3( 3.068214e4,-1.698411e4, 2.229810e4)
+          +(vec3(-1.675434e4, 7.594470e3,-1.131826e4)
+          + vec3( 3.707437e3,-1.366175e3, 2.372779e3)
+            *x)*x)*x)*x)*x)*x)*x)*x)*x;
+}
+
+// Function 49
+float spectrum2D(vec2 uv, float thickness, int level, sampler2D bufD)
+{
+    float val = spectrum(uv.x, 0, level, bufD);
+    return (abs(uv.y - val) < thickness/2.) ? (1.-abs(uv.y - val)*2./thickness) : 0.;
+}
+
+// Function 50
+void FFTBand_update(inout FFTBand band, float value)
+{
+    band.f += band.df * value;
+    band.df = vec2(
+        band.df.x * band.di.x - band.df.y * band.di.y,
+        band.df.y * band.di.x + band.df.x * band.di.y
+        );
+}
+
+// Function 51
+float spectrum2D(vec2 uv, float thickness, int level)
+{
+    return spectrum2D(uv, thickness, level, iChannel3);
+}
+
 // Function 52
-float FrequencyToTexture(float Frequency){
-    if (Frequency>=300.0) {
-        return Frequency/440.*ATone;
-    } else if ((Frequency>=130.0) && (Frequency<300.0)) {
-        return Frequency/440.*ATone2;
-    } else{
-        return Frequency/440.*ATone3;
+vec2 fft(vec2 uv)
+{
+    vec2 complex = vec2(0,0);
+    
+    uv *= float(FFT_SIZE);
+    
+    float size = float(FFT_SIZE);
+    
+    for(int x = 0;x < FFT_SIZE;x++)
+    {
+    	for(int y = 0;y < FFT_SIZE;y++)
+    	{
+            float a = 2.0 * PI * (uv.x * (float(x)/size) + uv.y * (float(y)/size));
+            vec3 samplev = texture(iChannel0,mod(vec2(x,y)/size,1.0)).rgb;
+            complex += avg(samplev)*vec2(cos(a),sin(a));
+        }
     }
+    
+    return complex;
 }
 
 // Function 53
+float getfrequency_blend(float x) {
+    return mix(getfrequency(x), getfrequency_smooth(x), 0.5);
+}
+
+// Function 54
+float convert_wave_length_to_black_body_spectrum(float wave_length_nm, float temperature_in_kelvin)
+{
+    float wave_length_in_meters = wave_length_nm * 1e-9;
+    float c1                    = 2.0 * pi * plancks_constant * speed_of_light * speed_of_light;
+    float c2                    = plancks_constant * speed_of_light / boltzmanns_constant;
+    float m                     = c1 / pow(wave_length_in_meters, 5.0) * 1.0 / (exp(c2 / (wave_length_in_meters * temperature_in_kelvin)) - 1.0);
+    return m;
+}
+
+// Function 55
+vec2 GetFFT(int x,int y){
+	return texelFetch(DynamicBuffer,ivec2(x,y),0).st;
+}
+
+// Function 56
+vec2 GetSpectrumUV( vec2 vUV, int index )
+{
+    vec2 vSpectrumUV = vUV;
+    float fMinY = fSpMinY - float(index) * fGraphSpacing;
+    float fMaxY = fSpMaxY - float(index) * fGraphSpacing;
+    
+    vSpectrumUV.x = (vSpectrumUV.x - fSpMinX) / (fSpMaxX - fSpMinX);
+    vSpectrumUV.y = (vSpectrumUV.y - fMinY) / (fMaxY - fMinY);
+    
+    return vSpectrumUV;
+}
+
+// Function 57
+float spectrum2D(vec2 uv, float thickness, int level)
+{
+    float val = spectrum(uv.x, 0, level);
+    return (abs(uv.y - val) < thickness/2.) ? (1.-abs(uv.y - val)*2./thickness) : 0.;
+}
+
+// Function 58
+float getfrequency(float x) {
+	return texture(iChannel0, vec2(floor(x * FREQ_RANGE + 1.0) / FREQ_RANGE, 0.25)).x + 0.06;
+}
+
+// Function 59
+float GetSpectrumGlare( float fDist )
+{
+    float fGlare = 0.0;
+    fDist = 1.0f - fDist;
+    if ( fDist < 0.0 )
+        return 0.0;
+    
+    fGlare += pow( fDist, 30.0);
+    fGlare += pow( fDist, 10.0) * 0.1;
+    //return UnitGaussian( fDist, 0.0, 20.0 );
+    
+    return fGlare * 0.005;
+}
+
+// Function 60
+vec3 spectrum_to_xyz(in float w)
+{
+    w = clamp(w, MIN_WL, MAX_WL) - MIN_WL;
+    float n = floor(w / WL_STEP);
+    int n0 = min(SPECTRUM_SAMPLES - 1, int(n));
+    int n1 = min(SPECTRUM_SAMPLES - 1, n0 + 1);
+    float t = w - (n * WL_STEP);
+    return mix(cie[n0], cie[n1], t / WL_STEP);
+}
+
+// Function 61
 float fftBand(float start, float end) {
    	float fft = 0.0;
     float st = (end - start) *FFT_SAMPLES_INV;
@@ -854,60 +1002,22 @@ float fftBand(float start, float end) {
  	return fft;
 }
 
-// Function 54
-void FFTBand_update(inout FFTBand band, float value)
-{
-    band.f += band.df * value;
-    band.df = vec2(
-        band.df.x * band.di.x - band.df.y * band.di.y,
-        band.df.y * band.di.x + band.df.x * band.di.y
-        );
+// Function 62
+float fftB(float f){
+    float sum = 0.0;
+    float val = 0.0;
+    float coeff = 0.0;
+    float k = 0.0;
+    for( int i = 0; i < fftSamplesB ; i++ ){
+        k = float(i)/float(fftSamplesB-1)-0.5;
+        coeff = exp(-k*k/(fftSmooth*fftSmooth)*2.0);
+		val += texture(sound, vec2( remapFreq(f + k * fftRadiusB)*fftWidth, 0.0) ).r * coeff;
+        sum += coeff;
+    }
+    return remapIntensity(f,val/sum)*fftGBGain*fftGBGain;
 }
 
-// Function 55
-float KeyToFrequency(int n){
-    return pow(Semitone,float(n-49))*440.;
-}
-
-// Function 56
-float spectrum2D(vec2 uv, float thickness, int level, sampler2D bufD)
-{
-    float val = spectrum(uv.x, 0, level, bufD);
-    return (abs(uv.y - val) < thickness/2.) ? (1.-abs(uv.y - val)*2./thickness) : 0.;
-}
-
-// Function 57
-vec3 fft(float freq,float time){
-    return texture(sound,vec2(freq,time)).rgb;
-}
-
-// Function 58
-vec4 fft(float freq,float time){
-    return texture(sound,vec2(freq,time));
-}
-
-// Function 59
-float frequency(float index)
-{
-return texture(iChannel0, vec2(index, 0)).x;
-}
-
-// Function 60
-vec3 spectrum_offset( float t ) {
-    float t0 = 3.0 * t - 1.5;
-	return clamp( vec3( -t0, 1.0-abs(t0), t0), 0.0, 1.0);
-    /*
-	vec3 ret;
-	float lo = step(t,0.5);
-	float hi = 1.0-lo;
-	float w = linterp( remap( t, 1.0/6.0, 5.0/6.0 ) );
-	float neg_w = 1.0-w;
-	ret = vec3(lo,1.0,hi) * vec3(neg_w, w, neg_w);
-	return pow( ret, vec3(1.0/2.2) );
-*/
-}
-
-// Function 61
+// Function 63
 float fft(float f,float r,float time){
     float sum = 0.0;
     float val = 0.0;
@@ -935,115 +1045,31 @@ float fft(float f,float r,float time){
     
 }
 
-// Function 62
-void zxspectrum_clash( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec2 pv = floor(fragCoord.xy/LOWREZ);
-    vec2 bv = floor(pv/8.0)*8.0;
-    vec2 sv = floor(iResolution.xy/LOWREZ);
-    
-    
-    vec4 min_cs=vec4(1.0,1.0,1.0,1.0);
-    vec4 max_cs=vec4(0.0,0.0,0.0,0.0);
-    float bright=0.0;
-
-    
-    for(int py=1;py<8;py++)
-    {
-        for(int px=0;px<8;px++)
-        {
-		    vec4 cs=bmap( (texture(iChannel0,(bv+vec2(px,py))/sv).rgb) );
-            bright+=cs.a;
-        	min_cs=min(min_cs,cs);
-        	max_cs=max(max_cs,cs);
-        }
-    }
-    
-    vec4 c;
-    
-    if(bright>=24.0)
-    {
-        bright=1.0;
-    }
-    else
-    {
-        bright=0.0;
-    }
-    
-    if( max_cs.rgb==min_cs.rgb )
-    {
-        min_cs.rgb=vec3(0.0,0.0,0.0);
-    }
-
-    if( max_cs.rgb==vec3(0.0,0.0,0.0) )
-    {
-        bright=0.0;
-        max_cs.rgb=vec3(0.0,0.0,1.0);
-        min_cs.rgb=vec3(0.0,0.0,0.0);
-    }
-    
-    vec3 c1=fmap(vec4(max_cs.rgb,bright));
-    vec3 c2=fmap(vec4(min_cs.rgb,bright));
-    
-    vec3 cs=texture(iChannel0,pv/sv).rgb;
-    
-    vec3 d= (cs+cs) - (c1+c2) ;
-    float dd=d.r+d.g+d.b;
-
-    if( mod(pv.x+pv.y,2.0)==1.0)
-    {
-        fragColor=vec4(
-                dd>=-(DITHER*0.5) ? c1.r : c2.r,
-                dd>=-(DITHER*0.5) ? c1.g : c2.g,
-                dd>=-(DITHER*0.5) ? c1.b : c2.b,
-                1.0);
-    }
-    else
-    {
-        fragColor=vec4(
-                dd>=(DITHER*0.5) ? c1.r : c2.r,
-                dd>=(DITHER*0.5) ? c1.g : c2.g,
-                dd>=(DITHER*0.5) ? c1.b : c2.b,
-                1.0);
-    }
- 
-//    fragColor.rgb=c1;
-}
-
-// Function 63
-float spectrum(float domain, int t, int level)
-{
-    float sixty_fourth = 1./32.;
-    vec2 uv = vec2(float(t)*3.*sixty_fourth + sixty_fourth, domain);
-    uv = upper_right(uv); level++;
-    for(int depth = 1; depth < 8; depth++)
-    {
-        if(depth >= level)
-        {
-            break;
-        }
-        uv = lower_right(uv);
-    }
-
-    return texture(iChannel3, uv).y;
-}
-
 // Function 64
-float GetSpectrumGlare( float fDist )
-{
-    float fGlare = 0.0;
-    fDist = 1.0f - fDist;
-    if ( fDist < 0.0 )
-        return 0.0;
-    
-    fGlare += pow( fDist, 30.0);
-    fGlare += pow( fDist, 10.0) * 0.1;
-    //return UnitGaussian( fDist, 0.0, 20.0 );
-    
-    return fGlare * 0.005;
+float getfrequency(float x) {
+	return texture(iChannel0, vec2(floor(x * FREQ_RANGE + 1.0) / FREQ_RANGE, 0.25)).x*gain + 0.06;
 }
 
 // Function 65
+vec2 GPUFFT(ivec2 U,inout vec2 B){
+    --U.y;
+    int index = BitReverse(U.x,9);
+    if(U.y == -1)
+    	B.st = vec2(GetTimeDomain(index),0.);
+    if(U.y >= 0 && U.y <= 8)
+    {
+        int burb = 1<<U.y; 
+        int kn = U.x & (burb-1);
+        float C = -_PI*float(kn)/float(burb);
+        vec2 W = sin(vec2(C+_Half_PI,C));
+        int E = 1-((U.x>>U.y)&1);
+        B.xy = GetFFT(U.x-burb*(1-E),U.y);
+        B.xy += mat2(W,-W.y,W.x)*GetFFT(U.x+burb*E,U.y)*float(E*2-1);
+    }
+	return GetFFT(U.x,9).xy;
+}
+
+// Function 66
 float fft(float x) {
     // convert x from uv space [0..1] to fft index [0..511]
     #if LOG_SCALE
@@ -1100,89 +1126,63 @@ float fft(float x) {
     return pow(fft_y, FFT_POW);
 }
 
-// Function 66
-vec2 fft(vec2 uv)
-{
-    vec2 complex = vec2(0,0);
-    
-    uv *= float(FFT_SIZE);
-    
-    float size = float(FFT_SIZE);
-    
-    for(int x = 0;x < FFT_SIZE;x++)
-    {
-    	for(int y = 0;y < FFT_SIZE;y++)
-    	{
-            float a = 2.0 * PI * (uv.x * (float(x)/size) + uv.y * (float(y)/size));
-            vec3 samplev = texture(iChannel0,mod(vec2(x,y)/size,1.0)).rgb;
-            complex += avg(samplev)*vec2(cos(a),sin(a));
-        }
-    }
-    
-    return complex;
-}
-
 // Function 67
-float fftB(float f){
-    float sum = 0.0;
-    float val = 0.0;
-    float coeff = 0.0;
-    float k = 0.0;
-    for( int i = 0; i < fftSamplesB ; i++ ){
-        k = float(i)/float(fftSamplesB-1)-0.5;
-        coeff = exp(-k*k/(fftSmooth*fftSmooth)*2.0);
-		val += texture(sound, vec2( remapFreq(f + k * fftRadiusB)*fftWidth, 0.0) ).r * coeff;
-        sum += coeff;
+float fft(sampler2D channel) {
+    const int fftSamples = 1000;
+    const float sampleOffset =  (1.0 / float(fftSamples)) / 2.0;
+    float totalWeight = 0.0;
+    float totalFFT = 0.0;
+    
+    for(int sampleIndex = 0; sampleIndex < fftSamples; sampleIndex++) {
+        // weight: (1/10)^(x-1)
+        float samplePointer = sampleOffset + float(sampleIndex) / float(fftSamples);
+        float weight = pow(1.0 - samplePointer, 10.0);
+        totalWeight += weight;
+        totalFFT += texture(channel, vec2(samplePointer, 0.25)).x * weight;
     }
-    return remapIntensity(f,val/sum)*fftGBGain*fftGBGain;
+    
+	float fft = totalFFT / totalWeight;
+    fft = pow(fft, 1.5);
+	//float fft = texture(iChannel1, vec2(uv.x, 0.25)).x;
+    
+    return fft;
 }
 
 // Function 68
-float fft(float x)
-{
-    return max( texture(iChannel1,vec2(x,.25)).x - .2 , .0 )*2.;
+float fft_sdf(vec2 p) {
+    // convert x from uv space [0..1] to fft index [0..511]
+    #if LOG_SCALE
+    	float fft_x = logyscale(p.x, 0.0, 1.0, 1.0, AUDIO_IN_SIZE-2.0);
+	#else
+    	float fft_x = linscale(p.x, 0.0, 1.0, 1.0, AUDIO_IN_SIZE-2.0);
+    #endif
+    
+    // closest previous sample
+    float fft_x1 = floor(fft_x); 
+    float fft_y1 = texelFetch(AUDIO_IN, ivec2(fft_x1, 0), 0).x;
+
+    // closest next sample
+    float fft_x2 = ceil(fft_x); 
+    float fft_y2 = texelFetch(AUDIO_IN, ivec2(fft_x2, 0), 0).x;
+    
+    return sd_line(p, vec2(fft_x1, fft_y1), vec2(fft_x2, fft_y2));   
 }
 
 // Function 69
-void GPU_FFT_Visual(vec2 u,inout vec4 c){
-	//u.x -= 100.;
-    //u.y -= (0.55*iResolution.y); //128.
-    u.x = floor(u.x/iResolution.y*180.)-30.;
-    u.y = u.y/iResolution.y*350.-170.;
-    //show visual effect
-    if(u.x-0.5 < 256. && u.x>=0. && u.y>0.){
-        vec2 xy = texture(iChannel0,vec2(u.x+0.5,9.5)/iChannelResolution[0].xy).xy;
-        //Energy
-        vec4 cc = vec4(length(xy));
-        //Really Energy 
-    	cc = u.x == 0. ? cc/512. : cc/256.;
-        cc *= u.x == 0. ? 2.: 20.;
-        cc = 20.*log(cc);
-        cc = vec4(clamp(cc.r,1.,120.),0.,0.,0.);
-        //show visual effect
-        if(floor(u.y) < cc.r ){
-    		c.g = 1.;
-        }
-    }   
+vec4 GetFFT(float x,float y){
+	vec4 FFTBuffer = texture(SelfBuffer,vec2(x+0.5,y+0.5)/SelfResolution);
+    //++i;
+    return FFTBuffer;
 }
 
 // Function 70
-float fftmul(float i){
-    return i*fftH*(i*fftH+0.8)*1.5 + 0.1;
+vec3 hsv2rgb_fl_spectrum(float hsvhue,float hsvsat,float hsvval) {
+	int hsv2hue = scale8(uint8_t(hsvhue),191);
+	return hsv2rgb_raw_C(float(hsv2hue)/ 255.,hsvsat,hsvval);
 }
 
 // Function 71
-FFTBand FFTBand_create(const float n, const int fft_size)
-{
-    FFTBand band;
-
-    float fi = (float(n) / float(fft_size / 2)) * float(fft_size) * 0.5;
-    float angle = 2.0 * PI * fi / float(fft_size);
-
-    band.di = vec2(cos(angle), sin(angle));
-    band.df = vec2(1.0 / float(fft_size), 0.0);
-    band.f  = vec2(0.0, 0.0);
-
-    return band;
+vec3 fft(float freq,float time){
+    return texture(sound,vec2(freq,time)).rgb;
 }
 

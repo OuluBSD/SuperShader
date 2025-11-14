@@ -2,165 +2,37 @@
 // Automatically extracted from particle/physics simulation-related shaders
 
 // Function 1
-float IntegrateOuter(float x, float d)
-{
-    return x / sqrt(d*d + x*x) + 1.0;
+float inv_integrate_sqrt_poly2_fast(float B, float C, float t) {
+    // there is to my knowledge no closed form solution.
+    
+    // the simplest root finding approach is bisection, but it 
+    // needs many iterations to achieve sufficient precision.
+    
+    // a faster method is to use newton-raphson, which conveniently
+    // requires the derivative which we started from.
+    
+    // our only hope for a closed form solution is the discovery 
+    // of an invertible approximation of the integral.
+    float x = 0.5;
+    for (int k = 0; k < 4; ++k) {
+        vec2 q = integrate_sqrt_poly2_fast(B, C, x);
+        float d = (t-q.x)/q.y;
+        x = clamp(x + d, 0.0, 1.0);
+    }
+    return x;
 }
 
 // Function 2
-vec4 VerletIntegral(in ivec2 iU){
-	vec4 P = GetP(iU);
-    if(iU.y == GridSize.y-1 ){
-        vec2 mouse = (iMouse.xy*2.-R)/R.y;
-        if(iMouse.x == 0. && iMouse.y == 0.)
-            mouse = vec2(0.);
-            
-    	P.xy = vec2(iU.x+12,iU.y+5)*R1 + mouse;	
-    }
-    vec2 PreviousP = P.zw;
-    vec2 CurrentP = Constraint(iU,P.xy);
-    vec2 NextP = CurrentP + (CurrentP - PreviousP)*(1.-Friction) + Gravity*iTimeDelta*iTimeDelta/2.;
-    
-    PreviousP = CurrentP;
-    
-    return vec4(NextP,PreviousP);
+vec2 integrate_sqrt_poly2(float A, float B, float C, float x) {
+    float xx = x*x;
+    float T = sqrt(A*xx + B*x + C);
+    float P = 2.0*A*x + B;
+    float Q = P * T;
+    float R = (B*B - 4.0*A*C)*log(2.0*sqrt(A)*T + P);
+    return vec2(Q/(4.0*A) - R/(8.0*pow(A,1.5)), T); 
 }
 
 // Function 3
-void forwardEuler(inout vec4 current, in float h) {
-  //Adding Gravity
-  current.zw += g * h;
-
-  // Forward Euler
-  current.xy += current.zw * h;
-}
-
-// Function 4
-void BodyIntegrate( inout Body body, float dT )
-{
-#ifdef ENABLE_GRAVITY_TOGGLE    
-    if( !KeyIsToggled( KEY_G ) )
-#endif // ENABLE_GRAVITY_TOGGLE        
-    {
-    	BodyApplyGravity( body, dT );
-    }
-    
-    body.vMomentum += body.vForce * dT;
-    body.vAngularMomentum += body.vTorque * dT;
-    
-    vec3 vVel = body.vMomentum / body.fMass;
-    vec3 vAngVel = body.vAngularMomentum / body.fIT;
-
-    body.vPos += vVel * dT;
-    vec4 qAngDelta = QuatFromVec3( vAngVel * dT );
-    body.qRot = QuatMul( qAngDelta, body.qRot );
-
-    body.qRot = normalize( body.qRot );
-}
-
-// Function 5
-float Integrate(float x, float dd)
-{
-    return x / sqrt(dd + x*x) + 1.0;
-}
-
-// Function 6
-float integrate(vec2 xy) {
-    float tx = 0.0;
-    float ty = 0.0;
-    int n = 2000;
-    vec2 last_p = path(0.0);
-
-    float wavelength = 0.02+0.02*iMouse.x/iResolution.x;
-
-    for (int i = 0; i < 2000; ++i) {
-        float t = float(i)/float(n);
-        vec2 p = path(t);
-        float d = hypot(xy-p);
-
-        float dt = p.y-last_p.y;
-
-        if (dt < 0.0 && cross2(p-last_p, xy-p) > 0.0) {
-            float path_length = d-p.x;
-            float s = 2.0*pi/wavelength*path_length;
-            tx += cos(s)*dt/d;
-            ty += sin(s)*dt/d;
-        }
-
-//        path_length = d+p.x;
-//        s = -2.0*pi/wavelength*path_length;
-//        tx += cos(s)*dt/d;
-//        ty += sin(s)*dt/d;
-
-        last_p = p;
-    }
-    return hypot(vec2(tx, ty));
-}
-
-// Function 7
-vec3 IntegrateAcceleration(vec3 ro, vec3 rd, float mass)
-{
-    float proj = dot(ro, rd);
-    vec3 dp = ro - proj * rd;
-    
-    //d = length(dp)  distance between star and ray 恒星到射线的距离
-    //intergrate = G*M/d * x/sqrt(d*d+x*x)  star outer acceleration integration 外部射线垂直方向积分
-    //limit(x/sqrt(d*d+x*x)) = +-1 function limit 积分函数极限
-
-    float d = length(dp);
-    if (d == 0.0) return vec3(0);
-    float g = CONST_G * mass / d * Integrate(proj, d*d);
-    return g / d * dp;
-}
-
-// Function 8
-float integratePolygon(vec2 sa, vec2 sb)
-{
-    vec2 sd = sb - sa;
-    float sum = 0.;
-    int e = 0;
-    
-    vec2 pa = polygonCorner(0);
-    
-    for(int i = 1; i <= numPolygonCorners; ++i)
-    {
-        vec2 pb = polygonCorner(i);
-        vec2 d = pb - pa;
-        vec2 n = vec2(d.y, -d.x);
-        float dotsdn = dot(sd, n);
-        float t = dot(pa - sa, n) / dotsdn;
-        float u = dot(sa + sd * t - pa, d);
-        
-        if(u > 0. && u <= dot(d, d))
-        {
-            if(t > 0. && t <= 1.)
-                sum += t * sign(dotsdn);
-            
-            if(t > 1.)
-                e ^= 1;
-        }
-        
-        pa = pb;
-    }
-    
-    if(e != 0)
-        sum += 1.;
-    
-    return sum;
-}
-
-// Function 9
-float Integrate(float x1, float x2, float dd)
-{
-    return x2 / sqrt(dd + x2*x2) - x1 / sqrt(dd + x1*x1);
-}
-
-// Function 10
-float integrate_L1(float A, float B, float C, float D, float x) {
-    return 0.5*((A*x + B)*abs(A*x + B)/A + (C*x + D)*abs(C*x + D)/C)*bias;
-}
-
-// Function 11
 vec4 IntegrateRK4(vec4 state, float h)
 {         
     vec4 k1 = h*dAdt_dVdt( state );
@@ -173,7 +45,7 @@ vec4 IntegrateRK4(vec4 state, float h)
     return state;
 }
 
-// Function 12
+// Function 4
 float integrateCheckerboard(vec2 uv0, vec2 uv1)
 {
   	vec2 rd = uv1 - uv0;
@@ -201,56 +73,84 @@ float integrateCheckerboard(vec2 uv0, vec2 uv1)
     return a;
 }
 
-// Function 13
-vec2 IntegrateBRDF(float NdotV, float roughness) {
-    vec3 V;
-    V.x = sqrt(1.0 - NdotV*NdotV);
-    V.y = 0.0;
-    V.z = NdotV;
-
-    float A = 0.0;
-    float B = 0.0;
-
-    vec3 N = vec3(0.0, 0.0, 1.0);
-
-    for(int i = 0; i < BRDF_SAMPLE_COUNT; ++i)
-    {
-        vec2 Xi = Hammersley(i, BRDF_SAMPLE_COUNT);
-        vec3 H  = ImportanceSampleGGX(Xi, N, roughness);
-        vec3 L  = normalize(2.0 * dot(V, H) * H - V);
-
-        float NdotL = max(L.z, 0.0);
-        float NdotH = max(H.z, 0.0);
-        float VdotH = max(dot(V, H), 0.0);
-
-        if(NdotL > 0.0)
-        {
-            float G = GeometrySmith(N, V, L, roughness);
-            float G_Vis = (G * VdotH) / (NdotH * NdotV);
-            float Fc = pow(1.0 - VdotH, 5.0);
-
-            A += (1.0 - Fc) * G_Vis;
-            B += Fc * G_Vis;
-        }
-    }
-    A /= float(BRDF_SAMPLE_COUNT);
-    B /= float(BRDF_SAMPLE_COUNT);
-    return vec2(A, B);
-}
-
-// Function 14
-vec3 integrate( vec3 x0, float sign_, int steps )
+// Function 5
+void BodyIntegrate( inout Body body, float dT )
 {
-  vec3 x = x0;
-  float h = 1.0 / float(steps);   // stepsize
-  for( int k=0; k < steps; k++ )  // Euler steps
-  {
-    x = x + h * sign_ * svf( x );
-  }
-  return (x-x0);
+#ifdef ENABLE_GRAVITY_TOGGLE    
+    if( !KeyIsToggled( KEY_G ) )
+#endif // ENABLE_GRAVITY_TOGGLE        
+    {
+    	BodyApplyGravity( body, dT );
+    }
+    
+    body.vMomentum += body.vForce * dT;
+    body.vAngularMomentum += body.vTorque * dT;
+    
+    vec3 vVel = body.vMomentum / body.fMass;
+    vec3 vAngVel = body.vAngularMomentum / body.fIT;
+
+    body.vPos += vVel * dT;
+    vec4 qAngDelta = QuatFromVec3( vAngVel * dT );
+    body.qRot = QuatMul( qAngDelta, body.qRot );
+
+    body.qRot = normalize( body.qRot );
 }
 
-// Function 15
+// Function 6
+vec2 integrate_sqrt_poly2_fast(float B, float C, float x) {
+    float xx = x*x;
+    float T = sqrt(xx + B*x + C);
+    float P = 2.0*x + B;
+    float Q = P * T;
+    float R = (B*B - 4.0*C)*log(2.0*T + P);
+    return vec2((Q - R*0.5)*0.25, T);
+}
+
+// Function 7
+vec2 euler(sampler2D g, vec2 p){
+    vec2 middle    = getT(g,p).xy;   	
+    vec2 up        = getT(g,p+vec2( 0, int(grid_level))).xy;
+    vec2 down      = getT(g,p+vec2( 0,-int(grid_level))).xy;
+    vec2 right     = getT(g,p+vec2( int(grid_level), 0)).xy;
+    vec2 left      = getT(g,p+vec2(-int(grid_level), 0)).xy;
+    vec2 upright   = getT(g,p+vec2( int(grid_level), int(grid_level))).xy;	
+    vec2 upleft    = getT(g,p+vec2(-int(grid_level), int(grid_level))).xy;
+    vec2 downright = getT(g,p+vec2( int(grid_level),-int(grid_level))).xy;
+    vec2 downleft  = getT(g,p+vec2(-int(grid_level),-int(grid_level))).xy;
+	
+    vec2 gradDiv\
+   	= vec2((0.25*(upleft.y + up.y)  - 0.25*(downleft.y + down.y)   + left.x   -middle.x\
+                -(0.25*(upright.y + up.y) - 0.25*(downright.y+ down.y)  + middle.x     -right.x))/(pow(grid_level,2.)*dx*dx),\
+                (up.y    - middle.y     + 0.25*(upleft.x + left.x)     -0.25*(upright.x + right.x)\
+                -(middle.y  - down.y   + 0.25*(downleft.x + left.x)   -0.25*(downright.x+right.x)))/(pow(grid_level,2.)*dx*dx));
+    
+    //laplacian(u) = div(grad(u))
+    //Gijs ninepoint stensil.
+    vec2 laplacian\
+    = (-8.*middle + up + left + right + down + upright + upleft + downright + downleft)/(3.*pow(grid_level,2.)*dx*dx);  
+    
+    //(uxdx + uydy)ux, (uxdx + uydy)uy
+    vec2 convect\
+   	= vec2((middle.x*(left.x - right.x) + middle.y*(up.x - down.x))/(2.*grid_level*dx),\
+               (middle.x*(left.y - right.y) + middle.y*(up.y - down.y))/(2.*grid_level*dx));
+    
+    //"Navier-Stokes"
+    return  middle.xy + dt*(viscosity*laplacian + nonlin_strength*convect + 1.0/epsilon*gradDiv);
+}
+
+// Function 8
+void euler(inout vec4 current, in float timeDelta) {
+  current.zw += g * timeDelta;
+  current.xy += current.zw * timeDelta;
+}
+
+// Function 9
+float IntegrateOuter(float x1, float x2, float d)
+{
+    return x2 / sqrt(d*d + x2*x2) - x1 / sqrt(d*d + x1*x1);
+}
+
+// Function 10
 float euler( vec2 ic, float tmax, vec2 p )
 {
     float h = tmax/float(MAXSTEPS); // stepsize
@@ -270,38 +170,128 @@ float euler( vec2 ic, float tmax, vec2 p )
 	return sqrt(d);
 }
 
-// Function 16
-Body Integrate3D(float mass, mat3 mInverseBodyInertiaTensor, 
-                 Body obj, vec3 vCMForce, vec3 vTorque, float dt) {
-    // compute auxiliary quantities
-    mat3 mInverseWorldInertiaTensor = obj.mOrientation * mInverseBodyInertiaTensor * transpose(obj.mOrientation);
-    vec3 vAngularVelocity = mInverseWorldInertiaTensor * obj.vAngularMomentum;
-       		
-    vCMForce -= obj.vCMVelocity * dKdl/dt; // Air friction
-    vTorque -= vAngularVelocity * dKda/dt;
-    
-    obj.vCMVelocity	+= dt * vCMForce /mass;
-    
-    obj.mOrientation	 += skewSymmetric(vAngularVelocity) * obj.mOrientation  * dt;
-    obj.vAngularMomentum += vTorque * dt;
-    obj.mOrientation = orthonormalize(obj.mOrientation);
+// Function 11
+vec2 Euler(vec2 posUV){
+    vec2 AspectRatio = iResolution.xy/iResolution.y;
+    return dt*GetVelocityUV(mod(posUV,vec2(1.0)))/AspectRatio;
+}
 
-    // integrate primary quantities
-    obj.vCMPosition	+= obj.vCMVelocity * dt;
-    
-    return obj;
+// Function 12
+void BodyIntegrate( inout Body body, float dT )
+{
+
+
+    body.vMomentum += body.vForce * dT;
+    body.vAngularMomentum += body.vTorque * dT;
+
+    vec3 vVel = body.vMomentum / body.fMass;
+    vec3 vAngVel = body.vAngularMomentum / body.fIT;
+
+    body.vPos += vVel * dT;
+    vec4 qAngDelta = QuatFromVec3( vAngVel * dT );
+    body.qRot = multQuat( qAngDelta, body.qRot );
+
+    body.qRot = normalize( body.qRot );
+}
+
+// Function 13
+void integrateVolumetricFog(in vec3 p, 
+                           in vec3 V,
+                           in float density,
+                           in float d,
+                           inout float transmittance, 
+                           inout vec3 inscatteredLight,
+                           in vec2 fragCoord)
+{
+    // --- sample a random position on the area light
+    transmittance *= exp(-density * d);
+    float g = 0.2;
+    float u = rand(rand(fragCoord.x * p.x + fragCoord.y + d * 1.5) + 46984.4363);
+    float v = rand(rand(fragCoord.y * p.y + fragCoord.x + d * 2.5) + 3428.532546);
+    vec3 lightPos;
+    vec3 lightCol;
+    sampleAreaLight(vec2(u, v), lightPos, lightCol);
+    vec3 L = (lightPos - p);
+    float G = (dot(normalize(L), transpose(getRotation()) * AreaLightNormal)) / dot(L, L);
+    float areaPdf = 1.0 / (AreaLightSize.x * AreaLightSize.y);
+    float shadow = rayMarchToAreaLight(p, lightPos);
+    float phaseHG = (1.0 / (4.0 * 3.14)) * ((1.0 - g * g) / (pow((1.0 + g * g - 2.0 * g * max(dot(normalize(L), V), 0.0)), 3.0 / 2.0)));
+    inscatteredLight += density * transmittance * lightCol * G * phaseHG * d * (1.0 / areaPdf) * shadow;
+}
+
+// Function 14
+void integrateVolumetricFogFromSampledPosition(in vec3 p, 
+                           in vec3 V,
+                           in float density,
+                           in float d,
+                           inout vec3 inscatteredLight,
+                           in vec3 lightPos,
+                           in vec3 lightCol,
+                           in float xPdf)
+{
+    // same integration as above, but position on the ray is given by equi-angular sampling
+    float trans = exp(-density * d);
+    float g = 0.2;
+    vec3 L = (lightPos - p);
+    float G = (dot(normalize(L), transpose(getRotation()) * AreaLightNormal)) / dot(L, L);
+    float areaPdf = 1.0 / (AreaLightSize.x * AreaLightSize.y);
+    float shadow = rayMarchToAreaLight(p, lightPos);
+    float phaseHG = (1.0 / (4.0 * 3.14)) * ((1.0 - g * g) / (pow((1.0 + g * g - 2.0 * g * max(dot(normalize(L), V), 0.0)), 3.0 / 2.0)));
+    inscatteredLight += density * trans * lightCol * G * phaseHG  * (1.0 / areaPdf) * (1.0 / xPdf) * shadow;
+}
+
+// Function 15
+mat3 EulerToMat(vec3 p){vec3 s=sin(p),c=cos(p);
+ return mat3(c.z*c.x,-c.z*s.x,c.z*s.x*s.y+s.z*c.y
+ ,s.x ,c.x*c.y ,-c.x*s.y
+ ,-s.z*c.x ,s.z*s.x*c.y+c.z*s.y ,-s.z*s.x*s.y+c.z*c.y);}
+
+// Function 16
+vec2 eulerInte(vec2 p) {
+    vec2 v = texture(iChannel0, p / iResolution.xy).xy;
+    return p - v * iTimeDelta;
 }
 
 // Function 17
-void VerletIntegrate (inout vec4 point, in vec2 acceleration)
-{
-	vec2 currentPos = point.xy;
-    vec2 lastPos = point.zw;
+vec2 IntegrateBRDF(float roughness, float NdotV) {
+    vec3 V;
+    V.x = sqrt(1.0 - NdotV*NdotV);
+    V.y = 0.0;
+    V.z = NdotV;
 
-    vec2 newPos = currentPos + currentPos - lastPos + acceleration * c_tickDeltaTimeSq;
-    
-    point.xy = newPos;
-    point.zw = currentPos;
+    float A = 0.0;
+    float B = 0.0;
+
+    const int SAMPLE_COUNT = 128;
+
+    vec3 N = vec3(0.0, 0.0, 1.0);
+    vec3 UpVector = abs(N.z) < 0.999 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0);
+    vec3 TangentX = normalize(cross(UpVector, N));
+    vec3 TangentY = cross(N, TangentX);
+
+    for(int i = 0; i < SAMPLE_COUNT; ++i)  {
+        vec2 Xi = Hammersley(i, SAMPLE_COUNT);
+        vec3 HTangent = ImportanceSampleGGX(Xi, roughness);
+        
+        vec3 H = normalize(HTangent.x * TangentX + HTangent.y * TangentY + HTangent.z * N);
+        vec3 L = normalize(2.0 * dot(V, H) * H - V);
+
+        float NdotL = max(L.z, 0.0);
+        float NdotH = max(H.z, 0.0);
+        float VdotH = max(dot(V, H), 0.0);
+
+        if(NdotL > 0.0) {
+            float G = GeometryGGX_Smith(NdotV, NdotL, roughness);
+            float G_Vis = (G * VdotH) / (NdotH * NdotV);
+            float Fc = pow(1.0 - VdotH, 5.0);
+
+            A += (1.0 - Fc) * G_Vis;
+            B += Fc * G_Vis;
+        }
+    }
+    A /= float(SAMPLE_COUNT);
+    B /= float(SAMPLE_COUNT);
+    return vec2(A, B);
 }
 
 // Function 18
@@ -384,99 +374,6 @@ float integratePolygon(vec2 sa, vec2 sb)
 }
 
 // Function 20
-float inv_integrate_sqrt_poly2(float A, float B, float C, float t) {
-    // there is to my knowledge no closed form solution.
-    
-    // the simplest root finding approach is bisection, but it 
-    // needs many iterations to achieve sufficient precision.
-    
-    // a faster method is to use newton-raphson, which conveniently
-    // requires the derivative which we started from.
-    
-    // our only hope for a closed form solution is the discovery 
-    // of an invertible approximation of the integral.
-    float x = 0.5;
-    for (int k = 0; k < 4; ++k) {
-        vec2 q = integrate_sqrt_poly2(A, B, C, x);
-        float d = (t-q.x)/q.y;
-        x = clamp(x + d, 0.0, 1.0);
-    }
-    return x;
-}
-
-// Function 21
-vec2 Euler(vec2 posUV){
-    vec2 AspectRatio = iResolution.xy/iResolution.y;
-    return dt*GetVelocityUV(mod(posUV,vec2(1.0)))/AspectRatio;
-}
-
-// Function 22
-vec2 integrate_sqrt_poly2(float A, float B, float C, float x) {
-    float xx = x*x;
-    float T = sqrt(A*xx + B*x + C);
-    float P = 2.0*A*x + B;
-    float Q = P * T;
-    float R = (B*B - 4.0*A*C)*log(2.0*sqrt(A)*T + P);
-    return vec2(Q/(4.0*A) - R/(8.0*pow(A,1.5)), T); 
-}
-
-// Function 23
-float IntegrateOuter(float x1, float x2, float d)
-{
-    return x2 / sqrt(d*d + x2*x2) - x1 / sqrt(d*d + x1*x1);
-}
-
-// Function 24
-vec2 euler(sampler2D g, vec2 p){
-    vec2 middle    = getT(g,p).xy;   	
-    vec2 up        = getT(g,p+vec2( 0, int(grid_level))).xy;
-    vec2 down      = getT(g,p+vec2( 0,-int(grid_level))).xy;
-    vec2 right     = getT(g,p+vec2( int(grid_level), 0)).xy;
-    vec2 left      = getT(g,p+vec2(-int(grid_level), 0)).xy;
-    vec2 upright   = getT(g,p+vec2( int(grid_level), int(grid_level))).xy;	
-    vec2 upleft    = getT(g,p+vec2(-int(grid_level), int(grid_level))).xy;
-    vec2 downright = getT(g,p+vec2( int(grid_level),-int(grid_level))).xy;
-    vec2 downleft  = getT(g,p+vec2(-int(grid_level),-int(grid_level))).xy;
-	
-    vec2 gradDiv\
-   	= vec2((0.25*(upleft.y + up.y)  - 0.25*(downleft.y + down.y)   + left.x   -middle.x\
-                -(0.25*(upright.y + up.y) - 0.25*(downright.y+ down.y)  + middle.x     -right.x))/(pow(grid_level,2.)*dx*dx),\
-                (up.y    - middle.y     + 0.25*(upleft.x + left.x)     -0.25*(upright.x + right.x)\
-                -(middle.y  - down.y   + 0.25*(downleft.x + left.x)   -0.25*(downright.x+right.x)))/(pow(grid_level,2.)*dx*dx));
-    
-    //laplacian(u) = div(grad(u))
-    //Gijs ninepoint stensil.
-    vec2 laplacian\
-    = (-8.*middle + up + left + right + down + upright + upleft + downright + downleft)/(3.*pow(grid_level,2.)*dx*dx);  
-    
-    //(uxdx + uydy)ux, (uxdx + uydy)uy
-    vec2 convect\
-   	= vec2((middle.x*(left.x - right.x) + middle.y*(up.x - down.x))/(2.*grid_level*dx),\
-               (middle.x*(left.y - right.y) + middle.y*(up.y - down.y))/(2.*grid_level*dx));
-    
-    //"Navier-Stokes"
-    return  middle.xy + dt*(viscosity*laplacian + nonlin_strength*convect + 1.0/epsilon*gradDiv);
-}
-
-// Function 25
-void BodyIntegrate( inout Body body, float dT )
-{
-
-
-    body.vMomentum += body.vForce * dT;
-    body.vAngularMomentum += body.vTorque * dT;
-
-    vec3 vVel = body.vMomentum / body.fMass;
-    vec3 vAngVel = body.vAngularMomentum / body.fIT;
-
-    body.vPos += vVel * dT;
-    vec4 qAngDelta = QuatFromVec3( vAngVel * dT );
-    body.qRot = multQuat( qAngDelta, body.qRot );
-
-    body.qRot = normalize( body.qRot );
-}
-
-// Function 26
 void Integrate(in vec3 F, in vec3 T, inout mat4 s) {
 	vec4 q = s[0];
     vec3 x = s[1].xyz;
@@ -500,7 +397,7 @@ void Integrate(in vec3 F, in vec3 T, inout mat4 s) {
     s = mat4(q, vec4(x, 1.0), vec4(P, 0.0), vec4(L, 0.0));
 }
 
-// Function 27
+// Function 21
 vec3 IntegrateSurface(vec3 col, vec3 pos, vec3 n, float matId, vec3 rayDir, SceneSetup setup)
 { 
      PBRMat mat;
@@ -527,112 +424,7 @@ vec3 IntegrateSurface(vec3 col, vec3 pos, vec3 n, float matId, vec3 rayDir, Scen
 	return col;
 }
 
-// Function 28
-mat3  euler(float h, float p, float r){float a=sin(h),b=sin(p),c=sin(r),d=cos(h),e=cos(p),f=cos(r);return mat3(f*e,c*e,-b,f*b*a-c*d,f*d+c*b*a,e*a,c*a+f*b*d,c*b*d-f*a,e*d);}
-
-// Function 29
-void integrateSpring(inout Point p1, inout Point p2, in float rest_length, in float stepsize)
-{
-    float dist = distance(p1.pos, p2.pos);
-    
-    float factor = clamp((rest_length - dist)/dist, -1., 1.);
-    
-    vec3 dir = (p1.pos - p2.pos) * factor * stepsize;
-    
-    p1.vel += dir;
-    p2.vel -= dir;
-}
-
-// Function 30
-float integrateSquare(vec2 pa, vec2 pb)
-{
-    vec2 d = pb - pa, sd = sign(d);
-    
-    vec2 t0 = (-sd - pa) / d;
-    vec2 t1 = (+sd - pa) / d;
-    
-    vec2 i = clamp(vec2(max(t0.x, t0.y), min(t1.x, t1.y)), 0., 1.);
-    
-    return max(0., i.y - i.x);
-}
-
-// Function 31
-vec2 IntegrateBRDF(float roughness, float NdotV) {
-    vec3 V;
-    V.x = sqrt(1.0 - NdotV*NdotV);
-    V.y = 0.0;
-    V.z = NdotV;
-
-    float A = 0.0;
-    float B = 0.0;
-
-    const int SAMPLE_COUNT = 128;
-
-    vec3 N = vec3(0.0, 0.0, 1.0);
-    vec3 UpVector = abs(N.z) < 0.999 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0);
-    vec3 TangentX = normalize(cross(UpVector, N));
-    vec3 TangentY = cross(N, TangentX);
-
-    for(int i = 0; i < SAMPLE_COUNT; ++i)  {
-        vec2 Xi = Hammersley(i, SAMPLE_COUNT);
-        vec3 HTangent = ImportanceSampleGGX(Xi, roughness);
-        
-        vec3 H = normalize(HTangent.x * TangentX + HTangent.y * TangentY + HTangent.z * N);
-        vec3 L = normalize(2.0 * dot(V, H) * H - V);
-
-        float NdotL = max(L.z, 0.0);
-        float NdotH = max(H.z, 0.0);
-        float VdotH = max(dot(V, H), 0.0);
-
-        if(NdotL > 0.0) {
-            float G = GeometryGGX_Smith(NdotV, NdotL, roughness);
-            float G_Vis = (G * VdotH) / (NdotH * NdotV);
-            float Fc = pow(1.0 - VdotH, 5.0);
-
-            A += (1.0 - Fc) * G_Vis;
-            B += Fc * G_Vis;
-        }
-    }
-    A /= float(SAMPLE_COUNT);
-    B /= float(SAMPLE_COUNT);
-    return vec2(A, B);
-}
-
-// Function 32
-vec3 Integrate(vec3 cur, float dt)
-{
-	vec3 next = vec3(0);
-    
-    next.x = O * (cur.y - cur.x);
-    next.y = cur.x * (P - cur.z) - cur.y;
-    next.z = cur.x*cur.y - B*cur.z;
-    
-    return cur + next * dt;
-}
-
-// Function 33
-void BodyIntegrate(inout Body body, float dt ) {
-    body.vMomentum += body.vForce * dt; 
-    body.vAngularMomentum += body.vTorque*dt;
-    
-    vec3 vVel = body.vMomentum * body.invM;
-    vec3 vAngVel = getAngularVelocityWorld(body);
-    
-    if (length(vVel) > MAX_VEL) {
-        vVel = normalize(vVel)*MAX_VEL;
-    }
-    if (length(vAngVel) > MAX_AVEL) {
-        vAngVel = normalize(vAngVel)*MAX_AVEL;
-    }
-    body.vPos += vVel * dt;
-    vec4 qAngDelta = QuatFromVec3(vAngVel * dt);
-    body.qRot = normalize(QuatMul(qAngDelta, body.qRot));
-    body.mRot = QuatToMat3(body.qRot);  // update rot
-    body.vMomentum *= pow(.91,10.*DT);
-    body.vAngularMomentum *= pow(.93,10.*DT); 
-}
-
-// Function 34
+// Function 22
 void integrateCameraRig(inout CameraRig rig, in float steps) {
     float stepsize = steps;
 	integrateSpring(rig.p1, rig.p2, cam_size, stepsize);
@@ -665,53 +457,126 @@ void integrateCameraRig(inout CameraRig rig, in float steps) {
     integratePoint(rig.p5, stepsize);
 }
 
-// Function 35
-float inv_integrate_sqrt_poly2_fast(float B, float C, float t) {
-    // there is to my knowledge no closed form solution.
-    
-    // the simplest root finding approach is bisection, but it 
-    // needs many iterations to achieve sufficient precision.
-    
-    // a faster method is to use newton-raphson, which conveniently
-    // requires the derivative which we started from.
-    
-    // our only hope for a closed form solution is the discovery 
-    // of an invertible approximation of the integral.
+// Function 23
+float integrate_L1(float A, float B, float C, float D, float x) {
+    return 0.5*((A*x + B)*abs(A*x + B)/A + (C*x + D)*abs(C*x + D)/C)*bias;
+}
+
+// Function 24
+float inv_integrate_L1(float A, float B, float C, float D, float t) {
+    // even for the L1 form there is no closed form solution.
+    // see inv_integrate_sqrt_poly2 for more information
     float x = 0.5;
     for (int k = 0; k < 4; ++k) {
-        vec2 q = integrate_sqrt_poly2_fast(B, C, x);
-        float d = (t-q.x)/q.y;
+        float q = integrate_L1(A, B, C, D, x);
+        float d = (t-q)/(bias*(abs(A*x + B) + abs(C*x + D)));
         x = clamp(x + d, 0.0, 1.0);
     }
     return x;
 }
 
-// Function 36
-void integrateVolumetricFog(in vec3 p, 
-                           in vec3 V,
-                           in float density,
-                           in float d,
-                           inout float transmittance, 
-                           inout vec3 inscatteredLight,
-                           in vec2 fragCoord)
+// Function 25
+float Integrate(float x, float dd)
 {
-    // --- sample a random position on the area light
-    transmittance *= exp(-density * d);
-    float g = 0.2;
-    float u = rand(rand(fragCoord.x * p.x + fragCoord.y + d * 1.5) + 46984.4363);
-    float v = rand(rand(fragCoord.y * p.y + fragCoord.x + d * 2.5) + 3428.532546);
-    vec3 lightPos;
-    vec3 lightCol;
-    sampleAreaLight(vec2(u, v), lightPos, lightCol);
-    vec3 L = (lightPos - p);
-    float G = (dot(normalize(L), transpose(getRotation()) * AreaLightNormal)) / dot(L, L);
-    float areaPdf = 1.0 / (AreaLightSize.x * AreaLightSize.y);
-    float shadow = rayMarchToAreaLight(p, lightPos);
-    float phaseHG = (1.0 / (4.0 * 3.14)) * ((1.0 - g * g) / (pow((1.0 + g * g - 2.0 * g * max(dot(normalize(L), V), 0.0)), 3.0 / 2.0)));
-    inscatteredLight += density * transmittance * lightCol * G * phaseHG * d * (1.0 / areaPdf) * shadow;
+    return x / sqrt(dd + x*x) + 1.0;
 }
 
-// Function 37
+// Function 26
+void BodyIntegrate(inout Body body, float dt ) {
+    body.vMomentum += body.vForce * dt; 
+    body.vAngularMomentum += body.vTorque*dt;
+    
+    vec3 vVel = body.vMomentum * body.invM;
+    vec3 vAngVel = getAngularVelocityWorld(body);
+    
+    if (length(vVel) > MAX_VEL) {
+        vVel = normalize(vVel)*MAX_VEL;
+    }
+    if (length(vAngVel) > MAX_AVEL) {
+        vAngVel = normalize(vAngVel)*MAX_AVEL;
+    }
+    body.vPos += vVel * dt;
+    vec4 qAngDelta = QuatFromVec3(vAngVel * dt);
+    body.qRot = normalize(QuatMul(qAngDelta, body.qRot));
+    body.mRot = QuatToMat3(body.qRot);  // update rot
+    body.vMomentum *= pow(.91,10.*DT);
+    body.vAngularMomentum *= pow(.93,10.*DT); 
+}
+
+// Function 27
+void forwardEuler(inout vec4 current, in float h) {
+  //Adding Gravity
+  current.zw += g * h;
+
+  // Forward Euler
+  current.xy += current.zw * h;
+}
+
+// Function 28
+vec2 IntegrateBRDF(float NdotV, float roughness) {
+    vec3 V;
+    V.x = sqrt(1.0 - NdotV*NdotV);
+    V.y = 0.0;
+    V.z = NdotV;
+
+    float A = 0.0;
+    float B = 0.0;
+
+    vec3 N = vec3(0.0, 0.0, 1.0);
+
+    for(int i = 0; i < BRDF_SAMPLE_COUNT; ++i)
+    {
+        vec2 Xi = Hammersley(i, BRDF_SAMPLE_COUNT);
+        vec3 H  = ImportanceSampleGGX(Xi, N, roughness);
+        vec3 L  = normalize(2.0 * dot(V, H) * H - V);
+
+        float NdotL = max(L.z, 0.0);
+        float NdotH = max(H.z, 0.0);
+        float VdotH = max(dot(V, H), 0.0);
+
+        if(NdotL > 0.0)
+        {
+            float G = GeometrySmith(N, V, L, roughness);
+            float G_Vis = (G * VdotH) / (NdotH * NdotV);
+            float Fc = pow(1.0 - VdotH, 5.0);
+
+            A += (1.0 - Fc) * G_Vis;
+            B += Fc * G_Vis;
+        }
+    }
+    A /= float(BRDF_SAMPLE_COUNT);
+    B /= float(BRDF_SAMPLE_COUNT);
+    return vec2(A, B);
+}
+
+// Function 29
+vec4 integrate( in vec4 sum, in float dif, in float den, in vec3 bgcol, in float t )
+{
+    // lighting
+    vec3 lin = vec3(0.9,0.95,1.0) + 0.5*vec3(0.7, 0.5, 0.3)*dif * smoothstep(-0.3, 0.3, v3sunDir.y);
+    vec4 col = vec4( mix( 1.15*vec3(1.0,0.95,0.8), vec3(0.65), den ), den );
+    col.xyz *= lin;
+    //col.xyz = mix( col.xyz, bgcol, 1.0-exp(-0.003*t*t) );
+    // front to back blending    
+    col.a *= 0.4;
+    col.rgb *= col.a;
+    return sum + col*(1.0-sum.a);
+}
+
+// Function 30
+void update_trajectory_euler(in int body, out vec4 XYZW, out vec3 velXYZ)
+{
+    vec4 bodyXYZW;
+    vec3 bodyVelXyz;
+    getBodyPosVel(body, bodyXYZW, bodyVelXyz);
+    
+    vec3 accelVec = calculate_gravity_accel(body, bodyXYZW, 0.0);
+    
+    velXYZ = bodyVelXyz + GRAVITY_COEFF * accelVec;
+    XYZW = bodyXYZW + UPDATE_STEP * vec4(velXYZ.xyz, 0.0);
+}
+
+// Function 31
 vec3 IntegrateAcceleration(vec3 ro, vec3 rd, float mass)
 {
     float proj = dot(ro, rd);
@@ -746,23 +611,35 @@ vec3 IntegrateAcceleration(vec3 ro, vec3 rd, float mass)
     return g / l * dp;
 }
 
-// Function 38
-vec2 integrate_sqrt_poly2_fast(float B, float C, float x) {
-    float xx = x*x;
-    float T = sqrt(xx + B*x + C);
-    float P = 2.0*x + B;
-    float Q = P * T;
-    float R = (B*B - 4.0*C)*log(2.0*T + P);
-    return vec2((Q - R*0.5)*0.25, T);
+// Function 32
+void VerletIntegrate (inout vec4 point, in vec2 acceleration)
+{
+	vec2 currentPos = point.xy;
+    vec2 lastPos = point.zw;
+
+    vec2 newPos = currentPos + currentPos - lastPos + acceleration * c_tickDeltaTimeSq;
+    
+    point.xy = newPos;
+    point.zw = currentPos;
 }
 
-// Function 39
-vec2 Euler(vec2 posUV){
-    vec2 AspectRatio = iResolution.xy/iResolution.y;
-    return dt*GetVelocityUV(posUV)/AspectRatio;
+// Function 33
+vec3 IntegrateAcceleration(vec3 ro, vec3 rd, float mass)
+{
+    float proj = dot(ro, rd);
+    vec3 dp = ro - proj * rd;
+    
+    //d = length(dp)  distance between star and ray 恒星到射线的距离
+    //intergrate = G*M/d * x/sqrt(d*d+x*x)  star outer acceleration integration 外部射线垂直方向积分
+    //limit(x/sqrt(d*d+x*x)) = +-1 function limit 积分函数极限
+
+    float d = length(dp);
+    if (d == 0.0) return vec3(0);
+    float g = CONST_G * mass / d * Integrate(proj, d*d);
+    return g / d * dp;
 }
 
-// Function 40
+// Function 34
 Quaternion euler_to_quat(vec3 angles)
 {
     Quaternion
@@ -772,36 +649,153 @@ Quaternion euler_to_quat(vec3 angles)
     return mul(q0, mul(q1, q2));
 }
 
+// Function 35
+vec3 integrate( vec3 x0, float sign_, int steps )
+{
+  vec3 x = x0;
+  float h = 1.0 / float(steps);   // stepsize
+  for( int k=0; k < steps; k++ )  // Euler steps
+  {
+    x = x + h * sign_ * svf( x );
+  }
+  return (x-x0);
+}
+
+// Function 36
+vec4 Integrate(vec4 body, vec2 accel, float delta)
+{
+    return vec4(2.0*body.xy - body.zw + accel * delta*delta, body.xy);
+}
+
+// Function 37
+float integrateSquare(vec2 pa, vec2 pb)
+{
+    vec2 d = pb - pa, sd = sign(d);
+    
+    vec2 t0 = (-sd - pa) / d;
+    vec2 t1 = (+sd - pa) / d;
+    
+    vec2 i = clamp(vec2(max(t0.x, t0.y), min(t1.x, t1.y)), 0., 1.);
+    
+    return max(0., i.y - i.x);
+}
+
+// Function 38
+float inv_integrate_sqrt_poly2(float A, float B, float C, float t) {
+    // there is to my knowledge no closed form solution.
+    
+    // the simplest root finding approach is bisection, but it 
+    // needs many iterations to achieve sufficient precision.
+    
+    // a faster method is to use newton-raphson, which conveniently
+    // requires the derivative which we started from.
+    
+    // our only hope for a closed form solution is the discovery 
+    // of an invertible approximation of the integral.
+    float x = 0.5;
+    for (int k = 0; k < 4; ++k) {
+        vec2 q = integrate_sqrt_poly2(A, B, C, x);
+        float d = (t-q.x)/q.y;
+        x = clamp(x + d, 0.0, 1.0);
+    }
+    return x;
+}
+
+// Function 39
+float integratePolygon(vec2 sa, vec2 sb)
+{
+    vec2 sd = sb - sa;
+    float sum = 0.;
+    int e = 0;
+    
+    vec2 pa = polygonCorner(0);
+    
+    for(int i = 1; i <= numPolygonCorners; ++i)
+    {
+        vec2 pb = polygonCorner(i);
+        vec2 d = pb - pa;
+        vec2 n = vec2(d.y, -d.x);
+        float dotsdn = dot(sd, n);
+        float t = dot(pa - sa, n) / dotsdn;
+        float u = dot(sa + sd * t - pa, d);
+        
+        if(u > 0. && u <= dot(d, d))
+        {
+            if(t > 0. && t <= 1.)
+                sum += t * sign(dotsdn);
+            
+            if(t > 1.)
+                e ^= 1;
+        }
+        
+        pa = pb;
+    }
+    
+    if(e != 0)
+        sum += 1.;
+    
+    return sum;
+}
+
+// Function 40
+float integrate(vec2 xy) {
+    float tx = 0.0;
+    float ty = 0.0;
+    int n = 2000;
+    vec2 last_p = path(0.0);
+
+    float wavelength = 0.02+0.02*iMouse.x/iResolution.x;
+
+    for (int i = 0; i < 2000; ++i) {
+        float t = float(i)/float(n);
+        vec2 p = path(t);
+        float d = hypot(xy-p);
+
+        float dt = p.y-last_p.y;
+
+        if (dt < 0.0 && cross2(p-last_p, xy-p) > 0.0) {
+            float path_length = d-p.x;
+            float s = 2.0*pi/wavelength*path_length;
+            tx += cos(s)*dt/d;
+            ty += sin(s)*dt/d;
+        }
+
+//        path_length = d+p.x;
+//        s = -2.0*pi/wavelength*path_length;
+//        tx += cos(s)*dt/d;
+//        ty += sin(s)*dt/d;
+
+        last_p = p;
+    }
+    return hypot(vec2(tx, ty));
+}
+
 // Function 41
-void euler(inout vec4 current, in float timeDelta) {
-  current.zw += g * timeDelta;
-  current.xy += current.zw * timeDelta;
+vec3 Integrate(vec3 cur, float dt)
+{
+	vec3 next = vec3(0);
+    
+    next.x = O * (cur.y - cur.x);
+    next.y = cur.x * (P - cur.z) - cur.y;
+    next.z = cur.x*cur.y - B*cur.z;
+    
+    return cur + next * dt;
 }
 
 // Function 42
-mat3 EulerToMat(vec3 p){vec3 s=sin(p),c=cos(p);
- return mat3(c.z*c.x,-c.z*s.x,c.z*s.x*s.y+s.z*c.y
- ,s.x ,c.x*c.y ,-c.x*s.y
- ,-s.z*c.x ,s.z*s.x*c.y+c.z*s.y ,-s.z*s.x*s.y+c.z*c.y);}
+vec2 Euler(vec2 posUV){
+    vec2 AspectRatio = iResolution.xy/iResolution.y;
+    return dt*GetVelocityUV(posUV)/AspectRatio;
+}
 
 // Function 43
-vec4 Euler2AxisAngle(vec3 p){p*=.5;//.xyz=heading,altitude,bank
- vec3 s=sin(p),c=cos(p);
- vec4 r;
- r.w=2.*acos(mulC(c)-mulC(s));
- r.x=s.x*s.y*c.z+c.x*c.y*s.z
-// x=s1  s2  c3 +c1  c2  s3
- r.y=s.x*c.y*c.z+c.x*s.y*s.z
-// y=s1  c2  c3 +c1  s2  s3
- r.z=c.x*s.y*c.z-s.x*c.y*c.z
-// z=c1  s2  c3 -s1  c2  s3
- return r;}
+float Integrate(float x1, float x2, float dd)
+{
+    return x2 / sqrt(dd + x2*x2) - x1 / sqrt(dd + x1*x1);
+}
 
 // Function 44
-vec2 eulerInte(vec2 p) {
-    vec2 v = texture(iChannel0, p / iResolution.xy).xy;
-    return p - v * iTimeDelta;
-}
+mat3  euler(float h, float p, float r){float a=sin(h),b=sin(p),c=sin(r),d=cos(h),e=cos(p),f=cos(r);return mat3(f*e,c*e,-b,f*b*a-c*d,f*d+c*b*a,e*a,c*a+f*b*d,c*b*d-f*a,e*d);}
 
 // Function 45
 void integratePoint(inout Point p, in float stepsize) {
@@ -829,69 +823,75 @@ void integratePoint(inout Point p, in float stepsize) {
 }
 
 // Function 46
-float inv_integrate_L1(float A, float B, float C, float D, float t) {
-    // even for the L1 form there is no closed form solution.
-    // see inv_integrate_sqrt_poly2 for more information
-    float x = 0.5;
-    for (int k = 0; k < 4; ++k) {
-        float q = integrate_L1(A, B, C, D, x);
-        float d = (t-q)/(bias*(abs(A*x + B) + abs(C*x + D)));
-        x = clamp(x + d, 0.0, 1.0);
-    }
-    return x;
-}
+vec4 Euler2AxisAngle(vec3 p){p*=.5;//.xyz=heading,altitude,bank
+ vec3 s=sin(p),c=cos(p);
+ vec4 r;
+ r.w=2.*acos(mulC(c)-mulC(s));
+ r.x=s.x*s.y*c.z+c.x*c.y*s.z
+// x=s1  s2  c3 +c1  c2  s3
+ r.y=s.x*c.y*c.z+c.x*s.y*s.z
+// y=s1  c2  c3 +c1  s2  s3
+ r.z=c.x*s.y*c.z-s.x*c.y*c.z
+// z=c1  s2  c3 -s1  c2  s3
+ return r;}
 
 // Function 47
-void update_trajectory_euler(in int body, out vec4 XYZW, out vec3 velXYZ)
-{
-    vec4 bodyXYZW;
-    vec3 bodyVelXyz;
-    getBodyPosVel(body, bodyXYZW, bodyVelXyz);
+Body Integrate3D(float mass, mat3 mInverseBodyInertiaTensor, 
+                 Body obj, vec3 vCMForce, vec3 vTorque, float dt) {
+    // compute auxiliary quantities
+    mat3 mInverseWorldInertiaTensor = obj.mOrientation * mInverseBodyInertiaTensor * transpose(obj.mOrientation);
+    vec3 vAngularVelocity = mInverseWorldInertiaTensor * obj.vAngularMomentum;
+       		
+    vCMForce -= obj.vCMVelocity * dKdl/dt; // Air friction
+    vTorque -= vAngularVelocity * dKda/dt;
     
-    vec3 accelVec = calculate_gravity_accel(body, bodyXYZW, 0.0);
+    obj.vCMVelocity	+= dt * vCMForce /mass;
     
-    velXYZ = bodyVelXyz + GRAVITY_COEFF * accelVec;
-    XYZW = bodyXYZW + UPDATE_STEP * vec4(velXYZ.xyz, 0.0);
+    obj.mOrientation	 += skewSymmetric(vAngularVelocity) * obj.mOrientation  * dt;
+    obj.vAngularMomentum += vTorque * dt;
+    obj.mOrientation = orthonormalize(obj.mOrientation);
+
+    // integrate primary quantities
+    obj.vCMPosition	+= obj.vCMVelocity * dt;
+    
+    return obj;
 }
 
 // Function 48
-vec4 Integrate(vec4 body, vec2 accel, float delta)
-{
-    return vec4(2.0*body.xy - body.zw + accel * delta*delta, body.xy);
+vec4 VerletIntegral(in ivec2 iU){
+	vec4 P = GetP(iU);
+    if(iU.y == GridSize.y-1 ){
+        vec2 mouse = (iMouse.xy*2.-R)/R.y;
+        if(iMouse.x == 0. && iMouse.y == 0.)
+            mouse = vec2(0.);
+            
+    	P.xy = vec2(iU.x+12,iU.y+5)*R1 + mouse;	
+    }
+    vec2 PreviousP = P.zw;
+    vec2 CurrentP = Constraint(iU,P.xy);
+    vec2 NextP = CurrentP + (CurrentP - PreviousP)*(1.-Friction) + Gravity*iTimeDelta*iTimeDelta/2.;
+    
+    PreviousP = CurrentP;
+    
+    return vec4(NextP,PreviousP);
 }
 
 // Function 49
-vec4 integrate( in vec4 sum, in float dif, in float den, in vec3 bgcol, in float t )
+float IntegrateOuter(float x, float d)
 {
-    // lighting
-    vec3 lin = vec3(0.9,0.95,1.0) + 0.5*vec3(0.7, 0.5, 0.3)*dif * smoothstep(-0.3, 0.3, v3sunDir.y);
-    vec4 col = vec4( mix( 1.15*vec3(1.0,0.95,0.8), vec3(0.65), den ), den );
-    col.xyz *= lin;
-    //col.xyz = mix( col.xyz, bgcol, 1.0-exp(-0.003*t*t) );
-    // front to back blending    
-    col.a *= 0.4;
-    col.rgb *= col.a;
-    return sum + col*(1.0-sum.a);
+    return x / sqrt(d*d + x*x) + 1.0;
 }
 
 // Function 50
-void integrateVolumetricFogFromSampledPosition(in vec3 p, 
-                           in vec3 V,
-                           in float density,
-                           in float d,
-                           inout vec3 inscatteredLight,
-                           in vec3 lightPos,
-                           in vec3 lightCol,
-                           in float xPdf)
+void integrateSpring(inout Point p1, inout Point p2, in float rest_length, in float stepsize)
 {
-    // same integration as above, but position on the ray is given by equi-angular sampling
-    float trans = exp(-density * d);
-    float g = 0.2;
-    vec3 L = (lightPos - p);
-    float G = (dot(normalize(L), transpose(getRotation()) * AreaLightNormal)) / dot(L, L);
-    float areaPdf = 1.0 / (AreaLightSize.x * AreaLightSize.y);
-    float shadow = rayMarchToAreaLight(p, lightPos);
-    float phaseHG = (1.0 / (4.0 * 3.14)) * ((1.0 - g * g) / (pow((1.0 + g * g - 2.0 * g * max(dot(normalize(L), V), 0.0)), 3.0 / 2.0)));
-    inscatteredLight += density * trans * lightCol * G * phaseHG  * (1.0 / areaPdf) * (1.0 / xPdf) * shadow;
+    float dist = distance(p1.pos, p2.pos);
+    
+    float factor = clamp((rest_length - dist)/dist, -1., 1.);
+    
+    vec3 dir = (p1.pos - p2.pos) * factor * stepsize;
+    
+    p1.vel += dir;
+    p2.vel -= dir;
 }
 
