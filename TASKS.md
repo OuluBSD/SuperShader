@@ -89,10 +89,10 @@
 - [x] Create standardized procedural modules
 
 ### Task 2.5: Raymarching and Raytracing Analysis
-- [ ] Process all raymarching/raytracing shaders from JSON files
-- [ ] Identify common raymarching patterns
-- [ ] Extract reusable raymarching modules
-- [ ] Create standardized raytracing modules
+- [x] Process all raymarching/raytracing shaders from JSON files
+- [x] Identify common raymarching patterns
+- [x] Extract reusable raymarching modules
+- [x] Create standardized raytracing modules
 
 ### Task 2.6: Particle and Physics Simulation Analysis
 - [ ] Process all particle/physics shaders from JSON files
@@ -151,7 +151,7 @@
 - [ ] Test with management code
 
 ### Task 3.5: Raytracing Module Creation
-- [ ] Convert analyzed raymarching shaders into reusable modules
+- [x] Convert analyzed raymarching shaders into reusable modules
 - [ ] Create branching for conflicting features
 - [ ] Implement pseudocode format
 - [ ] Test with management code

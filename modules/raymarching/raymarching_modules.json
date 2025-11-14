@@ -1,0 +1,35 @@
+{
+  "module_category": "raymarching",
+  "modules": [
+    {
+      "id": "raymarching_primitives",
+      "name": "Raymarching Primitives Library",
+      "description": "Basic and advanced distance functions for raymarching, including SDF operations, transformations, and fractal primitives",
+      "file": "raymarching_primitives.glsl",
+      "type": "primitive_library",
+      "tags": ["sdf", "distance", "primitives", "fractal", "transform", "operation"],
+      "dependencies": [],
+      "parameters": [
+        {"name": "precision", "type": "float", "range": [0.0001, 0.1], "default": 0.001},
+        {"name": "max_iterations", "type": "int", "range": [16, 256], "default": 128}
+      ]
+    },
+    {
+      "id": "advanced_raymarching",
+      "name": "Advanced Raymarching Utilities",
+      "description": "Advanced raymarching features including lighting models, post-processing, camera systems, and performance optimizations",
+      "file": "advanced_raymarching.glsl", 
+      "type": "utility_library",
+      "tags": ["lighting", "camera", "post_process", "optimization", "pbr", "anti_aliasing"],
+      "dependencies": ["raymarching_primitives"],
+      "parameters": [
+        {"name": "ao_samples", "type": "int", "range": [4, 32], "default": 8},
+        {"name": "shadow_quality", "type": "int", "range": [8, 64], "default": 16},
+        {"name": "ao_distance", "type": "float", "range": [0.1, 5.0], "default": 1.0}
+      ]
+    }
+  ],
+  "version": "1.0",
+  "author": "SuperShader Project",
+  "license": "MIT"
+}
