@@ -1,40 +1,5 @@
-#!/usr/bin/env python3
-"""
-UV Mapping Texturing Module
-Extracted from common texturing patterns in shader analysis
-Pattern frequency: 203 occurrences
-"""
-
-# Interface definition
-INTERFACE = {
-    'inputs': [
-        {'name': 'uv', 'type': 'vec2', 'direction': 'in', 'semantic': 'texture_coordinates'},
-        {'name': 'worldPos', 'type': 'vec3', 'direction': 'in', 'semantic': 'world_position'},
-        {'name': 'normal', 'type': 'vec3', 'direction': 'in', 'semantic': 'surface_normal'},
-        {'name': 'tangent', 'type': 'vec3', 'direction': 'in', 'semantic': 'tangent_vector'},
-        {'name': 'time', 'type': 'float', 'direction': 'uniform', 'semantic': 'time_parameter'},
-        {'name': 'tiling', 'type': 'vec2', 'direction': 'uniform', 'semantic': 'texture_tiling'},
-        {'name': 'offset', 'type': 'vec2', 'direction': 'uniform', 'semantic': 'texture_offset'},
-        {'name': 'blendFactor', 'type': 'float', 'direction': 'uniform', 'semantic': 'blend_factor'},
-        {'name': 'scrollSpeed', 'type': 'vec2', 'direction': 'uniform', 'semantic': 'scroll_speed'}
-    ],
-    'outputs': [
-        {'name': 'outputUV', 'type': 'vec2', 'direction': 'out', 'semantic': 'transformed_coordinates'},
-        {'name': 'sampledColor', 'type': 'vec4', 'direction': 'out', 'semantic': 'texture_color'},
-        {'name': 'worldNormal', 'type': 'vec3', 'direction': 'out', 'semantic': 'transformed_normal'}
-    ],
-    'uniforms': [
-        {'name': 'time', 'type': 'float', 'semantic': 'time_parameter'},
-        {'name': 'tiling', 'type': 'vec2', 'semantic': 'texture_tiling'},
-        {'name': 'offset', 'type': 'vec2', 'semantic': 'texture_offset'},
-        {'name': 'blendFactor', 'type': 'float', 'semantic': 'blend_factor'},
-        {'name': 'scrollSpeed', 'type': 'vec2', 'semantic': 'scroll_speed'}
-    ]
-}
-
-# Pseudocode for UV mapping texturing
-pseudocode = """
-// UV Mapping Texturing Implementation
+// UV Mapping Texturing Module
+// Implements standard UV mapping and texturing functions
 
 // Planar UV mapping
 vec2 planarMapping(vec3 position, vec3 axis) {
@@ -65,7 +30,7 @@ vec2 cylindricalMapping(vec3 position) {
 vec2 applyUVTransform(vec2 uv, vec2 offset, vec2 scale, float rotation) {
     // Apply offset
     uv += offset;
-    
+
     // Apply rotation
     if (rotation != 0.0) {
         float s = sin(rotation);
@@ -73,10 +38,10 @@ vec2 applyUVTransform(vec2 uv, vec2 offset, vec2 scale, float rotation) {
         mat2 rot = mat2(c, -s, s, c);
         uv = rot * uv;
     }
-    
+
     // Apply scale
     uv *= scale;
-    
+
     return uv;
 }
 
@@ -86,16 +51,16 @@ vec3 triplanarTexture(sampler2D tex, vec3 worldPos, vec3 normal, float blendStre
     vec2 uvX = worldPos.zy;
     vec2 uvY = worldPos.xz;
     vec2 uvZ = worldPos.xy;
-    
+
     // Sample the texture from each axis
     vec3 texX = texture(tex, uvX).rgb;
     vec3 texY = texture(tex, uvY).rgb;
     vec3 texZ = texture(tex, uvZ).rgb;
-    
+
     // Get blending weights based on normal
     vec3 blend = pow(abs(normal), vec3(blendStrength));
     blend = blend / (blend.x + blend.y + blend.z);
-    
+
     // Blend the textures
     return texX * blend.x + texY * blend.y + texZ * blend.z;
 }
@@ -130,10 +95,10 @@ vec2 parallaxMapping(sampler2D heightMap, vec2 uv, vec3 viewDir) {
     // Scale view direction to sample range
     vec3 v = normalize(viewDir);
     v.xy /= v.z;
-    
+
     // Get height from texture
     float height = texture(heightMap, uv).r;
-    
+
     // Calculate offset
     vec2 offset = -v.xy * height * 0.02;
     return uv + offset;
@@ -144,14 +109,14 @@ vec3 calcNormalFromMap(sampler2D normalMap, vec2 uv, vec3 pos, vec3 normal, vec3
     // Get tangent space normal
     vec3 tangentNormal = texture(normalMap, uv).rgb;
     tangentNormal = normalize(tangentNormal * 2.0 - 1.0);
-    
+
     // Convert to world space
     vec3 T = normalize(tangent);
     vec3 N = normalize(normal);
     T = normalize(T - dot(T, N) * N);
     vec3 B = cross(N, T);
     mat3 TBN = mat3(T, B, N);
-    
+
     return TBN * tangentNormal;
 }
 
@@ -164,28 +129,6 @@ vec2 animatedUV(vec2 uv, vec2 scrollSpeed, float time) {
 vec4 blendTextures(sampler2D tex1, sampler2D tex2, vec2 uv1, vec2 uv2, float blendFactor) {
     vec4 color1 = texture(tex1, uv1);
     vec4 color2 = texture(tex2, uv2);
-    
+
     return mix(color1, color2, blendFactor);
 }
-"""
-
-def get_interface():
-    """Return the interface definition for this module"""
-    return INTERFACE
-
-def get_pseudocode():
-    """Return the pseudocode for this UV mapping texturing module"""
-    return pseudocode
-
-def get_metadata():
-    """Return metadata about this module"""
-    return {
-        'name': 'uv_mapping',
-        'type': 'texturing',
-        'patterns': ['UV Mapping', 'Texture Coordinates', 'Triplanar'],
-        'frequency': 203,
-        'dependencies': [],
-        'conflicts': [],
-        'description': 'UV mapping and texturing functions for applying textures to 3D geometry',
-        'interface': INTERFACE
-    }

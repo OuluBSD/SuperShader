@@ -1,33 +1,5 @@
-#!/usr/bin/env python3
-"""
-Core Raymarching Module
-Extracted from common raymarching patterns in shader analysis
-Pattern frequency: 245 occurrences
-"""
-
-# Interface definition
-INTERFACE = {
-    'inputs': [
-        {'name': 'ro', 'type': 'vec3', 'direction': 'in', 'semantic': 'ray_origin'},
-        {'name': 'rd', 'type': 'vec3', 'direction': 'in', 'semantic': 'ray_direction'},
-        {'name': 'maxDist', 'type': 'float', 'direction': 'uniform', 'semantic': 'max_distance'},
-        {'name': 'maxSteps', 'type': 'int', 'direction': 'uniform', 'semantic': 'max_steps'},
-        {'name': 'jitter', 'type': 'float', 'direction': 'uniform', 'semantic': 'ray_jitter'}
-    ],
-    'outputs': [
-        {'name': 'distance', 'type': 'float', 'direction': 'out', 'semantic': 'ray_distance'},
-        {'name': 'hit', 'type': 'bool', 'direction': 'out', 'semantic': 'ray_hit_status'}
-    ],
-    'uniforms': [
-        {'name': 'maxDist', 'type': 'float', 'semantic': 'max_distance'},
-        {'name': 'maxSteps', 'type': 'int', 'semantic': 'max_steps'},
-        {'name': 'jitter', 'type': 'float', 'semantic': 'ray_jitter'}
-    ]
-}
-
-# Pseudocode for core raymarching algorithm
-pseudocode = """
-// Core Raymarching Implementation
+// Core Raymarching Module
+// Implements standard raymarching algorithms with various optimizations
 
 // Basic raymarching function
 vec2 raymarch(vec3 ro, vec3 rd, float maxDist, int maxSteps) {
@@ -126,25 +98,11 @@ vec3 calculateNormalAdaptive(vec3 p) {
     float dz = map(p + vec3(0.0, 0.0, 0.001)).x - map(p - vec3(0.0, 0.0, 0.001)).x;
     return normalize(vec3(dx, dy, dz));
 }
-"""
 
-def get_interface():
-    """Return the interface definition for this module"""
-    return INTERFACE
-
-def get_pseudocode():
-    """Return the pseudocode for this raymarching core module"""
-    return pseudocode
-
-def get_metadata():
-    """Return metadata about this module"""
-    return {
-        'name': 'raymarching_core',
-        'type': 'raymarching',
-        'patterns': ['Raymarching', 'Distance Field', 'Marching Algorithm'],
-        'frequency': 245,
-        'dependencies': ['distance_functions'],
-        'conflicts': [],
-        'description': 'Core raymarching algorithms with adaptive stepping and optimizations',
-        'interface': INTERFACE
-    }
+// Helper function for distance field evaluation (example implementation)
+vec2 map(vec3 p) {
+    // This is a placeholder - real implementation would depend on scene
+    // Example: sphere at origin with radius 1.0
+    float dist = length(p) - 1.0;
+    return vec2(dist, 1.0); // distance and material ID
+}
