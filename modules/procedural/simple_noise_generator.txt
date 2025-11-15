@@ -1,0 +1,85 @@
+{
+  "name": "simple_noise_generator",
+  "description": "Basic noise generation functions",
+  "version": "1.0.0",
+  "author": "SuperShader Team",
+  "pseudocode": "
+// Simple Noise Generator Module
+// Provides basic noise functions for procedural generation
+
+// Pseudo-random function using a position
+float random(vec2 pos) {
+    return fract(sin(dot(pos, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+// Value noise implementation
+float value_noise(vec2 pos) {
+    vec2 i = floor(pos);
+    vec2 f = fract(pos);
+    
+    // Four corners of a square
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+    
+    // Smooth interpolation
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    
+    float result = mix(a, b, u.x) + 
+           (c - a)* u.y * (1.0 - u.x) + 
+           (d - b) * u.x * u.y;
+           
+    return result;
+}
+
+// Create a 2D noise pattern with frequency and amplitude
+float noise_2d(vec2 pos, float frequency, float amplitude) {
+    vec2 scaled_pos = pos * frequency;
+    return value_noise(scaled_pos) * amplitude;
+}
+",
+  "dependencies": [],
+  "conflicts": [],
+  "tags": ["procedural", "noise", "generation"],
+  "type": "procedural_module",
+  "api_compatibility": ["glsl", "hlsl", "metal", "wgsl", "c_cpp"],
+  "implementation": {
+    "glsl": "
+// GLSL Implementation of Simple Noise Generator
+// Provides basic noise functions for procedural generation
+
+// Pseudo-random function using a position
+float random(vec2 pos) {
+    return fract(sin(dot(pos, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+// Value noise implementation
+float value_noise(vec2 pos) {
+    vec2 i = floor(pos);
+    vec2 f = fract(pos);
+    
+    // Four corners of a square
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+    
+    // Smooth interpolation
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    
+    float result = mix(a, b, u.x) + 
+           (c - a)* u.y * (1.0 - u.x) + 
+           (d - b) * u.x * u.y;
+           
+    return result;
+}
+
+// Create a 2D noise pattern with frequency and amplitude
+float noise_2d(vec2 pos, float frequency, float amplitude) {
+    vec2 scaled_pos = pos * frequency;
+    return value_noise(scaled_pos) * amplitude;
+}
+"
+  }
+}

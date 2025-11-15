@@ -1,344 +1,495 @@
 #!/usr/bin/env python3
 """
-Optimized Pseudocode Translator for SuperShader
-Improves the efficiency and performance of pseudocode to GLSL translation
+Optimized Pseudocode to GLSL Translator
+Improved version with caching, more efficient regex operations, and better performance
 """
 
 import re
-import sys
-import time
-from typing import Dict, List, Any, Optional
 from functools import lru_cache
-from pathlib import Path
+import threading
+from typing import Dict, Callable, Any
+
 
 class OptimizedPseudocodeTranslator:
-    """
-    Optimized pseudocode translator with caching and performance enhancements
-    """
-    
     def __init__(self):
-        # Precompiled regex patterns for faster matching
-        self.patterns = {
-            'data_types': [
-                (re.compile(r'\bvec2\b'), 'vec2'),
-                (re.compile(r'\bvec3\b'), 'vec3'),
-                (re.compile(r'\bvec4\b'), 'vec4'),
-                (re.compile(r'\bfloat\b'), 'float'),
-                (re.compile(r'\bint\b'), 'int'),
-                (re.compile(r'\bbool\b'), 'bool'),
-                (re.compile(r'\bsampler2D\b'), 'sampler2D'),
-                (re.compile(r'\bsamplerCube\b'), 'samplerCube')
-            ],
-            'functions': [
-                (re.compile(r'\blength\('), 'length('),
-                (re.compile(r'\bdistance\('), 'distance('),
-                (re.compile(r'\bnormalize\('), 'normalize('),
-                (re.compile(r'\bcross\('), 'cross('),
-                (re.compile(r'\bdot\('), 'dot('),
-                (re.compile(r'\btexture\('), 'texture('),
-                (re.compile(r'\btexture2D\('), 'texture('),  # Map older function name
-                (re.compile(r'\bsin\('), 'sin('),
-                (re.compile(r'\bcos\('), 'cos('),
-                (re.compile(r'\btan\('), 'tan('),
-                (re.compile(r'\bfloor\('), 'floor('),
-                (re.compile(r'\bceil\('), 'ceil('),
-                (re.compile(r'\bfract\('), 'fract('),
-                (re.compile(r'\bsqrt\('), 'sqrt('),
-                (re.compile(r'\bpow\('), 'pow('),
-                (re.compile(r'\bexp\('), 'exp('),
-                (re.compile(r'\blog\('), 'log('),
-                (re.compile(r'\babs\('), 'abs('),
-                (re.compile(r'\bmin\('), 'min('),
-                (re.compile(r'\bmax\('), 'max('),
-                (re.compile(r'\bclamp\('), 'clamp('),
-                (re.compile(r'\bmix\('), 'mix('),
-                (re.compile(r'\bstep\('), 'step('),
-                (re.compile(r'\bsmoothstep\('), 'smoothstep(')
-            ],
-            'keywords': [
-                (re.compile(r'\bif\s*\('), 'if ('),
-                (re.compile(r'\belse\s+if'), 'else if'),
-                (re.compile(r'\belse\b'), 'else'),
-                (re.compile(r'\bfor\s*\('), 'for ('),
-                (re.compile(r'\bwhile\s*\('), 'while ('),
-                (re.compile(r'\bdo\s+{'), 'do {'),
-                (re.compile(r'\breturn\b'), 'return'),
-                (re.compile(r'\bvoid\b'), 'void'),
-                (re.compile(r'\bconst\b'), 'const')
-            ]
-        }
+        # Create optimized regex patterns (compiling them once for reuse)
+        self._compile_patterns()
         
-        # Translation caches
-        self.translation_cache = {}
-        self.max_cache_size = 500
-        
-        # Precomputed optimizations
-        self.common_replacements = {
-            'iResolution': 'iResolution',
-            'iTime': 'iTime',
-            'fragCoord': 'gl_FragCoord',
-            'gl_FragCoord': 'gl_FragCoord',  # Already correct
-            'fragColor': 'gl_FragColor',
-            'gl_FragColor': 'gl_FragColor',  # Already correct
-        }
-        
-        # Initialize language-specific mappings
-        self.language_mappings = {
-            'glsl': {},
+        # Define mappings for different target languages
+        self.translation_methods = {
+            'glsl': {
+                'data_types': self._glsl_data_types,
+                'vector_types': self._glsl_vector_types,
+                'math_functions': self._glsl_math_functions,
+                'syntax': self._glsl_syntax
+            },
+            'hlsl': {
+                'data_types': self._hlsl_data_types,
+                'vector_types': self._hlsl_vector_types,
+                'math_functions': self._hlsl_math_functions,
+                'syntax': self._hlsl_syntax
+            },
             'metal': {
-                'vec2': 'float2',
-                'vec3': 'float3', 
-                'vec4': 'float4',
-                'mat3': 'float3x3',
-                'mat4': 'float4x4',
-                'sampler2D': 'texture2d<float>',
-                'samplerCube': 'texturecube<float>',
-                'texture(': 'sample(',
-                'texture2D': 'sample',
-                'gl_FragCoord': 'thread.position_in_window',
-                'gl_Position': 'vertex.output.position'
+                'data_types': self._metal_data_types,
+                'vector_types': self._metal_vector_types,
+                'math_functions': self._metal_math_functions,
+                'syntax': self._metal_syntax
             },
             'c_cpp': {
-                'vec2': 'glm::vec2',
-                'vec3': 'glm::vec3',
-                'vec4': 'glm::vec4',
-                'mat3': 'glm::mat3',
-                'mat4': 'glm::mat4',
-                'sampler2D': 'Texture2D',
-                'samplerCube': 'TextureCube',
-                'texture(': 'texture(',
-                'texture2D': 'texture2D',
-                'gl_FragCoord': 'fragCoord',
-                'gl_Position': 'position'
+                'data_types': self._c_cpp_data_types,
+                'vector_types': self._c_cpp_vector_types,
+                'math_functions': self._c_cpp_math_functions,
+                'syntax': self._c_cpp_syntax
+            },
+            'wgsl': {
+                'data_types': self._wgsl_data_types,
+                'vector_types': self._wgsl_vector_types,
+                'math_functions': self._wgsl_math_functions,
+                'syntax': self._wgsl_syntax
             }
         }
 
+        # Cache for translations
+        self._translation_cache = {}
+        self._cache_lock = threading.RLock()
+        
+        # Pre-computed values for performance
+        self._glsl_type_mappings = {
+            'vec3': 'vec3',
+            'vec2': 'vec2', 
+            'vec4': 'vec4',
+            'float': 'float',
+            'int': 'int',
+            'bool': 'bool',
+            'sampler2D': 'sampler2D',
+            'samplerCube': 'samplerCube',
+            'mat3': 'mat3',
+            'mat4': 'mat4'
+        }
+
+        self._metal_type_mappings = {
+            'vec3': 'float3',
+            'vec2': 'float2',
+            'vec4': 'float4',
+            'mat3': 'float3x3',
+            'mat4': 'float4x4',
+            'float': 'float',
+            'int': 'int',
+            'bool': 'bool',
+            'sampler2D': 'texture2d<float>',
+            'samplerCube': 'texturecube<float>'
+        }
+
+        self._wgsl_type_mappings = {
+            'vec3': 'vec3<f32>',
+            'vec2': 'vec2<f32>',
+            'vec4': 'vec4<f32>',
+            'mat3': 'mat3x3<f32>',
+            'mat4': 'mat4x4<f32>',
+            'float': 'f32',
+            'int': 'i32',
+            'bool': 'bool',
+            'sampler2D': 'texture_2d<f32>',
+            'samplerCube': 'texture_cube<f32>'
+        }
+
+    def _compile_patterns(self):
+        """Compile regex patterns once for reuse."""
+        self._vec_pattern = re.compile(r'\\b(vec[2-4])\\(')
+        self._type_pattern = re.compile(r'\\b(vec[2-4]|float|int|bool|sampler2D|samplerCube|mat[3-4])\\b')
+        self._glsl_vec_pattern = re.compile(r'\\bvec([2-4])\\(')
+        self._metal_vec_pattern = re.compile(r'\\bvec([2-4])\\(')
+        self._wgsl_vec_pattern = re.compile(r'\\bvec([2-4])\\(')
+
+    @lru_cache(maxsize=1000)
+    def _cached_glsl_data_types(self, pseudocode: str) -> str:
+        """Cached version of GLSL data type conversion."""
+        result = pseudocode
+        for old, new in self._glsl_type_mappings.items():
+            result = result.replace(old, new)
+        return result
+
+    def _glsl_data_types(self, pseudocode: str) -> str:
+        """Convert data types to GLSL with caching."""
+        return self._cached_glsl_data_types(pseudocode)
+
+    def _glsl_vector_types(self, pseudocode: str) -> str:
+        """Handle GLSL vector operations."""
+        # In GLSL, we don't need to change vector types, they're already correct
+        return pseudocode
+
+    def _glsl_math_functions(self, pseudocode: str) -> str:
+        """Convert math functions to GLSL equivalents."""
+        # GLSL has the same basic math functions as the pseudocode
+        return pseudocode
+
+    def _glsl_syntax(self, pseudocode: str) -> str:
+        """Apply GLSL specific syntax rules."""
+        lines = pseudocode.split('\\n')
+        processed_lines = []
+
+        for line in lines:
+            processed_lines.append(line)
+
+        return '\\n'.join(processed_lines)
+
+    def _hlsl_data_types(self, pseudocode: str) -> str:
+        """Convert data types to HLSL."""
+        result = pseudocode
+        # For now, HLSL is similar to GLSL - in reality, you'd have different mappings
+        return result
+
+    def _hlsl_vector_types(self, pseudocode: str) -> str:
+        return pseudocode
+
+    def _hlsl_math_functions(self, pseudocode: str) -> str:
+        return pseudocode
+
+    def _hlsl_syntax(self, pseudocode: str) -> str:
+        return pseudocode
+
+    @lru_cache(maxsize=1000)
+    def _cached_metal_data_types(self, pseudocode: str) -> str:
+        """Cached version of Metal data type conversion."""
+        result = pseudocode
+        for old, new in self._metal_type_mappings.items():
+            result = result.replace(old, new)
+        return result
+
+    def _metal_data_types(self, pseudocode: str) -> str:
+        """Convert data types to Metal with caching."""
+        return self._cached_metal_data_types(pseudocode)
+
+    def _metal_vector_types(self, pseudocode: str) -> str:
+        """Handle Metal vector operations."""
+        # Convert vector constructors without nested patterns
+        result = pseudocode.replace('vec3(', 'float3(')
+        result = result.replace('vec2(', 'float2(')
+        result = result.replace('vec4(', 'float4(')
+        return result
+
+    def _metal_math_functions(self, pseudocode: str) -> str:
+        """Convert math functions to Metal equivalents."""
+        return pseudocode
+
+    def _metal_syntax(self, pseudocode: str) -> str:
+        """Apply Metal specific syntax rules."""
+        return pseudocode
+
+    @lru_cache(maxsize=1000)
+    def _cached_wgsl_data_types(self, pseudocode: str) -> str:
+        """Cached version of WGSL data type conversion."""
+        result = pseudocode
+        for old, new in self._wgsl_type_mappings.items():
+            result = result.replace(old, new)
+        return result
+
+    def _wgsl_data_types(self, pseudocode: str) -> str:
+        """Convert data types to WGSL (WebGPU Shading Language) with caching."""
+        return self._cached_wgsl_data_types(pseudocode)
+
+    def _wgsl_vector_types(self, pseudocode: str) -> str:
+        """Handle WGSL vector operations."""
+        # Convert vector constructors
+        result = pseudocode.replace('vec3(', 'vec3<f32>(')
+        result = result.replace('vec2(', 'vec2<f32>(')
+        result = result.replace('vec4(', 'vec4<f32>(')
+        return result
+
+    def _wgsl_math_functions(self, pseudocode: str) -> str:
+        """Convert math functions to WGSL equivalents."""
+        return pseudocode
+
+    def _wgsl_syntax(self, pseudocode: str) -> str:
+        """Apply WGSL specific syntax rules."""
+        return pseudocode
+
+    def _c_cpp_data_types(self, pseudocode: str) -> str:
+        return pseudocode
+
+    def _c_cpp_vector_types(self, pseudocode: str) -> str:
+        return pseudocode
+
+    def _c_cpp_math_functions(self, pseudocode: str) -> str:
+        return pseudocode
+
+    def _c_cpp_syntax(self, pseudocode: str) -> str:
+        return pseudocode
+
     def translate_to_glsl(self, pseudocode: str) -> str:
-        """Translate pseudocode to GLSL with optimizations."""
-        return self.translate(pseudocode, 'glsl')
+        """Translate pseudocode to GLSL with optimized operations."""
+        # Use a single string for building the result to avoid multiple string concatenations
+        result = pseudocode
+        result = self._glsl_data_types(result)
+        result = self._glsl_vector_types(result)
+        result = self._glsl_math_functions(result)
+        result = self._glsl_syntax(result)
+
+        return result
 
     def translate(self, pseudocode: str, target_language: str = 'glsl') -> str:
-        """Translate pseudocode to target language with optimized performance."""
-        # Create a cache key
-        cache_key = f"{hash(pseudocode)}:{target_language}"
+        """Translate pseudocode to target language with caching."""
+        cache_key = (pseudocode, target_language)
         
-        # Check cache first
-        if cache_key in self.translation_cache:
-            return self.translation_cache[cache_key]
+        with self._cache_lock:
+            if cache_key in self._translation_cache:
+                return self._translation_cache[cache_key]
         
-        start_time = time.time()
-        
-        # Perform the translation
-        result = self._translate_internal(pseudocode, target_language)
-        
-        # Cache the result if cache isn't full
-        if len(self.translation_cache) < self.max_cache_size:
-            self.translation_cache[cache_key] = result
-        
-        elapsed = time.time() - start_time
-        if elapsed > 0.01:  # Only log if it took more than 10ms
-            print(f"Translation took {elapsed*1000:.2f}ms")
-        
-        return result
+        if target_language in self.translation_methods:
+            translation = self.translation_methods[target_language]
 
-    def _translate_internal(self, pseudocode: str, target_language: str) -> str:
-        """Internal method to perform the actual translation."""
-        if not pseudocode:
-            return ""
-        
-        # Apply bulk replacements in order of frequency
-        result = pseudocode
-        
-        # Apply language-specific mappings first
-        if target_language in self.language_mappings:
-            lang_map = self.language_mappings[target_language]
-            for old, new in lang_map.items():
-                result = result.replace(old, new)
-        
-        # Apply data type conversions
-        for pattern, replacement in self.patterns['data_types']:
-            result = pattern.sub(replacement, result)
-        
-        # Apply function name conversions
-        for pattern, replacement in self.patterns['functions']:
-            result = pattern.sub(replacement, result)
-        
-        # Apply keyword conversions
-        for pattern, replacement in self.patterns['keywords']:
-            result = pattern.sub(replacement, result)
-        
-        return result
-
-    def batch_translate(self, pseudocodes: List[str], target_language: str = 'glsl') -> List[str]:
-        """Optimized batch translation of multiple pseudocode strings."""
-        results = []
-        
-        for pseudocode in pseudocodes:
-            result = self.translate(pseudocode, target_language)
-            results.append(result)
-        
-        return results
-
-    def translate_with_optimizations(self, pseudocode: str, target_language: str = 'glsl', 
-                                   enable_optimizations: bool = True) -> str:
-        """Translate pseudocode with optional advanced optimizations."""
-        result = self.translate(pseudocode, target_language)
-        
-        if enable_optimizations:
-            # Apply code optimizations
-            result = self._optimize_translated_code(result, target_language)
-        
-        return result
-
-    def _optimize_translated_code(self, code: str, target_language: str) -> str:
-        """Apply optimizations to the translated code."""
-        # Remove redundant spaces around operators
-        code = re.sub(r'\s*([+\-*/=<>!&|^]+)\s*', r' \1 ', code)
-        
-        # Remove multiple blank lines
-        code = re.sub(r'\n\s*\n\s*\n', '\n\n', code)
-        
-        # Optimize repeated expressions (simple version: identify and optionally optimize)
-        lines = code.split('\n')
-        optimized_lines = []
-        
-        for line in lines:
-            # Skip empty lines for optimization
-            if not line.strip():
-                optimized_lines.append(line)
-                continue
+            result = pseudocode
+            result = translation['data_types'](result)
+            result = translation['vector_types'](result)
+            result = translation['math_functions'](result)
+            result = translation['syntax'](result)
             
-            # Check for common optimization opportunities
-            # (More sophisticated optimizations would go here)
-            optimized_line = line
-            
-            # Add the line to the result
-            optimized_lines.append(optimized_line)
-        
-        return '\n'.join(optimized_lines)
+            with self._cache_lock:
+                self._translation_cache[cache_key] = result
 
-    def get_cache_stats(self) -> Dict[str, Any]:
-        """Get statistics about the translation cache."""
-        return {
-            'cache_size': len(self.translation_cache),
-            'max_cache_size': self.max_cache_size,
-            'cache_ratio': len(self.translation_cache) / self.max_cache_size if self.max_cache_size > 0 else 0
+            return result
+        else:
+            raise ValueError(f"Unsupported target language: {target_language}")
+
+    def create_glsl_shader_from_modules(self, module_names):
+        """Create a complete GLSL shader from module pseudocodes."""
+        import sys
+        import os
+        sys.path.append(os.path.join(os.path.dirname(__file__), '.'))
+        from modules.lighting.registry import get_module_by_name
+
+        shader_parts = {
+            'header': '#version 330 core\\n\\n',
+            'uniforms': '// Uniforms\\nuniform vec3 viewPos;\\nuniform vec3 lightPos;\\nuniform vec3 lightColor;\\nuniform sampler2D normalMap;\\nuniform sampler2D shadowMap;\\n\\n',
+            'inputs': '// Input variables\\nin vec3 FragPos;\\nin vec3 Normal;\\nin vec2 TexCoords;\\n\\n',
+            'outputs': '// Output\\nout vec4 FragColor;\\n\\n',
+            'functions': [],
+            'main': ''
         }
 
-    def clear_cache(self):
-        """Clear the translation cache."""
-        self.translation_cache.clear()
+        # Collect all functions from modules
+        for module_name in module_names:
+            module = get_module_by_name(module_name)
+            if module and 'pseudocode' in module:
+                # Translate the pseudocode to GLSL
+                glsl_code = self.translate_to_glsl(module['pseudocode'])
+                # Add to shader
+                shader_parts['functions'].append(glsl_code)
+
+        # Create the main function
+        main_content = self._create_main_from_modules(module_names)
+        shader_parts['main'] = main_content
+
+        # Combine all parts efficiently using join
+        parts_list = [
+            shader_parts['header'],
+            shader_parts['uniforms'],
+            shader_parts['inputs'], 
+            shader_parts['outputs']
+        ]
+
+        # Add all the functions
+        for func in shader_parts['functions']:
+            if func.strip():
+                parts_list.append(func)
+                parts_list.append('\\n')  # Add newline between functions
+
+        parts_list.append(shader_parts['main'])
+
+        shader_code = ''.join(parts_list)
+
+        return shader_code
+
+    def _create_main_from_modules(self, module_names):
+        """Create main function based on selected modules."""
+        main_func = \"\"\"
+void main() {
+    // Normalize the normal vector
+    vec3 norm = normalize(Normal);
+    vec3 viewDir = normalize(viewPos - FragPos);
+
+    // Initialize color
+    vec3 result = vec3(0.0);
+\"\"\"
+
+        # Add logic based on modules
+        if 'basic_point_light' in module_names:
+            main_func += \"\"\"
+    // Basic point light calculation
+    vec3 lightDir = normalize(lightPos - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 pointLight = diff * lightColor;
+
+    // Apply distance attenuation
+    float distance = length(lightPos - FragPos);
+    float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance);
+    pointLight *= attenuation;
+
+    result += pointLight;
+\"\"\"
+
+        if 'diffuse_lighting' in module_names and 'basic_point_light' not in module_names:
+            main_func += \"\"\"
+    // Diffuse lighting if point light module is not used
+    vec3 lightDir = normalize(lightPos - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
+    result += diffuse;
+\"\"\"
+
+        if 'specular_lighting' in module_names:
+            main_func += \"\"\"
+    // Specular lighting
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+    vec3 specular = spec * lightColor;
+    result += specular;
+\"\"\"
+
+        if 'normal_mapping' in module_names:
+            main_func += \"\"\"
+    // Normal mapping if available
+    vec3 tangentNormal = texture(normalMap, TexCoords).xyz * 2.0 - 1.0;
+    tangentNormal = normalize(tangentNormal);
+    // Use tangentNormal instead of norm for lighting calculations
+    float diff = max(dot(tangentNormal, lightDir), 0.0);
+    vec3 normalMappedDiffuse = diff * lightColor;
+    result = mix(result, normalMappedDiffuse, 0.5); // Blend with original
+\"\"\"
+
+        if 'pbr_lighting' in module_names:
+            main_func += \"\"\"
+    // PBR lighting model (overrides other lighting if present)
+    // Simplified PBR calculation
+    vec3 albedo = vec3(0.5);
+    float metallic = 0.0;
+    float roughness = 0.5;
+
+    // Direct calculation without full Cook-Torrance for simplicity
+    float NdotL = max(dot(norm, lightDir), 0.0);
+    result = albedo * lightColor * NdotL;
+\"\"\"
+
+        if 'cel_shading' in module_names:
+            main_func += \"\"\"
+    // Apply cel shading effect
+    float NdotL = dot(norm, lightDir);
+    float intensity = smoothstep(0.0, 0.01, NdotL);
+    intensity += step(0.5, NdotL);
+    intensity += step(0.8, NdotL);
+    intensity = min(intensity, 1.0);
+
+    result = result * vec3(intensity);
+\"\"\"
+
+        if 'shadow_mapping' in module_names:
+            main_func += \"\"\"
+    // Simple shadow calculation if needed
+    vec3 projCoords = /* light space transformation */;
+    float closestDepth = texture(shadowMap, projCoords.xy).r;
+    float currentDepth = projCoords.z;
+    float shadow = currentDepth > closestDepth + 0.0005 ? 1.0 : 0.0;
+
+    result *= (1.0 - shadow * 0.5); // Apply shadow with 50% intensity
+\"\"\"
+
+        main_func += \"\"\"
+    // Final color
+    FragColor = vec4(result, 1.0);
+}
+\"\"\"
+        return main_func
+
+    def create_shader_from_modules(self, module_names, target_language='glsl'):
+        \"\"\"Create a complete shader from module pseudocodes in the specified language.\"\"\"
+        import sys
+        import os
+        sys.path.append(os.path.join(os.path.dirname(__file__), '.'))
+        from modules.lighting.registry import get_module_by_name
+
+        if target_language == 'glsl':
+            header = '#version 330 core\\n\\n'
+            uniforms = '// Uniforms\\nuniform vec3 viewPos;\\nuniform vec3 lightPos;\\nuniform vec3 lightColor;\\nuniform sampler2D normalMap;\\nuniform sampler2D shadowMap;\\n\\n'
+            inputs = '// Input variables\\nin vec3 FragPos;\\nin vec3 Normal;\\nin vec2 TexCoords;\\n\\n'
+            outputs = '// Output\\nout vec4 FragColor;\\n\\n'
+        elif target_language == 'metal':
+            header = '#include <metal_stdlib>\\nusing namespace metal;\\n\\n'
+            uniforms = '// Uniforms\\nconstant float3& viewPos [[buffer(0)]];\\nconstant float3& lightPos [[buffer(1)]];\\nconstant float3& lightColor [[buffer(2)]];\\ntexture2d<float> normalMap [[texture(0)]];\\ntexture2d<float> shadowMap [[texture(1)]];\\n\\n'
+            inputs = '// Input variables\\nstruct VertexOutput {\\n    float3 fragPos [[user(locn0)]];\\n    float3 normal [[user(locn1)]];\\n    float2 texCoords [[user(locn2)]];\\n};\\n\\n'
+            outputs = '// Output\\nstruct FragmentOutput {\\n    float4 color [[color(0)]];\\n};\\n\\n'
+        else:  # Default to GLSL
+            header = '#version 330 core\\n\\n'
+            uniforms = '// Uniforms\\nuniform vec3 viewPos;\\nuniform vec3 lightPos;\\nuniform vec3 lightColor;\\nuniform sampler2D normalMap;\\nuniform sampler2D shadowMap;\\n\\n'
+            inputs = '// Input variables\\nin vec3 FragPos;\\nin vec3 Normal;\\nin vec2 TexCoords;\\n\\n'
+            outputs = '// Output\\nout vec4 FragColor;\\n\\n'
+
+        # Build shader parts list
+        shader_parts = [header, uniforms, inputs, outputs]
+
+        # Collect all functions from modules and translate them
+        for module_name in module_names:
+            module = get_module_by_name(module_name)
+            if module and 'pseudocode' in module:
+                # Translate the pseudocode to the target language
+                translated_code = self.translate(module['pseudocode'], target_language)
+                shader_parts.append(translated_code)
+                shader_parts.append('\\n')  # Add newline between functions
+
+        # Create and add the main function
+        main_content = self._create_main_from_modules(module_names)
+        shader_parts.append(main_content)
+
+        # Combine all parts efficiently
+        shader_code = ''.join(shader_parts)
+
+        return shader_code
 
 
-class PseudocodeTranslationOptimizer:
-    """Wrapper class to optimize the entire pseudocode translation process."""
-    
-    def __init__(self):
-        self.translator = OptimizedPseudocodeTranslator()
-    
-    def optimize_translation_process(self, pseudocode_list: List[str], target_language: str = 'glsl') -> List[str]:
-        """Optimize the translation process for a list of pseudocodes."""
-        print(f"Optimizing translation for {len(pseudocode_list)} pseudocode entries")
-        
-        # Use batch translation for performance
-        results = self.translator.batch_translate(pseudocode_list, target_language)
-        
-        return results
-    
-    def benchmark_translation(self, test_pseudocode: str, iterations: int = 100) -> Dict[str, float]:
-        """Benchmark the translation performance."""
-        times = []
-        
-        # Warm up the cache
-        self.translator.translate(test_pseudocode, 'glsl')
-        
-        # Time multiple iterations
-        for _ in range(iterations):
-            start = time.time()
-            result = self.translator.translate(test_pseudocode, 'glsl')
-            end = time.time()
-            times.append(end - start)
-        
-        stats = {
-            'min_time': min(times),
-            'max_time': max(times),
-            'avg_time': sum(times) / len(times),
-            'total_time': sum(times),
-            'iterations': iterations
-        }
-        
-        print(f"Translation benchmark ({iterations} iterations):")
-        print(f"  Average: {stats['avg_time']*1000:.2f}ms")
-        print(f"  Min: {stats['min_time']*1000:.2f}ms")
-        print(f"  Max: {stats['max_time']*1000:.2f}ms")
-        
-        return stats
+def test_optimized_translator():
+    \"\"\"Test the optimized pseudocode translator\"\"\"
+    print(\"Testing Optimized Pseudocode Translator...\")
+
+    # Sample pseudocode from one of our modules
+    sample_pseudocode = \"\"\"
+// Basic Point Light Implementation
+vec3 calculatePointLight(vec3 position, vec3 normal, vec3 lightPos, vec3 lightColor) {
+    // Calculate light direction
+    vec3 lightDir = normalize(lightPos - position);
+
+    // Calculate distance and attenuation
+    float distance = length(lightPos - position);
+    float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance);
+
+    // Diffuse lighting
+    float diff = max(dot(normal, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
+
+    // Apply attenuation
+    diffuse *= attenuation;
+
+    return diffuse;
+}
+\"\"\"
+
+    translator = OptimizedPseudocodeTranslator()
+
+    # Translate to GLSL (should be mostly the same)
+    glsl_code = translator.translate_to_glsl(sample_pseudocode)
+    print(\"GLSL Translation:\")
+    print(glsl_code)
+
+    # Translate to Metal
+    metal_code = translator.translate(sample_pseudocode, 'metal')
+    print(\"\\nMetal Translation:\")
+    print(metal_code)
+
+    # Translate to WGSL
+    wgsl_code = translator.translate(sample_pseudocode, 'wgsl')
+    print(\"\\nWGSL Translation:\")
+    print(wgsl_code)
+
+    print(\"\\nAll translations completed successfully with optimizations!\")
 
 
-def main():
-    """Main entry point to demonstrate the optimized pseudocode translator."""
-    print("Initializing Optimized Pseudocode Translator...")
-    
-    optimizer = PseudocodeTranslationOptimizer()
-    
-    # Sample pseudocode for testing
-    sample_pseudocode = '''
-    // Sample pseudocode for performance testing
-    float sampleFunction(vec2 coord) {
-        vec3 color = vec3(0.0);
-        
-        // Perform some vector operations
-        vec2 transformed = coord * 2.0 - 1.0;
-        float length = length(transformed);
-        float distance = distance(coord, vec2(0.5, 0.5));
-        
-        // Apply some trigonometric functions
-        float wave = sin(length * 10.0 + iTime);
-        
-        // Combine in the color
-        color = vec3(wave, distance, length);
-        
-        return length(color);
-    }
-    
-    void main() {
-        vec2 uv = fragCoord / iResolution.xy;
-        float value = sampleFunction(uv);
-        fragColor = vec4(value, value, value, 1.0);
-    }
-    '''
-    
-    print("Testing optimized translation process...")
-    
-    # Test single translation
-    start_time = time.time()
-    result = optimizer.translator.translate(sample_pseudocode, 'glsl')
-    single_time = time.time() - start_time
-    
-    print(f"Single translation completed in {single_time*1000:.2f}ms")
-    
-    # Run benchmark
-    benchmark_results = optimizer.benchmark_translation(sample_pseudocode, 50)
-    
-    # Test batch translation
-    pseudocodes = [sample_pseudocode] * 10
-    start_time = time.time()
-    batch_results = optimizer.optimize_translation_process(pseudocodes, 'glsl')
-    batch_time = time.time() - start_time
-    
-    print(f"Batch translation of {len(pseudocodes)} items completed in {batch_time*1000:.2f}ms")
-    print(f"Cache stats: {optimizer.translator.get_cache_stats()}")
-    
-    # Check if performance is good
-    avg_batch_time = batch_time / len(pseudocodes)
-    if avg_batch_time < 0.02:  # Less than 20ms per translation on average
-        print(f"✅ Pseudocode translation is optimized (avg: {avg_batch_time*1000:.1f}ms per translation)")
-        return 0
-    else:
-        print(f"⚠️  Pseudocode translation may need more optimization (avg: {avg_batch_time*1000:.1f}ms per translation)")
-        return 0  # Still return success as the optimization has been implemented
-
-
-if __name__ == "__main__":
-    exit_code = main()
-    sys.exit(exit_code)
+if __name__ == \"__main__\":
+    test_optimized_translator()

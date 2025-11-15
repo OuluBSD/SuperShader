@@ -1,5 +1,29 @@
-shaders_071121/**
-shaders_270321/**
-tmp/**
-trash/**
+# Generated files and reports
+*.glsl
+*.json
+!config_*.json  # Keep config files
+comprehensive_test_report_*.json
+performance_test_results/
+regression_tests_results/
+profiles/
+distributions/
+dist/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+env/
+venv/
+.venv/
+build/
+*.so
 
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,42 @@
+{
+  "library_name": "SuperShader Initial Module Library",
+  "version": "1.0.0",
+  "description": "A collection of basic shader modules for getting started with SuperShader",
+  "author": "SuperShader Team",
+  "modules": [
+    {
+      "name": "basic_math_functions",
+      "path": "modules/math/basic_math_functions.txt",
+      "category": "math",
+      "tags": ["math", "utilities", "functions"],
+      "description": "Basic mathematical functions for shaders"
+    },
+    {
+      "name": "simple_diffuse_lighting", 
+      "path": "modules/lighting/simple_diffuse_lighting.txt",
+      "category": "lighting",
+      "tags": ["lighting", "diffuse", "basic"],
+      "description": "Basic diffuse lighting calculation"
+    },
+    {
+      "name": "uv_mapping_standard",
+      "path": "modules/texturing/uv_mapping_standard.txt", 
+      "category": "texturing",
+      "tags": ["texturing", "uv", "mapping"],
+      "description": "Standard UV mapping for texture coordinates"
+    },
+    {
+      "name": "simple_noise_generator",
+      "path": "modules/procedural/simple_noise_generator.txt",
+      "category": "procedural", 
+      "tags": ["procedural", "noise", "generation"],
+      "description": "Basic noise generation functions"
+    }
+  ],
+  "dependencies": {},
+  "metadata": {
+    "created_at": "2025-11-15T00:00:00Z",
+    "compatible_versions": [">=1.0.0"],
+    "license": "BSD 3-Clause License"
+  }
+}

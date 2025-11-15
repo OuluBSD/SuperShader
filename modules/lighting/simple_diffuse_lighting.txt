@@ -1,0 +1,49 @@
+{
+  "name": "simple_diffuse_lighting",
+  "description": "Basic diffuse lighting calculation",
+  "version": "1.0.0",
+  "author": "SuperShader Team",
+  "pseudocode": "
+// Simple Diffuse Lighting Module
+// Calculates basic diffuse lighting based on normal and light direction
+
+// Calculate diffuse lighting using Lambert's cosine law
+vec3 calculate_diffuse_lighting(vec3 normal, vec3 light_direction, vec3 light_color) {
+    float diff = max(dot(normal, light_direction), 0.0);
+    vec3 diffuse = diff * light_color;
+    return diffuse;
+}
+
+// Calculate diffuse lighting with material properties
+vec3 calculate_diffuse_with_material(vec3 normal, vec3 light_direction, vec3 light_color, vec3 albedo) {
+    float diff = max(dot(normal, light_direction), 0.0);
+    vec3 diffuse = diff * light_color * albedo;
+    return diffuse;
+}
+",
+  "dependencies": ["math/basic_math_functions"],
+  "conflicts": ["pbr_lighting", "phong_lighting"],
+  "tags": ["lighting", "diffuse", "basic"],
+  "type": "lighting_module",
+  "api_compatibility": ["glsl", "hlsl", "metal", "wgsl", "c_cpp"],
+  "implementation": {
+    "glsl": "
+// GLSL Implementation of Simple Diffuse Lighting
+// Calculates basic diffuse lighting based on normal and light direction
+
+// Calculate diffuse lighting using Lambert's cosine law
+vec3 calculate_diffuse_lighting(vec3 normal, vec3 light_direction, vec3 light_color) {
+    float diff = max(dot(normal, light_direction), 0.0);
+    vec3 diffuse = diff * light_color;
+    return diffuse;
+}
+
+// Calculate diffuse lighting with material properties
+vec3 calculate_diffuse_with_material(vec3 normal, vec3 light_direction, vec3 light_color, vec3 albedo) {
+    float diff = max(dot(normal, light_direction), 0.0);
+    vec3 diffuse = diff * light_color * albedo;
+    return diffuse;
+}
+"
+  }
+}

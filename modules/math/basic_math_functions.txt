@@ -1,0 +1,75 @@
+{
+  "name": "basic_math_functions",
+  "description": "Basic mathematical functions for shaders",
+  "version": "1.0.0",
+  "author": "SuperShader Team",
+  "pseudocode": "
+// Basic Math Functions Module
+// Provides commonly used mathematical operations
+
+// Clamp a value between min and max
+float clamp_value(float value, float min_val, float max_val) {
+    return min(max(value, min_val), max_val);
+}
+
+// Smooth interpolation between two values
+float smooth_interpolate(float a, float b, float t) {
+    float t_smooth = t * t * (3.0 - 2.0 * t);
+    return a + (b - a) * t_smooth;
+}
+
+// Distance between two 3D points
+float distance_3d(vec3 a, vec3 b) {
+    vec3 diff = a - b;
+    return sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+}
+
+// Length of a 2D vector
+float length_2d(vec2 v) {
+    return sqrt(v.x * v.x + v.y * v.y);
+}
+
+// Dot product of two 3D vectors
+float dot_product_3d(vec3 a, vec3 b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+",
+  "dependencies": [],
+  "conflicts": [],
+  "tags": ["math", "utilities", "functions"],
+  "type": "utility_module",
+  "api_compatibility": ["glsl", "hlsl", "metal", "wgsl", "c_cpp"],
+  "implementation": {
+    "glsl": "
+// GLSL Implementation of Basic Math Functions
+// Provides commonly used mathematical operations
+
+// Clamp a value between min and max
+float clamp_value(float value, float min_val, float max_val) {
+    return min(max(value, min_val), max_val);
+}
+
+// Smooth interpolation between two values
+float smooth_interpolate(float a, float b, float t) {
+    float t_smooth = t * t * (3.0 - 2.0 * t);
+    return a + (b - a) * t_smooth;
+}
+
+// Distance between two 3D points
+float distance_3d(vec3 a, vec3 b) {
+    vec3 diff = a - b;
+    return sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+}
+
+// Length of a 2D vector
+float length_2d(vec2 v) {
+    return sqrt(v.x * v.x + v.y * v.y);
+}
+
+// Dot product of two 3D vectors
+float dot_product_3d(vec3 a, vec3 b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+"
+  }
+}

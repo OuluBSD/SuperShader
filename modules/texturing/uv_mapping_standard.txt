@@ -1,0 +1,61 @@
+{
+  "name": "uv_mapping_standard",
+  "description": "Standard UV mapping for texture coordinates",
+  "version": "1.0.0",
+  "author": "SuperShader Team",
+  "pseudocode": "
+// UV Mapping Module
+// Provides standard UV coordinate transformations
+
+// Basic UV transformation
+vec2 transform_uv(vec2 uv, vec2 offset, vec2 scale) {
+    return (uv * scale) + offset;
+}
+
+// Calculate UV coordinates for a quad
+vec2 calculate_quad_uv(vec2 position, vec2 min_corner, vec2 max_corner) {
+    return (position - min_corner) / (max_corner - min_corner);
+}
+
+// Apply tiling to UV coordinates
+vec2 apply_tiling(vec2 uv, float tile_factor) {
+    return uv * tile_factor;
+}
+
+// Wrap UV coordinates
+vec2 wrap_uv(vec2 uv) {
+    return fract(uv);
+}
+",
+  "dependencies": [],
+  "conflicts": [],
+  "tags": ["texturing", "uv", "mapping"],
+  "type": "texturing_module",
+  "api_compatibility": ["glsl", "hlsl", "metal", "wgsl", "c_cpp"],
+  "implementation": {
+    "glsl": "
+// GLSL Implementation of UV Mapping
+// Provides standard UV coordinate transformations
+
+// Basic UV transformation
+vec2 transform_uv(vec2 uv, vec2 offset, vec2 scale) {
+    return (uv * scale) + offset;
+}
+
+// Calculate UV coordinates for a quad
+vec2 calculate_quad_uv(vec2 position, vec2 min_corner, vec2 max_corner) {
+    return (position - min_corner) / (max_corner - min_corner);
+}
+
+// Apply tiling to UV coordinates
+vec2 apply_tiling(vec2 uv, float tile_factor) {
+    return uv * tile_factor;
+}
+
+// Wrap UV coordinates
+vec2 wrap_uv(vec2 uv) {
+    return fract(uv);
+}
+"
+  }
+}
