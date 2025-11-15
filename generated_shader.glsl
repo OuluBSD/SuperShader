@@ -107,28 +107,28 @@ void main() {
     // Normalize the normal vector
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
-    
+
     // Initialize color
     vec3 result = vec3(0.0);
-    
+
     // Basic point light calculation
     vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 pointLight = diff * lightColor;
-    
+
     // Apply distance attenuation
     float distance = length(lightPos - FragPos);
     float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance);
     pointLight *= attenuation;
-    
+
     result += pointLight;
-    
+
     // Specular lighting
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
     vec3 specular = spec * lightColor;
     result += specular;
-    
+
     // Normal mapping if available
     vec3 tangentNormal = texture(normalMap, TexCoords).xyz * 2.0 - 1.0;
     tangentNormal = normalize(tangentNormal);
@@ -136,7 +136,7 @@ void main() {
     float diff = max(dot(tangentNormal, lightDir), 0.0);
     vec3 normalMappedDiffuse = diff * lightColor;
     result = mix(result, normalMappedDiffuse, 0.5); // Blend with original
-    
+
     // Final color
     FragColor = vec4(result, 1.0);
 }

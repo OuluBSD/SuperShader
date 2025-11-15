@@ -1,313 +1,290 @@
 #!/usr/bin/env python3
 """
-Target-Specific Shader Optimization System
-Applies optimizations tailored to specific target languages and platforms
+Hardware-Specific Shader Optimization System
+Optimizes shader code for specific target platforms and constraints
 """
 
-from typing import Dict, List, Tuple
+import json
+from typing import Dict, List, Any, Optional
+from dataclasses import dataclass
 from enum import Enum
-import re
 
 
-class TargetPlatform(Enum):
-    OPENGL = "opengl"
-    DIRECTX = "directx" 
-    METAL = "metal"
-    WEBGPU = "webgpu"
+class HardwarePlatform(Enum):
+    """Enumeration of supported hardware platforms"""
+    CPU = "cpu"
+    GPU = "gpu"
+    EPIPHANY = "epiphany"
     VULKAN = "vulkan"
+    OPENGL = "opengl"
+    DIRECTX = "directx"
+    ARM = "arm"
+    X86 = "x86"
+    RISCV = "riscv"
+
+
+@dataclass
+class HardwareConstraints:
+    """Hardware constraint specifications"""
+    platform: HardwarePlatform
+    memory_limit: int  # in bytes
+    compute_units: int
+    max_threads: int
+    vector_width: int  # SIMD width
+    cache_size: int  # in bytes
+    max_precision: str  # "low", "medium", "high", "double"
+    max_texture_size: int
+    max_uniforms: int
+    support_for_float64: bool = False
+    support_for_int64: bool = False
+    power_efficiency_required: bool = False
 
 
 class TargetSpecificOptimizer:
+    """Optimizes shader code for specific hardware targets"""
+    
     def __init__(self):
-        self.optimizations = {
-            'glsl': self._get_glsl_optimizations(),
-            'hlsl': self._get_hlsl_optimizations(), 
-            'metal': self._get_metal_optimizations(),
-            'wgsl': self._get_wgsl_optimizations(),
-            'c_cpp': self._get_c_cpp_optimizations()
-        }
+        self.hardware_configs: Dict[str, HardwareConstraints] = {}
+        self._load_default_configs()
+    
+    def _load_default_configs(self):
+        """Load default hardware configurations"""
+        # CPU - desktop system
+        self.hardware_configs["cpu_desktop"] = HardwareConstraints(
+            platform=HardwarePlatform.CPU,
+            memory_limit=8 * 1024 * 1024 * 1024,  # 8GB
+            compute_units=8,  # cores
+            max_threads=16,
+            vector_width=4,  # AVX-256 (4 floats)
+            cache_size=32 * 1024 * 1024,  # 32MB
+            max_precision="high",
+            max_texture_size=16384,
+            max_uniforms=1024,
+            support_for_float64=True,
+            power_efficiency_required=False
+        )
         
-        self.platform_optimizations = {
-            TargetPlatform.OPENGL: self._get_opengl_platform_optimizations(),
-            TargetPlatform.DIRECTX: self._get_directx_platform_optimizations(),
-            TargetPlatform.METAL: self._get_metal_platform_optimizations(),
-            TargetPlatform.WEBGPU: self._get_webgpu_platform_optimizations(),
-            TargetPlatform.VULKAN: self._get_vulkan_platform_optimizations(),
-        }
-
-    def _get_glsl_optimizations(self) -> List[Tuple[str, str]]:
-        """Get GLSL-specific optimizations"""
-        return [
-            # Reduce precision where possible for mobile/web GLSL
-            (r'\bhighp\b', 'mediump'),  # For mobile optimization
-            (r'\bmediump\b', 'mediump'),  # Already mediump, keep for consistency
-            
-            # Optimize texture lookups
-            (r'\btexture\s*\(\s*([^,]+)\s*,\s*([^)]+)\s*\)\s*\.\s*rgb', r'vec3(texture(\1, \2).rgb)'),
-            
-            # Optimize repeated expressions
-            (r'\b(\w+)\s*=\s*([^;]+);\s*\1\s*\*\s*\1', r'\1 = \2; float \1_sqr = \1 * \1;'),  # For future use
-            
-            # Combine operations where possible
-            (r'float\s+(\w+)\s*=\s*([^;]+);\s*float\s+(\w+)\s*=\s*\1\s*\*\s*\1', 
-             r'float \1 = \2; float \3 = \1 * \1; // Optimized: \3 is square of \1'),
-        ]
-
-    def _get_hlsl_optimizations(self) -> List[Tuple[str, str]]:
-        """Get HLSL-specific optimizations"""
-        return [
-            # HLSL-specific sampler state optimizations
-            (r'sampler\s+(\w+)\s*:\s*register\(s\d+\);', r'Texture2D \1_tex : register(t0); SamplerState \1_sampler : register(s0);'),
-            
-            # Packing optimizations for HLSL
-            (r'float4\s+\w+\s*=\s*float4\(([^,]+),\s*([^,]+),\s*([^,]+),\s*([^)]+)\);\s*return\s+\w+;', 
-             r'return float4(\1, \2, \3, \4); // Direct return optimization'),
-        ]
-
-    def _get_metal_optimizations(self) -> List[Tuple[str, str]]:
-        """Get Metal-specific optimizations"""
-        return [
-            # Metal-specific texture access optimizations
-            (r'(\w+)\.sample\(([^,]+),\s*([^)]+)\)', r'const auto sample_result = \1.sample(\2, \3);'),
-            
-            # Metal function inlining hints
-            (r'float\s+(\w+)\s*\(', r'float __attribute__((always_inline)) \1('),
-        ]
-
-    def _get_wgsl_optimizations(self) -> List[Tuple[str, str]]:
-        """Get WGSL-specific optimizations"""
-        return [
-            # WGSL-specific access optimizations
-            (r'textureSample\(([^,]+),\s*([^,]+),\s*([^)]+)\)', r'textureSample(\1, \2, \3)'),
-            
-            # WGSL variable declaration optimizations
-            (r'var\s+(\w+)\s*:\s*\w+\s*=\s*([^;]+);', r'const \1 = \2;'),  # Use const when possible
-        ]
-
-    def _get_c_cpp_optimizations(self) -> List[Tuple[str, str]]:
-        """Get C/C++ specific optimizations"""
-        return [
-            # Inline function declarations for C++
-            (r'float\s+(\w+)\s*\(', r'inline float \1('),
-            
-            # Constant propagation in C++
-            (r'const float\s+(\w+)\s*=\s*([^;]+);\s*float\s+\1', r'const float \1 = \2; float temp_\1'),
-        ]
-
-    def _get_opengl_platform_optimizations(self) -> List[Tuple[str, str]]:
-        """Get OpenGL-specific platform optimizations"""
-        return [
-            # OpenGL ES specific optimizations
-            (r'#version 330 core', '#version 300 es\nprecision mediump float;'),
-            
-            # Optimize for mobile GPU constraints
-            (r'pow\(([^,]+),\s*2\)', r'(\1) * (\1)'),  # pow(x, 2) -> x*x for mobile
-        ]
-
-    def _get_directx_platform_optimizations(self) -> List[Tuple[str, str]]:
-        """Get DirectX-specific platform optimizations"""
-        return [
-            # DirectX-specific optimizations
-            (r'void main\(\)', 'float4 main(float4 pos : SV_POSITION) : SV_TARGET'),
-        ]
-
-    def _get_metal_platform_optimizations(self) -> List[Tuple[str, str]]:
-        """Get Metal-specific platform optimizations"""
-        return [
-            # Metal-specific optimizations
-        ]
-
-    def _get_webgpu_platform_optimizations(self) -> List[Tuple[str, str]]:
-        """Get WebGPU-specific platform optimizations"""
-        return [
-            # WebGPU-specific optimizations
-        ]
-
-    def _get_vulkan_platform_optimizations(self) -> List[Tuple[str, str]]:
-        """Get Vulkan-specific platform optimizations"""
-        return [
-            # Vulkan-specific optimizations
-        ]
-
-    def optimize_for_target(self, shader_code: str, target_language: str, 
-                           target_platform: TargetPlatform = None) -> str:
-        """Apply optimizations specific to the target language and platform"""
+        # Epiphany Parallella
+        self.hardware_configs["epiphany"] = HardwareConstraints(
+            platform=HardwarePlatform.EPIPHANY,
+            memory_limit=32 * 1024 * 1024,  # 32MB total
+            compute_units=16,  # 16 cores
+            max_threads=1,  # Each core handles its own thread
+            vector_width=1,  # Limited SIMD
+            cache_size=64 * 1024,  # 64KB per core
+            max_precision="medium",
+            max_texture_size=2048,
+            max_uniforms=256,
+            support_for_float64=False,
+            power_efficiency_required=True
+        )
+        
+        # Mobile GPU
+        self.hardware_configs["mobile_gpu"] = HardwareConstraints(
+            platform=HardwarePlatform.GPU,
+            memory_limit=2 * 1024 * 1024 * 1024,  # 2GB
+            compute_units=4,  # shader cores
+            max_threads=4,
+            vector_width=4,  # 4-wide SIMD
+            cache_size=128 * 1024,  # 128KB
+            max_precision="medium",
+            max_texture_size=4096,
+            max_uniforms=256,
+            support_for_float64=False,
+            power_efficiency_required=True
+        )
+        
+        # Embedded ARM
+        self.hardware_configs["embedded_arm"] = HardwareConstraints(
+            platform=HardwarePlatform.ARM,
+            memory_limit=512 * 1024 * 1024,  # 512MB
+            compute_units=4,  # cores
+            max_threads=4,
+            vector_width=2,  # NEON SIMD
+            cache_size=64 * 1024,  # 64KB
+            max_precision="low",
+            max_texture_size=2048,
+            max_uniforms=128,
+            support_for_float64=False,
+            power_efficiency_required=True
+        )
+    
+    def get_constraints(self, platform_name: str) -> Optional[HardwareConstraints]:
+        """Get constraints for a specific platform"""
+        return self.hardware_configs.get(platform_name)
+    
+    def optimize_shader_for_platform(self, shader_code: str, platform: str) -> str:
+        """Apply platform-specific optimizations to the shader code"""
+        constraints = self.get_constraints(platform)
+        if not constraints:
+            raise ValueError(f"Unknown platform: {platform}")
+        
         optimized_code = shader_code
         
-        # Apply language-specific optimizations
-        if target_language in self.optimizations:
-            for pattern, replacement in self.optimizations[target_language]:
-                optimized_code = re.sub(pattern, replacement, optimized_code)
+        # Apply precision optimizations
+        optimized_code = self._optimize_precision(optimized_code, constraints)
         
-        # Apply platform-specific optimizations if specified
-        if target_platform and target_platform in self.platform_optimizations:
-            for pattern, replacement in self.platform_optimizations[target_platform]:
-                optimized_code = re.sub(pattern, replacement, optimized_code)
+        # Apply memory optimizations
+        optimized_code = self._optimize_memory_usage(optimized_code, constraints)
+        
+        # Apply computation optimizations
+        optimized_code = self._optimize_computation(optimized_code, constraints)
+        
+        # Apply power efficiency optimizations if needed
+        if constraints.power_efficiency_required:
+            optimized_code = self._optimize_power_efficiency(optimized_code, constraints)
         
         return optimized_code
-
-    def optimize_shader_structure(self, shader_code: str, target_language: str) -> str:
-        """Optimize shader structure based on target language"""
-        lines = shader_code.split('\n')
-        optimized_lines = []
-        
-        # Track which optimizations were applied
-        applied_optimizations = []
-        
-        i = 0
-        while i < len(lines):
-            line = lines[i]
-            
-            # GLSL-specific optimizations
-            if target_language == 'glsl':
-                # Optimize for uniform buffer objects if present
-                if 'uniform' in line and 'struct' in line:
-                    applied_optimizations.append("Structured uniform optimization")
-                
-                # Optimize texture declarations
-                texture_match = re.search(r'sampler2D\s+(\w+)', line)
-                if texture_match:
-                    tex_name = texture_match.group(1)
-                    # In newer GLSL, we can use texture objects
-                    applied_optimizations.append(f"Texture optimization for {tex_name}")
-            
-            # Metal-specific optimizations
-            elif target_language == 'metal':
-                # Optimize for Metal's function constants
-                if 'constant' in line and 'device' in line:
-                    applied_optimizations.append("Metal-specific memory optimization")
-            
-            # HLSL-specific optimizations
-            elif target_language == 'hlsl':
-                # Optimize for HLSL's SV semantics
-                if 'SV_' in line:
-                    applied_optimizations.append("HLSL semantic optimization")
-            
-            optimized_lines.append(line)
-            i += 1
-        
-        optimized_shader = '\n'.join(optimized_lines)
-        
-        return optimized_shader
-
-    def get_optimization_report(self, original_code: str, optimized_code: str, 
-                               target_language: str, target_platform: TargetPlatform = None) -> Dict:
-        """Generate a report of optimizations applied"""
-        report = {
-            'target_language': target_language,
-            'target_platform': target_platform.value if target_platform else None,
-            'original_size': len(original_code),
-            'optimized_size': len(optimized_code),
-            'size_reduction': len(original_code) - len(optimized_code),
-            'size_reduction_percent': ((len(original_code) - len(optimized_code)) / len(original_code)) * 100 if len(original_code) > 0 else 0,
-            'optimizations_applied': [],
-            'complexity_analysis': self._analyze_complexity(optimized_code)
-        }
-        
-        return report
-
-    def _analyze_complexity(self, shader_code: str) -> Dict:
-        """Analyze the complexity of the shader code"""
-        complexity = {
-            'function_count': len(re.findall(r'\w+\s+\w+\s*\([^)]*\)\s*\{', shader_code)),
-            'texture_reads': len(re.findall(r'(texture|texture2D|sample)', shader_code, re.IGNORECASE)),
-            'arithmetic_operations': len(re.findall(r'[\+\-\*\/]', shader_code)),
-            'branching_statements': len(re.findall(r'\b(if|else|switch|for|while)\b', shader_code)),
-            'vector_operations': len(re.findall(r'\b(vec[2-4]|float[2-4]|mat[2-4])', shader_code)),
-            'loops': len(re.findall(r'\b(for|while)\b', shader_code))
-        }
-        
-        return complexity
-
-    def optimize_complete_shader(self, shader_code: str, target_language: str, 
-                                target_platform: TargetPlatform = None) -> Tuple[str, Dict]:
-        """Optimize a complete shader and return both optimized code and report"""
-        # Apply structure optimizations
-        struct_optimized = self.optimize_shader_structure(shader_code, target_language)
-        
-        # Apply target-specific optimizations
-        fully_optimized = self.optimize_for_target(struct_optimized, target_language, target_platform)
-        
-        # Generate report
-        report = self.get_optimization_report(shader_code, fully_optimized, target_language, target_platform)
-        
-        return fully_optimized, report
-
-
-def demo_target_specific_optimization():
-    """Demonstrate target-specific optimization capabilities"""
-    print("Target-Specific Shader Optimization Demo")
-    print("=" * 50)
     
+    def _optimize_precision(self, shader_code: str, constraints: HardwareConstraints) -> str:
+        """Optimize precision based on hardware capabilities"""
+        # Remove high precision if not supported
+        if constraints.max_precision == "low":
+            # Replace high precision with low precision
+            shader_code = shader_code.replace("highp", "lowp")
+            shader_code = shader_code.replace("precision highp", "precision lowp")
+        elif constraints.max_precision == "medium":
+            # Replace high precision with medium
+            shader_code = shader_code.replace("highp", "mediump")
+            shader_code = shader_code.replace("precision highp", "precision mediump")
+        
+        # Remove double precision if not supported
+        if not constraints.support_for_float64:
+            shader_code = shader_code.replace("double", "float")
+            shader_code = shader_code.replace("dvec", "vec")
+            shader_code = shader_code.replace("dmat", "mat")
+        
+        if not constraints.support_for_int64:
+            shader_code = shader_code.replace("int64", "int")
+            shader_code = shader_code.replace("uint64", "uint")
+        
+        return shader_code
+    
+    def _optimize_memory_usage(self, shader_code: str, constraints: HardwareConstraints) -> str:
+        """Optimize for memory constraints"""
+        # Reduce texture size if necessary
+        if constraints.max_texture_size < 4096:
+            # Replace high resolution textures with smaller ones
+            # This is a simplified approach - real implementation would be more sophisticated
+            shader_code = shader_code.replace("textureSize > 4096", f"textureSize > {constraints.max_texture_size}")
+        
+        # Optimize uniform usage
+        if constraints.max_uniforms < 256:
+            # Consider using texture for uniform storage instead of uniforms
+            pass  # Placeholder for complex optimization
+        
+        return shader_code
+    
+    def _optimize_computation(self, shader_code: str, constraints: HardwareConstraints) -> str:
+        """Optimize computation based on hardware capabilities"""
+        # Optimize for vector width
+        if constraints.vector_width < 4:
+            # Reduce use of wide vector operations
+            pass  # Placeholder for complex optimization
+        
+        # Optimize for compute units
+        if constraints.compute_units < 8:
+            # Reduce parallel computation requirements
+            pass  # Placeholder for complex optimization
+        
+        return shader_code
+    
+    def _optimize_power_efficiency(self, shader_code: str, constraints: HardwareConstraints) -> str:
+        """Optimize for power efficiency"""
+        # Replace expensive operations with less expensive ones
+        shader_code = self._replace_expensive_operations(shader_code)
+        
+        # Reduce number of texture lookups
+        shader_code = self._reduce_texture_lookups(shader_code)
+        
+        return shader_code
+    
+    def _replace_expensive_operations(self, shader_code: str) -> str:
+        """Replace expensive operations with more efficient alternatives"""
+        # Replace expensive functions with approximations
+        # For example, replace some trigonometric functions
+        pass  # Placeholder for actual implementation
+        return shader_code
+    
+    def _reduce_texture_lookups(self, shader_code: str) -> str:
+        """Reduce the number of texture lookups"""
+        pass  # Placeholder for actual implementation
+        return shader_code
+
+
+def create_optimization_profile(platform_name: str, output_file: str):
+    """Create an optimization profile for a specific platform"""
     optimizer = TargetSpecificOptimizer()
+    constraints = optimizer.get_constraints(platform_name)
     
-    # Sample shader code to optimize
-    sample_shader = """#version 330 core
-
-uniform vec3 viewPos;
-uniform vec3 lightPos; 
-uniform vec3 lightColor;
-uniform sampler2D normalMap;
-
-in vec3 FragPos;
-in vec3 Normal;
-in vec2 TexCoords;
-
-out vec4 FragColor;
-
-float complexFunction(float x) {
-    float a = x * 1.0;
-    float b = 2.0 * 3.0;
-    float c = a + 0.0;
-    float d = pow(x, 2.0);
-    float e = sqrt(1.0 - x * x);
+    if not constraints:
+        raise ValueError(f"Unknown platform: {platform_name}")
     
-    return a + b + c + d + e;
+    profile = {
+        "platform": platform_name,
+        "constraints": {
+            "memory_limit": constraints.memory_limit,
+            "compute_units": constraints.compute_units,
+            "max_threads": constraints.max_threads,
+            "vector_width": constraints.vector_width,
+            "cache_size": constraints.cache_size,
+            "max_precision": constraints.max_precision,
+            "max_texture_size": constraints.max_texture_size,
+            "max_uniforms": constraints.max_uniforms,
+            "support_for_float64": constraints.support_for_float64,
+            "support_for_int64": constraints.support_for_int64,
+            "power_efficiency_required": constraints.power_efficiency_required
+        }
+    }
+    
+    with open(output_file, 'w') as f:
+        json.dump(profile, f, indent=2)
+    
+    print(f"Optimization profile for {platform_name} saved to {output_file}")
+
+
+def optimize_shader(shader_pseudocode: str, platform: str) -> str:
+    """Optimize shader code for a specific platform"""
+    optimizer = TargetSpecificOptimizer()
+    return optimizer.optimize_shader_for_platform(shader_pseudocode, platform)
+
+
+# Example usage and testing
+def example_usage():
+    # Example shader pseudocode
+    shader_code = '''
+precision highp float;
+uniform vec3 lightPos;
+varying vec3 vNormal;
+varying vec3 vPosition;
+
+vec3 calculateLighting(vec3 position, vec3 normal, vec3 lightPos, vec3 lightColor) {
+    vec3 lightDir = normalize(lightPos - position);
+    float diff = max(dot(normal, lightDir), 0.0);
+    return diff * lightColor;
 }
 
 void main() {
-    vec2 uv = TexCoords;
-    float value = complexFunction(uv.x);
-    FragColor = vec4(value, value, value, 1.0);
-    
-    vec3 redundant = uv.x * 1.0;
-    float unused = 42.0;
+    vec3 lighting = calculateLighting(vPosition, vNormal, lightPos, vec3(1.0));
+    gl_FragColor = vec4(lighting, 1.0);
 }
-"""
+'''
     
-    print("Original shader:")
-    print(sample_shader)
-    print("\n" + "="*60 + "\n")
+    optimizer = TargetSpecificOptimizer()
     
-    # Test optimizations for different targets
-    targets = [
-        ('glsl', TargetPlatform.OPENGL),
-        ('metal', TargetPlatform.METAL), 
-        ('hlsl', TargetPlatform.DIRECTX),
-        ('wgsl', TargetPlatform.WEBGPU)
-    ]
+    # Optimize for different platforms
+    platforms = ["epiphany", "mobile_gpu", "embedded_arm", "cpu_desktop"]
     
-    for target_lang, target_platform in targets:
-        print(f"Optimizing for {target_lang.upper()} on {target_platform.value.upper()}:")
-        print("-" * 40)
-        
-        try:
-            optimized_code, report = optimizer.optimize_complete_shader(
-                sample_shader, target_lang, target_platform
-            )
-            
-            print(f"Optimized code ({report['size_reduction_percent']:.2f}% size change):")
-            print(optimized_code[:300] + "..." if len(optimized_code) > 300 else optimized_code)
-            
-            print(f"\nReport:")
-            print(f"  Size: {report['original_size']} -> {report['optimized_size']} ({report['size_reduction']} chars)")
-            print(f"  Complexity: {report['complexity_analysis']}")
-            
-        except Exception as e:
-            print(f"Error optimizing for {target_lang}: {e}")
-        
-        print("\n" + "="*60 + "\n")
+    for platform in platforms:
+        optimized = optimizer.optimize_shader_for_platform(shader_code, platform)
+        print(f"Optimized for {platform}:")
+        print(optimized)
+        print("-" * 50)
+    
+    # Create optimization profiles
+    for platform in platforms:
+        create_optimization_profile(platform, f"config_{platform}.json")
 
 
 if __name__ == "__main__":
-    demo_target_specific_optimization()
+    example_usage()
