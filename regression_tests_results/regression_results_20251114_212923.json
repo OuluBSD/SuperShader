@@ -1,0 +1,1400 @@
+{
+  "procedural": {
+    "perlin_noise": {
+      "type": "non_branching",
+      "result": {
+        "success": true,
+        "translations": {
+          "glsl": {
+            "success": true,
+            "length": 1219
+          },
+          "metal": {
+            "success": true,
+            "length": 1252
+          },
+          "cpp": {
+            "success": true,
+            "length": 1230
+          }
+        },
+        "original_length": 1230
+      },
+      "hash": "c938ffe8d535de8b5c7c9916ed90cb78"
+    },
+    "noise_functions_branching": {
+      "type": "branching",
+      "branches": {
+        "perlin": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 853
+            },
+            "metal": {
+              "success": true,
+              "length": 897
+            },
+            "cpp": {
+              "success": true,
+              "length": 877
+            }
+          },
+          "original_length": 877
+        },
+        "simplex": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 1706
+            },
+            "metal": {
+              "success": true,
+              "length": 1813
+            },
+            "cpp": {
+              "success": true,
+              "length": 1771
+            }
+          },
+          "original_length": 1771
+        },
+        "value": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 743
+            },
+            "metal": {
+              "success": true,
+              "length": 784
+            },
+            "cpp": {
+              "success": true,
+              "length": 766
+            }
+          },
+          "original_length": 766
+        },
+        "fbm": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 387
+            },
+            "metal": {
+              "success": true,
+              "length": 409
+            },
+            "cpp": {
+              "success": true,
+              "length": 407
+            }
+          },
+          "original_length": 407
+        },
+        "ridged": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 571
+            },
+            "metal": {
+              "success": true,
+              "length": 593
+            },
+            "cpp": {
+              "success": true,
+              "length": 591
+            }
+          },
+          "original_length": 591
+        },
+        "turbulence": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 377
+            },
+            "metal": {
+              "success": true,
+              "length": 399
+            },
+            "cpp": {
+              "success": true,
+              "length": 397
+            }
+          },
+          "original_length": 397
+        }
+      },
+      "hash": "b581d304cf9c5758e9de4536c419dd62"
+    }
+  },
+  "raymarching": {
+    "raymarching_core": {
+      "type": "non_branching",
+      "result": {
+        "success": true,
+        "translations": {
+          "glsl": {
+            "success": true,
+            "length": 2910
+          },
+          "metal": {
+            "success": true,
+            "length": 3008
+          },
+          "cpp": {
+            "success": true,
+            "length": 2932
+          }
+        },
+        "original_length": 2932
+      },
+      "hash": "70873b204bdfcffa81addb1c9ea2c5b0"
+    },
+    "raymarching_advanced_branching": {
+      "type": "branching",
+      "branches": {
+        "basic": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 376
+            },
+            "metal": {
+              "success": true,
+              "length": 394
+            },
+            "cpp": {
+              "success": true,
+              "length": 384
+            }
+          },
+          "original_length": 384
+        },
+        "adaptive": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 626
+            },
+            "metal": {
+              "success": true,
+              "length": 646
+            },
+            "cpp": {
+              "success": true,
+              "length": 636
+            }
+          },
+          "original_length": 636
+        },
+        "cone": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 693
+            },
+            "metal": {
+              "success": true,
+              "length": 755
+            },
+            "cpp": {
+              "success": true,
+              "length": 745
+            }
+          },
+          "original_length": 745
+        },
+        "multi": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 652
+            },
+            "metal": {
+              "success": true,
+              "length": 675
+            },
+            "cpp": {
+              "success": true,
+              "length": 661
+            }
+          },
+          "original_length": 661
+        },
+        "standard_normal": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 309
+            },
+            "metal": {
+              "success": true,
+              "length": 325
+            },
+            "cpp": {
+              "success": true,
+              "length": 315
+            }
+          },
+          "original_length": 315
+        },
+        "analytical_normal": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 282
+            },
+            "metal": {
+              "success": true,
+              "length": 292
+            },
+            "cpp": {
+              "success": true,
+              "length": 288
+            }
+          },
+          "original_length": 288
+        },
+        "hybrid_normal": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 820
+            },
+            "metal": {
+              "success": true,
+              "length": 848
+            },
+            "cpp": {
+              "success": true,
+              "length": 836
+            }
+          },
+          "original_length": 836
+        },
+        "early_exit": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 540
+            },
+            "metal": {
+              "success": true,
+              "length": 565
+            },
+            "cpp": {
+              "success": true,
+              "length": 551
+            }
+          },
+          "original_length": 551
+        },
+        "adaptive_threshold": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 585
+            },
+            "metal": {
+              "success": true,
+              "length": 621
+            },
+            "cpp": {
+              "success": true,
+              "length": 611
+            }
+          },
+          "original_length": 611
+        }
+      },
+      "hash": "12d1aa74a6c8662d84f07fceb7b2de3a"
+    }
+  },
+  "physics": {
+    "verlet_integration": {
+      "type": "non_branching",
+      "result": {
+        "success": true,
+        "translations": {
+          "glsl": {
+            "success": true,
+            "length": 2566
+          },
+          "metal": {
+            "success": true,
+            "length": 2657
+          },
+          "cpp": {
+            "success": true,
+            "length": 2587
+          }
+        },
+        "original_length": 2587
+      },
+      "hash": "3a07456a65e573816cda6e149fe26961"
+    },
+    "physics_advanced_branching": {
+      "type": "branching",
+      "branches": {
+        "euler_integration": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 297
+            },
+            "metal": {
+              "success": true,
+              "length": 310
+            },
+            "cpp": {
+              "success": true,
+              "length": 304
+            }
+          },
+          "original_length": 304
+        },
+        "verlet_integration": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 437
+            },
+            "metal": {
+              "success": true,
+              "length": 455
+            },
+            "cpp": {
+              "success": true,
+              "length": 445
+            }
+          },
+          "original_length": 445
+        },
+        "rk4_integration": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 1415
+            },
+            "metal": {
+              "success": true,
+              "length": 1447
+            },
+            "cpp": {
+              "success": true,
+              "length": 1429
+            }
+          },
+          "original_length": 1429
+        },
+        "semi_implicit_euler": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 308
+            },
+            "metal": {
+              "success": true,
+              "length": 321
+            },
+            "cpp": {
+              "success": true,
+              "length": 315
+            }
+          },
+          "original_length": 315
+        },
+        "simple_collision": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 628
+            },
+            "metal": {
+              "success": true,
+              "length": 645
+            },
+            "cpp": {
+              "success": true,
+              "length": 639
+            }
+          },
+          "original_length": 639
+        },
+        "constraint_collision": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 520
+            },
+            "metal": {
+              "success": true,
+              "length": 535
+            },
+            "cpp": {
+              "success": true,
+              "length": 527
+            }
+          },
+          "original_length": 527
+        },
+        "impulse_collision": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 666
+            },
+            "metal": {
+              "success": true,
+              "length": 686
+            },
+            "cpp": {
+              "success": true,
+              "length": 676
+            }
+          },
+          "original_length": 676
+        },
+        "newtonian_forces": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 345
+            },
+            "metal": {
+              "success": true,
+              "length": 365
+            },
+            "cpp": {
+              "success": true,
+              "length": 353
+            }
+          },
+          "original_length": 353
+        },
+        "field_based_forces": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 378
+            },
+            "metal": {
+              "success": true,
+              "length": 400
+            },
+            "cpp": {
+              "success": true,
+              "length": 385
+            }
+          },
+          "original_length": 385
+        },
+        "potential_field_forces": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 690
+            },
+            "metal": {
+              "success": true,
+              "length": 712
+            },
+            "cpp": {
+              "success": true,
+              "length": 698
+            }
+          },
+          "original_length": 698
+        }
+      },
+      "hash": "aa61bbe77367eaa2977e5f325cd13813"
+    }
+  },
+  "texturing": {
+    "uv_mapping": {
+      "type": "non_branching",
+      "result": {
+        "success": true,
+        "translations": {
+          "glsl": {
+            "success": true,
+            "length": 3553
+          },
+          "metal": {
+            "success": true,
+            "length": 3786
+          },
+          "cpp": {
+            "success": true,
+            "length": 3623
+          }
+        },
+        "original_length": 3623
+      },
+      "hash": "4af01f11f0c707697000cc900d117128"
+    },
+    "texturing_advanced_branching": {
+      "type": "branching",
+      "branches": {
+        "planar_mapping": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 282
+            },
+            "metal": {
+              "success": true,
+              "length": 294
+            },
+            "cpp": {
+              "success": true,
+              "length": 288
+            }
+          },
+          "original_length": 288
+        },
+        "spherical_mapping": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 195
+            },
+            "metal": {
+              "success": true,
+              "length": 207
+            },
+            "cpp": {
+              "success": true,
+              "length": 201
+            }
+          },
+          "original_length": 201
+        },
+        "cylindrical_mapping": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 179
+            },
+            "metal": {
+              "success": true,
+              "length": 191
+            },
+            "cpp": {
+              "success": true,
+              "length": 185
+            }
+          },
+          "original_length": 185
+        },
+        "triplanar_mapping": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 641
+            },
+            "metal": {
+              "success": true,
+              "length": 679
+            },
+            "cpp": {
+              "success": true,
+              "length": 650
+            }
+          },
+          "original_length": 650
+        },
+        "nearest_filtering": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 255
+            },
+            "metal": {
+              "success": true,
+              "length": 276
+            },
+            "cpp": {
+              "success": true,
+              "length": 261
+            }
+          },
+          "original_length": 261
+        },
+        "bilinear_filtering": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 709
+            },
+            "metal": {
+              "success": true,
+              "length": 763
+            },
+            "cpp": {
+              "success": true,
+              "length": 718
+            }
+          },
+          "original_length": 718
+        },
+        "trilinear_filtering": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 472
+            },
+            "metal": {
+              "success": true,
+              "length": 495
+            },
+            "cpp": {
+              "success": true,
+              "length": 480
+            }
+          },
+          "original_length": 480
+        },
+        "anisotropic_filtering": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 662
+            },
+            "metal": {
+              "success": true,
+              "length": 702
+            },
+            "cpp": {
+              "success": true,
+              "length": 679
+            }
+          },
+          "original_length": 679
+        },
+        "multiply_blending": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 96
+            },
+            "metal": {
+              "success": true,
+              "length": 108
+            },
+            "cpp": {
+              "success": true,
+              "length": 102
+            }
+          },
+          "original_length": 102
+        },
+        "overlay_blending": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 194
+            },
+            "metal": {
+              "success": true,
+              "length": 206
+            },
+            "cpp": {
+              "success": true,
+              "length": 200
+            }
+          },
+          "original_length": 200
+        },
+        "soft_light_blending": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 141
+            },
+            "metal": {
+              "success": true,
+              "length": 153
+            },
+            "cpp": {
+              "success": true,
+              "length": 147
+            }
+          },
+          "original_length": 147
+        },
+        "additive_blending": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 96
+            },
+            "metal": {
+              "success": true,
+              "length": 108
+            },
+            "cpp": {
+              "success": true,
+              "length": 102
+            }
+          },
+          "original_length": 102
+        }
+      },
+      "hash": "3944c04cc0272d1743eea40c97580e0c"
+    }
+  },
+  "audio": {
+    "beat_detection": {
+      "type": "non_branching",
+      "result": {
+        "success": true,
+        "translations": {
+          "glsl": {
+            "success": true,
+            "length": 4699
+          },
+          "metal": {
+            "success": true,
+            "length": 4876
+          },
+          "cpp": {
+            "success": true,
+            "length": 4772
+          }
+        },
+        "original_length": 4772
+      },
+      "hash": "233ec325692098f8adc901b8253abea1"
+    },
+    "audio_advanced_branching": {
+      "type": "branching",
+      "branches": {
+        "bars_visualization": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 773
+            },
+            "metal": {
+              "success": true,
+              "length": 821
+            },
+            "cpp": {
+              "success": true,
+              "length": 804
+            }
+          },
+          "original_length": 804
+        },
+        "waveform_visualization": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 499
+            },
+            "metal": {
+              "success": true,
+              "length": 537
+            },
+            "cpp": {
+              "success": true,
+              "length": 520
+            }
+          },
+          "original_length": 520
+        },
+        "circle_visualization": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 756
+            },
+            "metal": {
+              "success": true,
+              "length": 810
+            },
+            "cpp": {
+              "success": true,
+              "length": 787
+            }
+          },
+          "original_length": 787
+        },
+        "particles_visualization": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 1080
+            },
+            "metal": {
+              "success": true,
+              "length": 1151
+            },
+            "cpp": {
+              "success": true,
+              "length": 1124
+            }
+          },
+          "original_length": 1124
+        },
+        "energy_beat_detection": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 592
+            },
+            "metal": {
+              "success": true,
+              "length": 612
+            },
+            "cpp": {
+              "success": true,
+              "length": 603
+            }
+          },
+          "original_length": 603
+        },
+        "frequency_beat_detection": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 736
+            },
+            "metal": {
+              "success": true,
+              "length": 757
+            },
+            "cpp": {
+              "success": true,
+              "length": 746
+            }
+          },
+          "original_length": 746
+        },
+        "amplitude_beat_detection": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 553
+            },
+            "metal": {
+              "success": true,
+              "length": 585
+            },
+            "cpp": {
+              "success": true,
+              "length": 574
+            }
+          },
+          "original_length": 574
+        },
+        "spectral_color_mapping": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 377
+            },
+            "metal": {
+              "success": true,
+              "length": 394
+            },
+            "cpp": {
+              "success": true,
+              "length": 388
+            }
+          },
+          "original_length": 388
+        },
+        "intensity_color_mapping": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 489
+            },
+            "metal": {
+              "success": true,
+              "length": 517
+            },
+            "cpp": {
+              "success": true,
+              "length": 505
+            }
+          },
+          "original_length": 505
+        },
+        "temporal_color_mapping": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 319
+            },
+            "metal": {
+              "success": true,
+              "length": 336
+            },
+            "cpp": {
+              "success": true,
+              "length": 330
+            }
+          },
+          "original_length": 330
+        }
+      },
+      "hash": "0b77b493a694ab5b0189358071541b0f"
+    }
+  },
+  "game": {
+    "input_handling": {
+      "type": "non_branching",
+      "result": {
+        "success": true,
+        "translations": {
+          "glsl": {
+            "success": true,
+            "length": 5573
+          },
+          "metal": {
+            "success": true,
+            "length": 5874
+          },
+          "cpp": {
+            "success": true,
+            "length": 5754
+          }
+        },
+        "original_length": 5754
+      },
+      "hash": "7bc0d69c96529e920f4682c012844aa7"
+    },
+    "game_advanced_branching": {
+      "type": "branching",
+      "branches": {
+        "minimalist_hud": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 671
+            },
+            "metal": {
+              "success": true,
+              "length": 704
+            },
+            "cpp": {
+              "success": true,
+              "length": 692
+            }
+          },
+          "original_length": 692
+        },
+        "detailed_hud": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 1604
+            },
+            "metal": {
+              "success": true,
+              "length": 1695
+            },
+            "cpp": {
+              "success": true,
+              "length": 1667
+            }
+          },
+          "original_length": 1667
+        },
+        "themed_hud": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 1232
+            },
+            "metal": {
+              "success": true,
+              "length": 1290
+            },
+            "cpp": {
+              "success": true,
+              "length": 1272
+            }
+          },
+          "original_length": 1272
+        },
+        "click_interaction": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 500
+            },
+            "metal": {
+              "success": true,
+              "length": 517
+            },
+            "cpp": {
+              "success": true,
+              "length": 511
+            }
+          },
+          "original_length": 511
+        },
+        "hover_interaction": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 402
+            },
+            "metal": {
+              "success": true,
+              "length": 419
+            },
+            "cpp": {
+              "success": true,
+              "length": 413
+            }
+          },
+          "original_length": 413
+        },
+        "touch_interaction": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 219
+            },
+            "metal": {
+              "success": true,
+              "length": 229
+            },
+            "cpp": {
+              "success": true,
+              "length": 225
+            }
+          },
+          "original_length": 225
+        },
+        "subtle_feedback": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 287
+            },
+            "metal": {
+              "success": true,
+              "length": 303
+            },
+            "cpp": {
+              "success": true,
+              "length": 293
+            }
+          },
+          "original_length": 293
+        },
+        "flashy_feedback": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 369
+            },
+            "metal": {
+              "success": true,
+              "length": 385
+            },
+            "cpp": {
+              "success": true,
+              "length": 375
+            }
+          },
+          "original_length": 375
+        },
+        "animated_feedback": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 530
+            },
+            "metal": {
+              "success": true,
+              "length": 557
+            },
+            "cpp": {
+              "success": true,
+              "length": 545
+            }
+          },
+          "original_length": 545
+        }
+      },
+      "hash": "f1133c2e0f41804e66a6394105fb8e28"
+    }
+  },
+  "ui": {
+    "basic_shapes": {
+      "type": "non_branching",
+      "result": {
+        "success": true,
+        "translations": {
+          "glsl": {
+            "success": true,
+            "length": 4583
+          },
+          "metal": {
+            "success": true,
+            "length": 4836
+          },
+          "cpp": {
+            "success": true,
+            "length": 4730
+          }
+        },
+        "original_length": 4730
+      },
+      "hash": "d374e43c52ed8b16503cd4b26eba33d1"
+    },
+    "ui_advanced_branching": {
+      "type": "branching",
+      "branches": {
+        "flat_widget": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 616
+            },
+            "metal": {
+              "success": true,
+              "length": 661
+            },
+            "cpp": {
+              "success": true,
+              "length": 637
+            }
+          },
+          "original_length": 637
+        },
+        "material_widget": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 1097
+            },
+            "metal": {
+              "success": true,
+              "length": 1169
+            },
+            "cpp": {
+              "success": true,
+              "length": 1133
+            }
+          },
+          "original_length": 1133
+        },
+        "neumorphic_widget": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 1860
+            },
+            "metal": {
+              "success": true,
+              "length": 1953
+            },
+            "cpp": {
+              "success": true,
+              "length": 1911
+            }
+          },
+          "original_length": 1911
+        },
+        "glassmorphism_widget": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 1292
+            },
+            "metal": {
+              "success": true,
+              "length": 1377
+            },
+            "cpp": {
+              "success": true,
+              "length": 1343
+            }
+          },
+          "original_length": 1343
+        },
+        "static_animation": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 124
+            },
+            "metal": {
+              "success": true,
+              "length": 130
+            },
+            "cpp": {
+              "success": true,
+              "length": 130
+            }
+          },
+          "original_length": 130
+        },
+        "subtle_animation": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 219
+            },
+            "metal": {
+              "success": true,
+              "length": 225
+            },
+            "cpp": {
+              "success": true,
+              "length": 225
+            }
+          },
+          "original_length": 225
+        },
+        "dynamic_animation": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 430
+            },
+            "metal": {
+              "success": true,
+              "length": 446
+            },
+            "cpp": {
+              "success": true,
+              "length": 446
+            }
+          },
+          "original_length": 446
+        },
+        "minimal_feedback": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 276
+            },
+            "metal": {
+              "success": true,
+              "length": 292
+            },
+            "cpp": {
+              "success": true,
+              "length": 282
+            }
+          },
+          "original_length": 282
+        },
+        "haptic_feedback_simulation": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 408
+            },
+            "metal": {
+              "success": true,
+              "length": 424
+            },
+            "cpp": {
+              "success": true,
+              "length": 414
+            }
+          },
+          "original_length": 414
+        },
+        "visual_feedback": {
+          "success": true,
+          "translations": {
+            "glsl": {
+              "success": true,
+              "length": 525
+            },
+            "metal": {
+              "success": true,
+              "length": 552
+            },
+            "cpp": {
+              "success": true,
+              "length": 540
+            }
+          },
+          "original_length": 540
+        }
+      },
+      "hash": "968240c018e3cb84877548e8deba599c"
+    }
+  }
+}

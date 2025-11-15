@@ -1,0 +1,39 @@
+{
+  "name": "supershader",
+  "version": "1.0.0",
+  "description": "Modular shader generation system with branching for conflicting features",
+  "author": "SuperShader Team",
+  "license": "MIT",
+  "components": {
+    "management": [
+      "management/",
+      "create_pseudocode_translator.py",
+      "create_module_registry.py",
+      "create_performance_system.py",
+      "create_pseudocode_translator.py",
+      "management/module_combiner.py",
+      "management/module_linker.py",
+      "management/shader_assembler.py",
+      "modules/"
+    ],
+    "documentation": [
+      "README.md",
+      "PLAN.md",
+      "QWEN.md",
+      "TASKS.md",
+      "DATA_FLOW_TECHNICAL_DOCS.md"
+    ],
+    "config_files": [
+      "config_cel_shading.json",
+      "config_pbr_with_shadows.json",
+      "config_phong_lighting.json",
+      "config_raymarching.json",
+      "data_flow_graph.json"
+    ]
+  },
+  "installation_date": "2025-11-15T00:02:40.718316",
+  "build_info": {
+    "python_version": "3.13.9 (main, Oct 15 2025, 14:56:22) [GCC 15.2.0]",
+    "build_timestamp": "2025-11-15T00:02:40.718354"
+  }
+}

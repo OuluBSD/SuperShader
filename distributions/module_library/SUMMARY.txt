@@ -1,0 +1,34 @@
+SuperShader Module Library Summary
+==================================
+Date: 2025-11-15T00:16:11.151128
+Version: 1.0.0
+Total modules: 11
+
+Procedural (2 modules):
+  - perlin_noise
+  - noise_functions_branching
+
+Raymarching (2 modules):
+  - raymarching_core
+  - raymarching_advanced_branching
+
+Physics (2 modules):
+  - verlet_integration
+  - physics_advanced_branching
+
+Texturing (2 modules):
+  - uv_mapping
+  - advanced_texturing_branching
+
+Audio (2 modules):
+  - beat_detection
+  - audio_advanced_branching
+
+Game (2 modules):
+  - input_handling
+  - game_advanced_branching
+
+Ui (2 modules):
+  - basic_shapes
+  - ui_advanced_branching
+

@@ -1,0 +1,224 @@
+{
+  "summary": {
+    "total_tests": 27,
+    "total_passed": 19,
+    "total_failed": 8,
+    "total_errors": 0,
+    "success_rate": 70.37037037037037,
+    "total_execution_time": 0.007018566131591797
+  },
+  "breakdown": {
+    "unit_tests": {
+      "total": 12,
+      "passed": 5,
+      "failed": 7,
+      "errors": 0
+    },
+    "integration_tests": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "errors": 0
+    },
+    "regression_tests": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "errors": 0
+    },
+    "compatibility_tests": {
+      "total": 3,
+      "passed": 2,
+      "failed": 1,
+      "errors": 0
+    },
+    "performance_tests": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "errors": 0
+    },
+    "functional_tests": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "errors": 0
+    }
+  },
+  "categories": {
+    "unit_tests": [
+      {
+        "name": "Pseudocode to GLSL Translation",
+        "status": "PASS",
+        "execution_time": 0.00042366981506347656,
+        "details": "Translated to 141 chars"
+      },
+      {
+        "name": "Pseudocode to Metal Translation",
+        "status": "PASS",
+        "execution_time": 0.00029778480529785156,
+        "details": "Translated to 157 chars"
+      },
+      {
+        "name": "Pseudocode to C/C++ Translation",
+        "status": "PASS",
+        "execution_time": 3.814697265625e-06,
+        "details": "Translated to 155 chars"
+      },
+      {
+        "name": "Module Combiner Initialization",
+        "status": "PASS",
+        "execution_time": 0.001,
+        "details": "ModuleCombiner instantiated successfully"
+      },
+      {
+        "name": "Empty Module Combination",
+        "status": "PASS",
+        "execution_time": 3.0994415283203125e-06,
+        "details": "Combined empty modules without error"
+      },
+      {
+        "name": "Procedural Registry Loading",
+        "status": "FAIL",
+        "execution_time": 0,
+        "details": "Error loading procedural registry: name 'importlib' is not defined"
+      },
+      {
+        "name": "Raymarching Registry Loading",
+        "status": "FAIL",
+        "execution_time": 0,
+        "details": "Error loading raymarching registry: name 'importlib' is not defined"
+      },
+      {
+        "name": "Physics Registry Loading",
+        "status": "FAIL",
+        "execution_time": 0,
+        "details": "Error loading physics registry: name 'importlib' is not defined"
+      },
+      {
+        "name": "Texturing Registry Loading",
+        "status": "FAIL",
+        "execution_time": 0,
+        "details": "Error loading texturing registry: name 'importlib' is not defined"
+      },
+      {
+        "name": "Audio Registry Loading",
+        "status": "FAIL",
+        "execution_time": 0,
+        "details": "Error loading audio registry: name 'importlib' is not defined"
+      },
+      {
+        "name": "Game Registry Loading",
+        "status": "FAIL",
+        "execution_time": 0,
+        "details": "Error loading game registry: name 'importlib' is not defined"
+      },
+      {
+        "name": "Ui Registry Loading",
+        "status": "FAIL",
+        "execution_time": 0,
+        "details": "Error loading ui registry: name 'importlib' is not defined"
+      }
+    ],
+    "integration_tests": [
+      {
+        "name": "Translator-Combiner Integration",
+        "status": "PASS",
+        "execution_time": 7.390975952148438e-05,
+        "details": "Component integration works correctly"
+      },
+      {
+        "name": "Module Loading Integration",
+        "status": "PASS",
+        "execution_time": 0.0006663799285888672,
+        "details": "Successfully loaded procedural module"
+      }
+    ],
+    "regression_tests": [
+      {
+        "name": "Regression Test: Basic assignment",
+        "status": "PASS",
+        "execution_time": 2.8848648071289062e-05,
+        "details": "Successfully translated Basic assignment"
+      },
+      {
+        "name": "Regression Test: Function definition",
+        "status": "PASS",
+        "execution_time": 3.504753112792969e-05,
+        "details": "Successfully translated Function definition"
+      },
+      {
+        "name": "Regression Test: Vector operations",
+        "status": "PASS",
+        "execution_time": 3.314018249511719e-05,
+        "details": "Successfully translated Vector operations"
+      },
+      {
+        "name": "Regression Test: Control flow",
+        "status": "PASS",
+        "execution_time": 3.838539123535156e-05,
+        "details": "Successfully translated Control flow"
+      },
+      {
+        "name": "Regression Test: Loops",
+        "status": "PASS",
+        "execution_time": 3.719329833984375e-05,
+        "details": "Successfully translated Loops"
+      },
+      {
+        "name": "Regression Test: Complex expressions",
+        "status": "PASS",
+        "execution_time": 4.029273986816406e-05,
+        "details": "Successfully translated Complex expressions"
+      }
+    ],
+    "compatibility_tests": [
+      {
+        "name": "Compatibility Test: Pseudocode Translator",
+        "status": "PASS",
+        "execution_time": 4.0531158447265625e-06,
+        "details": "Pseudocode Translator imported successfully"
+      },
+      {
+        "name": "Compatibility Test: Module Combiner",
+        "status": "PASS",
+        "execution_time": 3.337860107421875e-06,
+        "details": "Module Combiner imported successfully"
+      },
+      {
+        "name": "Compatibility Test: GLSL Parser",
+        "status": "FAIL",
+        "execution_time": 0.00037407875061035156,
+        "details": "Import error for GLSL Parser: No module named 'analysis.glsl_parser'"
+      }
+    ],
+    "performance_tests": [
+      {
+        "name": "Single Translation Performance",
+        "status": "PASS",
+        "execution_time": 0.00016307830810546875,
+        "details": "Translation completed in 0.16ms"
+      },
+      {
+        "name": "Multiple Translation Performance",
+        "status": "PASS",
+        "execution_time": 0.0015387535095214844,
+        "details": "10 translations completed in 1.54ms (0.15ms avg)"
+      }
+    ],
+    "functional_tests": [
+      {
+        "name": "Functional Translation Test",
+        "status": "PASS",
+        "execution_time": 3.5762786865234375e-05,
+        "details": "Translation produced expected GLSL syntax"
+      },
+      {
+        "name": "Basic Combiner Functionality",
+        "status": "PASS",
+        "execution_time": 4.291534423828125e-06,
+        "details": "Combiner operates without errors"
+      }
+    ]
+  }
+}

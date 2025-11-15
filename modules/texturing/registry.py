@@ -25,6 +25,11 @@ TEXTURING_MODULES = {
         'path': 'modules/texturing/procedural/procedural_texturing.py',
         'get_pseudocode': lambda: load_module_function('modules/texturing/procedural/procedural_texturing.py', 'get_pseudocode')(),
         'get_metadata': lambda: load_module_function('modules/texturing/procedural/procedural_texturing.py', 'get_metadata')()
+    },
+    'texturing_advanced_branching': {
+        'path': 'modules/texturing/standardized/advanced_texturing_branching.py',
+        'get_pseudocode': lambda: load_module_function('modules/texturing/standardized/advanced_texturing_branching.py', 'get_pseudocode')(),
+        'get_metadata': lambda: load_module_function('modules/texturing/standardized/advanced_texturing_branching.py', 'get_metadata')()
     }
 }
 

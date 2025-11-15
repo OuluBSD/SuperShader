@@ -1,0 +1,297 @@
+{
+  "inheritable_modules": {
+    "base_texturing": {
+      "name": "base_texturing",
+      "type": "texturing",
+      "version": "1.0.0",
+      "pseudocode": "\n// Base texturing operations\nvec4 sampleTexture(sampler2D tex, vec2 uv) {\n    return texture(tex, uv);\n}\n\nvec4 sampleTextureWithOffset(sampler2D tex, vec2 uv, vec2 offset) {\n    return texture(tex, uv + offset);\n}\n\nvec4 blendTextures(vec4 tex1, vec4 tex2, float blendFactor) {\n    return mix(tex1, tex2, blendFactor);\n}\n            ",
+      "interface": {
+        "inputs": [
+          {
+            "name": "uv",
+            "type": "vec2",
+            "direction": "in",
+            "semantic": "texture_coordinates"
+          },
+          {
+            "name": "offset",
+            "type": "vec2",
+            "direction": "uniform",
+            "semantic": "texture_offset"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "color",
+            "type": "vec4",
+            "direction": "out",
+            "semantic": "sampled_color"
+          }
+        ],
+        "uniforms": [
+          {
+            "name": "tex",
+            "type": "sampler2D",
+            "semantic": "texture_sampler"
+          },
+          {
+            "name": "blendFactor",
+            "type": "float",
+            "semantic": "blend_factor"
+          }
+        ]
+      },
+      "dependencies": [],
+      "extensions": [
+        "advanced_texturing"
+      ],
+      "description": "Basic texturing module with fundamental operations",
+      "inheritable": true
+    },
+    "base_lighting": {
+      "name": "base_lighting",
+      "type": "lighting",
+      "version": "1.0.0",
+      "pseudocode": "\n// Basic lighting functions\nvec3 basicDiffuse(vec3 normal, vec3 lightDir, vec3 lightColor) {\n    float diff = max(dot(normal, lightDir), 0.0);\n    return diff * lightColor;\n}\n\nvec3 basicSpecular(vec3 normal, vec3 viewDir, vec3 lightDir, float shininess) {\n    vec3 reflectDir = reflect(-lightDir, normal);\n    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);\n    return spec;\n}\n            ",
+      "interface": {
+        "inputs": [
+          {
+            "name": "normal",
+            "type": "vec3",
+            "direction": "in",
+            "semantic": "surface_normal"
+          },
+          {
+            "name": "viewDir",
+            "type": "vec3",
+            "direction": "in",
+            "semantic": "view_direction"
+          },
+          {
+            "name": "lightDir",
+            "type": "vec3",
+            "direction": "in",
+            "semantic": "light_direction"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "diffuse",
+            "type": "vec3",
+            "direction": "out",
+            "semantic": "diffuse_contribution"
+          },
+          {
+            "name": "specular",
+            "type": "vec3",
+            "direction": "out",
+            "semantic": "specular_contribution"
+          }
+        ],
+        "uniforms": [
+          {
+            "name": "lightColor",
+            "type": "vec3",
+            "semantic": "light_color"
+          },
+          {
+            "name": "shininess",
+            "type": "float",
+            "semantic": "shininess_factor"
+          }
+        ]
+      },
+      "dependencies": [],
+      "extensions": [
+        "pbr_lighting"
+      ],
+      "description": "Basic lighting calculations",
+      "inheritable": true
+    },
+    "base_shape": {
+      "name": "base_shape",
+      "type": "geometry",
+      "version": "1.0.0",
+      "pseudocode": "// Base shape functions\ngeneric float distanceFunc(vec3 p) { return 0.0; }",
+      "interface": {},
+      "dependencies": [],
+      "extensions": [
+        "sphere_shape"
+      ],
+      "description": "Base shape operations",
+      "inheritable": true
+    }
+  },
+  "extended_modules": {
+    "advanced_texturing": {
+      "name": "advanced_texturing",
+      "type": "texturing",
+      "version": "1.0.0",
+      "parent": "base_texturing",
+      "pseudocode": "\n// Base texturing operations\nvec4 sampleTexture(sampler2D tex, vec2 uv) {\n    return texture(tex, uv);\n}\n\nvec4 sampleTextureWithOffset(sampler2D tex, vec2 uv, vec2 offset) {\n    return texture(tex, uv + offset);\n}\n\nvec4 blendTextures(vec4 tex1, vec4 tex2, float blendFactor) {\n    return mix(tex1, tex2, blendFactor);\n}\n            \n\n// Extended functionality\n\n// Extended texturing operations\nvec4 sampleProceduralPattern(vec2 uv, float scale, float time) {\n    // Create procedural pattern\n    float pattern = sin(uv.x * scale * 10.0 + time) * sin(uv.y * scale * 10.0 + time);\n    return vec4(vec3(pattern), 1.0);\n}\n\nvec4 combineTextureAndPattern(sampler2D tex, vec2 uv, float scale, float time) {\n    vec4 texColor = sampleTexture(tex, uv);  // Inherited function\n    vec4 patternColor = sampleProceduralPattern(uv, scale, time);\n    return blendTextures(texColor, patternColor, 0.5);  // Inherited function\n}\n            \n\n// Function override for sampleTexture\n\nvec4 sampleTexture(sampler2D tex, vec2 uv) {\n    // Completely overridden function with more advanced features\n    vec2 pixelSize = 1.0 / textureSize(tex, 0);\n    return texture(tex, uv + pixelSize);  // Add small offset to demonstrate override\n}\n        ",
+      "interface": {
+        "inputs": [
+          {
+            "name": "uv",
+            "type": "vec2",
+            "direction": "in",
+            "semantic": "texture_coordinates"
+          },
+          {
+            "name": "offset",
+            "type": "vec2",
+            "direction": "uniform",
+            "semantic": "texture_offset"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "color",
+            "type": "vec4",
+            "direction": "out",
+            "semantic": "sampled_color"
+          }
+        ],
+        "uniforms": [
+          {
+            "name": "tex",
+            "type": "sampler2D",
+            "semantic": "texture_sampler"
+          },
+          {
+            "name": "blendFactor",
+            "type": "float",
+            "semantic": "blend_factor"
+          }
+        ]
+      },
+      "dependencies": [],
+      "extensions": [],
+      "description": "Advanced texturing with procedural patterns",
+      "is_extension": true
+    },
+    "pbr_lighting": {
+      "name": "pbr_lighting",
+      "type": "lighting",
+      "version": "1.0.0",
+      "parent": "base_lighting",
+      "pseudocode": "\n// Basic lighting functions\nvec3 basicDiffuse(vec3 normal, vec3 lightDir, vec3 lightColor) {\n    float diff = max(dot(normal, lightDir), 0.0);\n    return diff * lightColor;\n}\n\nvec3 basicSpecular(vec3 normal, vec3 viewDir, vec3 lightDir, float shininess) {\n    vec3 reflectDir = reflect(-lightDir, normal);\n    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);\n    return spec;\n}\n            \n\n// Extended functionality\n\n// Extended PBR lighting functions\n// Cook-Torrance BRDF implementation\nfloat distributionGGX(vec3 normal, vec3 halfDir, float roughness) {\n    float a = roughness * roughness;\n    float a2 = a * a;\n    float NdotH = max(dot(normal, halfDir), 0.0);\n    float NdotH2 = NdotH * NdotH;\n\n    float nom = a2;\n    float denom = (NdotH2 * (a2 - 1.0) + 1.0);\n    denom = PI * denom * denom;\n\n    return nom / denom;\n}\n\nfloat geometrySchlickGGX(float NdotV, float roughness) {\n    float r = (roughness + 1.0);\n    float k = (r * r) / 8.0;\n\n    float nom = NdotV;\n    float denom = NdotV * (1.0 - k) + k;\n\n    return nom / denom;\n}\n\nfloat geometrySmith(vec3 normal, vec3 viewDir, vec3 lightDir, float roughness) {\n    float NdotV = max(dot(normal, viewDir), 0.0);\n    float NdotL = max(dot(normal, lightDir), 0.0);\n    float ggx2 = geometrySchlickGGX(NdotV, roughness);\n    float ggx1 = geometrySchlickGGX(NdotL, roughness);\n\n    return ggx1 * ggx2;\n}\n\nvec3 fresnelSchlick(float cosTheta, vec3 F0) {\n    return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);\n}\n\n// PBR lighting model that incorporates basic lighting\nvec3 pbrLighting(vec3 normal, vec3 viewDir, vec3 lightDir, vec3 lightColor, \n                 vec3 albedo, float metallic, float roughness) {\n    // Using functions inherited from base lighting for some calculations\n    vec3 halfwayDir = normalize(lightDir + viewDir);\n\n    // Fresnel\n    vec3 F0 = mix(vec3(0.04), albedo, metallic);\n    vec3 F = fresnelSchlick(max(dot(halfwayDir, viewDir), 0.0), F0);\n\n    // Other terms\n    float NDF = distributionGGX(normal, halfwayDir, roughness);\n    float G = geometrySmith(normal, viewDir, lightDir, roughness);\n\n    vec3 nominator = NDF * G * F;\n    float denominator = 4.0 * max(dot(normal, viewDir), 0.0) * max(dot(normal, lightDir), 0.0) + 0.001; // Epsilon to prevent divide by zero\n    vec3 specular = nominator / denominator;\n\n    // For Ks (specular reflection) and Kd (diffuse reflection)\n    vec3 kS = F;\n    vec3 kD = vec3(1.0) - kS;\n    kD *= 1.0 - metallic; // Metallic surfaces have no diffuse lighting\n\n    // Final lighting calculation\n    float NdotL = max(dot(normal, lightDir), 0.0);\n    vec3 irradiance = lightColor;\n    vec3 diffuse = irradiance * albedo / PI;\n\n    // Combine both lighting contributions\n    vec3 result = (kD * diffuse + specular) * NdotL;\n\n    return result;\n}\n            ",
+      "interface": {
+        "inputs": [
+          {
+            "name": "normal",
+            "type": "vec3",
+            "direction": "in",
+            "semantic": "surface_normal"
+          },
+          {
+            "name": "viewDir",
+            "type": "vec3",
+            "direction": "in",
+            "semantic": "view_direction"
+          },
+          {
+            "name": "lightDir",
+            "type": "vec3",
+            "direction": "in",
+            "semantic": "light_direction"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "diffuse",
+            "type": "vec3",
+            "direction": "out",
+            "semantic": "diffuse_contribution"
+          },
+          {
+            "name": "specular",
+            "type": "vec3",
+            "direction": "out",
+            "semantic": "specular_contribution"
+          }
+        ],
+        "uniforms": [
+          {
+            "name": "lightColor",
+            "type": "vec3",
+            "semantic": "light_color"
+          },
+          {
+            "name": "shininess",
+            "type": "float",
+            "semantic": "shininess_factor"
+          }
+        ]
+      },
+      "dependencies": [],
+      "extensions": [],
+      "description": "Physically Based Rendering lighting model",
+      "is_extension": true
+    },
+    "sphere_shape": {
+      "name": "sphere_shape",
+      "type": "geometry",
+      "version": "1.0.0",
+      "parent": "base_shape",
+      "pseudocode": "// Base shape functions\ngeneric float distanceFunc(vec3 p) { return 0.0; }\n\n// Extended functionality\n// Sphere-specific functions\ngeneric float sphereDistance(vec3 p) { return length(p) - 1.0; }",
+      "interface": {},
+      "dependencies": [],
+      "extensions": [
+        "sphere_with_material"
+      ],
+      "description": "Sphere-specific operations",
+      "is_extension": true
+    },
+    "sphere_with_material": {
+      "name": "sphere_with_material",
+      "type": "geometry",
+      "version": "1.0.0",
+      "parent": "sphere_shape",
+      "pseudocode": "// Base shape functions\ngeneric float distanceFunc(vec3 p) { return 0.0; }\n\n// Extended functionality\n// Sphere-specific functions\ngeneric float sphereDistance(vec3 p) { return length(p) - 1.0; }\n\n// Extended functionality\n// Material extension\nvec3 getMaterialColor() { return vec3(1.0, 0.5, 0.2); }",
+      "interface": {},
+      "dependencies": [],
+      "extensions": [],
+      "description": "Sphere with material properties",
+      "is_extension": true
+    }
+  },
+  "inheritance_tree": {
+    "base_texturing": {
+      "extends": null,
+      "children": [
+        "advanced_texturing"
+      ]
+    },
+    "advanced_texturing": {
+      "extends": "base_texturing",
+      "children": []
+    },
+    "base_lighting": {
+      "extends": null,
+      "children": [
+        "pbr_lighting"
+      ]
+    },
+    "pbr_lighting": {
+      "extends": "base_lighting",
+      "children": []
+    },
+    "base_shape": {
+      "extends": null,
+      "children": [
+        "sphere_shape"
+      ]
+    },
+    "sphere_shape": {
+      "extends": "base_shape",
+      "children": [
+        "sphere_with_material"
+      ]
+    },
+    "sphere_with_material": {
+      "extends": "sphere_shape",
+      "children": []
+    }
+  }
+}

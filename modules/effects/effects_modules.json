@@ -1,0 +1,36 @@
+{
+  "module_category": "effects",
+  "modules": [
+    {
+      "id": "standard_effects",
+      "name": "Standard Effects Library",
+      "description": "Basic post-processing effects like color adjustments, filters, blurs, and compositing operations",
+      "file": "standard_effects.glsl",
+      "type": "effect_library",
+      "tags": ["color", "filter", "blur", "composite", "adjustment"],
+      "dependencies": [],
+      "parameters": [
+        {"name": "brightness", "type": "float", "range": [-1.0, 1.0], "default": 0.0},
+        {"name": "contrast", "type": "float", "range": [-1.0, 1.0], "default": 0.0},
+        {"name": "saturation", "type": "float", "range": [-1.0, 1.0], "default": 0.0}
+      ]
+    },
+    {
+      "id": "advanced_post_effects", 
+      "name": "Advanced Post-Processing Effects",
+      "description": "Advanced effects including tone mapping, bloom, depth of field, FXAA, chromatic aberration, and film effects",
+      "file": "advanced_post_effects.glsl",
+      "type": "effect_library", 
+      "tags": ["tone_map", "bloom", "dof", "fxaa", "chromatic_aberration", "film_grain", "vignette"],
+      "dependencies": ["standard_effects"],
+      "parameters": [
+        {"name": "exposure", "type": "float", "range": [0.0, 5.0], "default": 1.0},
+        {"name": "bloom_intensity", "type": "float", "range": [0.0, 2.0], "default": 0.5},
+        {"name": "dof_focus_distance", "type": "float", "range": [0.0, 1.0], "default": 0.5}
+      ]
+    }
+  ],
+  "version": "1.0",
+  "author": "SuperShader Project",
+  "license": "MIT"
+}

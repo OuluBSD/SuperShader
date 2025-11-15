@@ -1,0 +1,36 @@
+{
+  "module_category": "animation",
+  "modules": [
+    {
+      "id": "standard_animation",
+      "name": "Standard Animation Library",
+      "description": "Basic animation utilities including noise functions, particle systems, physics simulations, and procedural patterns",
+      "file": "standard_animation.glsl",
+      "type": "animation_library",
+      "tags": ["noise", "particles", "physics", "patterns", "random", "curves"],
+      "dependencies": [],
+      "parameters": [
+        {"name": "time", "type": "float", "range": [0, "inf"], "default": 0.0},
+        {"name": "speed", "type": "float", "range": [0.0, 10.0], "default": 1.0},
+        {"name": "frequency", "type": "float", "range": [0.0, 10.0], "default": 1.0}
+      ]
+    },
+    {
+      "id": "advanced_procedural", 
+      "name": "Advanced Procedural Library",
+      "description": "Advanced procedural generation including fractals, fluid simulation, complex shapes, and physics-based animations",
+      "file": "advanced_procedural.glsl",
+      "type": "procedural_library", 
+      "tags": ["fractals", "fluid", "shapes", "physics", "complex_patterns"],
+      "dependencies": ["standard_animation"],
+      "parameters": [
+        {"name": "iterations", "type": "int", "range": [1, 20], "default": 8},
+        {"name": "persistence", "type": "float", "range": [0.0, 1.0], "default": 0.5},
+        {"name": "octaves", "type": "int", "range": [1, 10], "default": 5}
+      ]
+    }
+  ],
+  "version": "1.0",
+  "author": "SuperShader Project",
+  "license": "MIT"
+}

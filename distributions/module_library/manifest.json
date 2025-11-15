@@ -1,0 +1,147 @@
+{
+  "library_name": "SuperShader Standard Module Library",
+  "version": "1.0.0",
+  "description": "Standard library of shader modules for SuperShader distribution",
+  "generated_at": "2025-11-15T00:16:11.151128",
+  "modules": {
+    "procedural/noise_functions_branching": {
+      "name": "noise_functions_branching",
+      "category": "procedural",
+      "description": "Procedural noise generation with branching for different algorithms",
+      "patterns": [
+        "Perlin Noise",
+        "Simplex Noise",
+        "Value Noise",
+        "Fractal Brownian Motion"
+      ],
+      "type": "procedural",
+      "source_path": "modules/procedural/standardized/noise_functions_branching.py"
+    },
+    "raymarching/raymarching_advanced_branching": {
+      "name": "raymarching_advanced_branching",
+      "category": "raymarching",
+      "description": "Advanced raymarching with branching for different algorithms",
+      "patterns": [
+        "Raymarching",
+        "Adaptive Steps",
+        "Cone Tracing",
+        "Multi-Raymarching"
+      ],
+      "type": "raymarching",
+      "source_path": "modules/raymarching/standardized/advanced_raymarching_branching.py"
+    },
+    "physics/physics_advanced_branching": {
+      "name": "physics_advanced_branching",
+      "category": "physics",
+      "description": "Advanced physics with branching for different integration methods",
+      "patterns": [
+        "Euler Integration",
+        "Verlet Integration",
+        "RK4 Integration",
+        "Semi-Implicit Euler"
+      ],
+      "type": "physics",
+      "source_path": "modules/physics/standardized/advanced_physics_branching.py"
+    },
+    "texturing/uv_mapping": {
+      "name": "uv_mapping",
+      "category": "texturing",
+      "description": "UV mapping and texturing functions",
+      "patterns": [
+        "UV Mapping",
+        "Texture Coordinates",
+        "Triplanar"
+      ],
+      "type": "texturing",
+      "source_path": "modules/texturing/uv_mapping/uv_mapping.py"
+    },
+    "texturing/advanced_texturing_branching": {
+      "name": "advanced_texturing_branching",
+      "category": "texturing",
+      "description": "Advanced texturing with branching for different mapping approaches",
+      "patterns": [
+        "Planar UV Mapping",
+        "Spherical UV Mapping",
+        "Cylindrical UV Mapping",
+        "Triplanar UV Mapping"
+      ],
+      "type": "texturing",
+      "source_path": "modules/texturing/standardized/advanced_texturing_branching.py"
+    },
+    "audio/beat_detection": {
+      "name": "beat_detection",
+      "category": "audio",
+      "description": "Audio reactive beat detection algorithms",
+      "patterns": [
+        "Beat Detection",
+        "Frequency Analysis",
+        "Audio Visualization"
+      ],
+      "type": "audio",
+      "source_path": "modules/audio/beat_detection/beat_detection.py"
+    },
+    "audio/audio_advanced_branching": {
+      "name": "audio_advanced_branching",
+      "category": "audio",
+      "description": "Advanced audio processing with branching for different analysis methods",
+      "patterns": [
+        "Fourier Transform Analysis",
+        "Wavelet Analysis",
+        "Autocorrelation Analysis"
+      ],
+      "type": "audio",
+      "source_path": "modules/audio/standardized/advanced_audio_branching.py"
+    },
+    "game/input_handling": {
+      "name": "input_handling",
+      "category": "game",
+      "description": "Game input handling and interaction processing",
+      "patterns": [
+        "Input Handling",
+        "Mouse Detection",
+        "Interactive Elements"
+      ],
+      "type": "game",
+      "source_path": "modules/game/input_handling/input_handling.py"
+    },
+    "game/game_advanced_branching": {
+      "name": "game_advanced_branching",
+      "category": "game",
+      "description": "Advanced game modules with branching for different UI approaches",
+      "patterns": [
+        "Minimalist HUD",
+        "Detailed HUD",
+        "Themed HUD",
+        "Click-based Interaction",
+        "Hover-based Interaction"
+      ],
+      "type": "game",
+      "source_path": "modules/game/standardized/advanced_game_branching.py"
+    },
+    "ui/basic_shapes": {
+      "name": "basic_shapes",
+      "category": "ui",
+      "description": "Basic 2D shape rendering for UI elements",
+      "patterns": [
+        "Basic Shapes",
+        "UI Rendering",
+        "2D Graphics"
+      ],
+      "type": "ui",
+      "source_path": "modules/ui/basic_shapes/basic_shapes.py"
+    },
+    "ui/ui_advanced_branching": {
+      "name": "ui_advanced_branching",
+      "category": "ui",
+      "description": "Advanced UI with branching for different design approaches",
+      "patterns": [
+        "Flat UI",
+        "Material Design",
+        "Neumorphic UI",
+        "Glassmorphism UI"
+      ],
+      "type": "ui",
+      "source_path": "modules/ui/standardized/advanced_ui_branching.py"
+    }
+  }
+}

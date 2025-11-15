@@ -35,6 +35,11 @@ RAYMARCHING_MODULES = {
         'path': 'modules/raymarching/lighting/raymarching_lighting.py',
         'get_pseudocode': lambda: load_module_function('modules/raymarching/lighting/raymarching_lighting.py', 'get_pseudocode')(),
         'get_metadata': lambda: load_module_function('modules/raymarching/lighting/raymarching_lighting.py', 'get_metadata')()
+    },
+    'raymarching_advanced_branching': {
+        'path': 'modules/raymarching/standardized/advanced_raymarching_branching.py',
+        'get_pseudocode': lambda: load_module_function('modules/raymarching/standardized/advanced_raymarching_branching.py', 'get_pseudocode')(),
+        'get_metadata': lambda: load_module_function('modules/raymarching/standardized/advanced_raymarching_branching.py', 'get_metadata')()
     }
 }
 
