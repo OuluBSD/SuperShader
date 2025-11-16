@@ -1,0 +1,19 @@
+// Basic directory structure for the C++ rendering process
+// This will be expanded in future development phases
+
+// Include directory structure
+// include/
+// ├── Renderer.h
+// ├── Shader.h
+// ├── Scene.h
+// └── Communication.h
+
+// Source directory structure  
+// src/
+// ├── main.cpp
+// ├── Renderer.cpp
+// ├── Shader.cpp
+// ├── Scene.cpp
+// └── Communication.cpp
+
+// Create the include directory and basic header files

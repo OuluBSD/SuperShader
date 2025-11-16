@@ -1,143 +1,26 @@
-# SuperShader Project Context
+# SuperShader Project Notes
 
-## Work Approach
+## Architecture
+- Two-process architecture: PyQt6 IDE process and C++ OpenGL/Vulkan rendering process
+- IDE handles configuration, project management, and code editing
+- Rendering process handles real-time graphics and debug overlays
 
-For quality assurance, we follow a focused approach where only one task (from one phase) is worked on at a time. The agent should take sufficient time to thoroughly complete each task, paying careful attention to detail. It's important to look for hidden faults and optional improvements during implementation, and to address them proactively. Each task should be completed with high quality, and the agent should invest additional effort to ensure the work is robust and well-executed.
+## Goals
+- Create an IDE-like application for shader development
+- Support hybrid projects combining GPU, CPU, and AI processing
+- Provide real-time visualization and debugging
+- Enable separate processes for stability and performance
 
-## Project Overview
+## Components
+- IDE Process (Python + PyQt6)
+- Rendering Process (C++ + OpenGL/Vulkan)
+- Inter-process communication layer
+- Debug overlay system
+- Performance metrics display
 
-This is the Qwen Code context for the SuperShader repository. SuperShader is a tongue-in-cheek project that combines all shaders into one unified system using generic modules.
-
-## Project Goals
-
-- Break down all shaders into generic, reusable modules
-- Identify and eliminate duplicate code
-- Find similar modules and group them logically
-- Create a management system to combine modules into useful shaders
-- Store code in a universal format (pseudocode) translatable to multiple languages and rendering APIs
-
-## Key Directories and Files
-
-- `modules/` - Contains generic shader modules organized by genre
-- `search.py` - Enhanced search functionality for shader analysis
-- `extract_glsl.py` - Utility to extract GLSL code from JSON files
-- `TASKS.md` - Detailed project tasks organized by phases
-- `PLAN.md` - Project phases and implementation approach
-- `QWEN.md` (this file) - Project context and instructions for AI assistants
-- `json/` - Shader data files in JSON format (original data)
-- `common/` - Common resources and assets
-
-## Working with JSON Shader Files
-
-The project maintains a large collection of shaders in JSON format in the `json/` directory. To analyze these files:
-
-1. Use `search.py` for tag-based searching and filtering
-2. Use the GLSL extraction utility to get shader code
-3. Identify patterns across different shaders
-4. Group similar functionality into modules
-
-## GLSL Extraction Utility
-
-The `extract_glsl.py` script allows easy extraction of GLSL code from JSON files:
-
-```bash
-# Extract GLSL code to stdout for analysis
-python extract_glsl.py --json-file path/to/shader.json
-
-# Extract specific shader type (vertex, fragment, etc.)
-python extract_glsl.py --json-file path/to/shader.json --type fragment
-
-# Process all JSON files in a directory
-python extract_glsl.py --json-dir ./json/
-```
-
-## Module Organization
-
-Modules are organized by genre in the `modules/` directory:
-
-```
-modules/
-├── geometry/
-│   ├── transforms/
-│   │   ├── matrix_ops/
-│   │   │   ├── standard/
-│   │   │   └── optimized/
-│   │   └── projections/
-│   │       ├── perspective/
-│   │       └── orthographic/
-├── lighting/
-│   ├── models/
-│   │   ├── phong/
-│   │   ├── blinn_phong/
-│   │   └── pbr/
-```
-
-Branches within module directories handle conflicting features between different implementations.
-
-## Development Workflow
-
-1. Analyze shaders in JSON files using search and extraction tools
-2. Identify similar patterns and functionality across shaders
-3. Extract common functionality into reusable modules
-4. Organize modules by genre and function
-5. Handle conflicting features with branching directories
-6. Create pseudocode modules for universal compatibility
-7. Test modules using the management system
-8. Generate complete shaders by combining modules
-
-## Pseudocode Format
-
-Modules are stored in a pseudocode format that can be translated to:
-- Programming languages: C/C++, Java, Python, JavaScript, C#
-- Graphics APIs: OpenGL, DirectX, Vulkan, Metal, Software rendering
-
-The pseudocode should be clear, maintainable, and easily translatable to specific implementations while preserving the algorithmic essence of the original shader code.
-
-## Working with Tags
-
-Use the tag information from JSON files to group shaders by functionality:
-- Process shaders by tag categories (geometry, lighting, effects, etc.)
-- Identify common patterns within each tag category
-- Create genre-specific modules based on tag organization
-- An analysis script (analyze_tags.py) has been created to extract and categorize all available tags
-
-## Shader Feature Cataloging
-
-The project includes a system for cataloging shader features:
-- Use catalog_features.py to analyze and catalog features across shaders
-- The catalog identifies common functions, types, uniforms, and renderpass configurations
-- Creates a comprehensive report of feature distribution across the shader collection
-- Helps identify the most common shader components for module creation
-
-## Data Processing Pipeline
-
-The project includes a comprehensive data processing pipeline:
-- Use pipeline.py to process shaders in batches for large-scale analysis
-- The pipeline organizes shaders by tags and features for systematic processing
-- Stores shader metadata and features in an indexed database for fast queries
-- Optimized for processing large numbers of shaders efficiently
-
-## Pseudocode Language System
-
-The project includes a universal pseudocode system:
-- Defined in pseudocode_spec.md with syntax and structure guidelines
-- Supports mapping to multiple target languages (GLSL, HLSL, etc.)
-- Includes a translator (pseudocode_translator.py) to convert pseudocode to target implementations
-- Enables cross-platform shader modules that work with multiple graphics APIs
-
-## 3D Model and Math Library Integration
-
-- Use assimp library for 3D model loading, replacing built-in 3D primitives when appropriate
-- Wrap with intuitive helpers when needed for simple cases (e.g., adding red spheres)
-- Maintain primitive support but consider replacing with 3D model loaders when beneficial
-- Utilize platform-specific math libraries (GLM for C/C++, DirectX math, etc.) instead of built-in mathematical operations
-- Recognize code that duplicates system library functionality for potential replacement with native libraries
-- Consider future collection of "library code" that duplicates native language library functionality (currently a curiosity only)
-
-## Important Notes
-
-- Original JSON shader files are in the `json/` directory (over 100MB)
-- The focus is on analysis and extraction, not modifying the original JSON files
-- Module directories should be created to organize functionality, not stored in JSON files
-- Use `search.py` to analyze shader content and requirements
-- Aim to minimize duplicate code between branches in the same module
+## Development Phases
+1. Architecture setup
+2. Basic IDE features
+3. Rendering integration
+4. Advanced features
+5. Hybrid projects support
